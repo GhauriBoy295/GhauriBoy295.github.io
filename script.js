@@ -1145,7 +1145,8 @@
     if (reducedMotion.matches || !finePointer.matches) return;
 
     const layers = [
-      { el: $('.hero-console'), depth: 0.06 }
+      { el: $('.hero-console'), depth: 0.06 },
+      { el: $('.orbit-field'), depth: 0.14 }
     ].filter((layer) => layer.el);
     if (!layers.length) return;
 
