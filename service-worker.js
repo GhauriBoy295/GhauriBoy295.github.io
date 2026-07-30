@@ -13,7 +13,7 @@
    Documents and CV files are intentionally not precached — they are large and
    rarely needed offline. They still cache on first use via the asset path. */
 
-const CACHE_VERSION = 'v5-2-0';
+const CACHE_VERSION = 'v7-0-1';
 const SHELL_CACHE = `portfolio-shell-${CACHE_VERSION}`;
 
 const SHELL_ASSETS = [
@@ -57,9 +57,15 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   // Navigations: network first, cached shell as the offline fallback.
+  //
+  // `cache: 'no-store'` is load-bearing. A plain fetch(request) consults the
+  // browser's HTTP cache, and GitHub Pages serves HTML with max-age=600 — so
+  // "network first" would quietly hand back up to ten-minute-old markup and a
+  // freshly deployed site would look unchanged. Bypassing the HTTP cache here
+  // is what makes a deploy visible immediately.
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
+      fetch(request, { cache: 'no-store' })
         .then((response) => {
           const copy = response.clone();
           caches.open(SHELL_CACHE).then((cache) => cache.put('index.html', copy)).catch(() => undefined);
