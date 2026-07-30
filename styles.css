@@ -28,39 +28,39 @@
    increments (bg -> surface -> raised -> overlay) so depth reads
    as structure rather than as arbitrary panels. */
 :root {
-  --bg-rgb: 5 8 6;
-  --bg-deep-rgb: 0 0 0;
-  --surface-rgb: 12 18 14;
-  --surface-raised-rgb: 20 29 23;
-  --surface-overlay-rgb: 28 40 32;
-  --text-rgb: 233 245 237;
+  --bg-rgb: 8 9 11;
+  --bg-deep-rgb: 4 4 6;
+  --surface-rgb: 17 18 22;
+  --surface-raised-rgb: 26 28 33;
+  --surface-overlay-rgb: 36 38 45;
+  --text-rgb: 237 238 242;
   --text-strong-rgb: 255 255 255;
-  --muted-rgb: 150 173 158;
-  --muted-strong-rgb: 197 214 203;
-  --line-rgb: 130 220 170;
-  --accent-rgb: 0 255 156;
-  --accent-strong-rgb: 96 255 190;
-  --accent-2-rgb: 180 255 57;
-  --on-accent-rgb: 0 18 10;
+  --muted-rgb: 150 154 165;
+  --muted-strong-rgb: 196 199 208;
+  --line-rgb: 150 154 165;
+  --accent-rgb: 124 140 255;
+  --accent-strong-rgb: 154 168 255;
+  --accent-2-rgb: 56 189 248;
+  --on-accent-rgb: 8 9 20;
   --shadow-rgb: 0 0 0;
 }
 
 :root[data-theme="light"] {
-  --bg-rgb: 244 248 245;
-  --bg-deep-rgb: 232 238 234;
+  --bg-rgb: 247 248 250;
+  --bg-deep-rgb: 236 238 242;
   --surface-rgb: 255 255 255;
-  --surface-raised-rgb: 248 251 249;
+  --surface-raised-rgb: 250 251 253;
   --surface-overlay-rgb: 255 255 255;
-  --text-rgb: 18 30 23;
-  --text-strong-rgb: 8 17 12;
-  --muted-rgb: 78 98 86;
-  --muted-strong-rgb: 50 66 56;
-  --line-rgb: 24 70 46;
-  --accent-rgb: 4 106 62;
-  --accent-strong-rgb: 3 84 49;
-  --accent-2-rgb: 74 104 8;
+  --text-rgb: 17 19 24;
+  --text-strong-rgb: 8 9 12;
+  --muted-rgb: 90 95 107;
+  --muted-strong-rgb: 58 62 72;
+  --line-rgb: 40 44 56;
+  --accent-rgb: 67 84 214;
+  --accent-strong-rgb: 52 66 180;
+  --accent-2-rgb: 12 116 168;
   --on-accent-rgb: 255 255 255;
-  --shadow-rgb: 20 44 30;
+  --shadow-rgb: 24 27 38;
 }
 
 /* ---------- Derived tokens (palette independent) ---------- */
@@ -222,7 +222,7 @@ button, summary { cursor: pointer; }
   inset: 0;
   z-index: -5;
   pointer-events: none;
-  opacity: .5;
+  opacity: .22;
   background-image:
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
@@ -1472,7 +1472,7 @@ body.intro-complete .hero-console { animation: shellIn .9s var(--ease-out-expo) 
   inset: 0;
   z-index: -3;
   pointer-events: none;
-  opacity: .5;
+  opacity: .28;
   background: repeating-linear-gradient(
     to bottom,
     rgb(var(--accent-rgb) / .045) 0 1px,
@@ -1486,7 +1486,9 @@ body.intro-complete .hero-console { animation: shellIn .9s var(--ease-out-expo) 
   inset: 0;
   z-index: -4;
   pointer-events: none;
-  opacity: .3;
+  /* Deliberately faint. It should register as texture in peripheral vision,
+     not as the subject of the page. */
+  opacity: .14;
 }
 
 /* RGB-split glitch on the hero title. Runs as a short burst, not constantly. */
@@ -1552,7 +1554,7 @@ body.intro-complete .hero-console { animation: shellIn .9s var(--ease-out-expo) 
 @keyframes bootLineIn { to { opacity: 1; } }
 
 @media (max-width: 760px) {
-  .crt-scanlines { opacity: .3; }
+  .crt-scanlines { opacity: .18; }
   .boot-log { display: none; }
 }
 
