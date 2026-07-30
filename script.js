@@ -64,7 +64,7 @@
   }
 
   // Browser-bar colour tracks the active theme.
-  const BAR_COLOUR = { dark: '#08090B', light: '#F7F8FA' };
+  const BAR_COLOUR = { dark: '#06040C', light: '#F8F6FC' };
 
   function syncBrowserBar() {
     const themeMeta = $('meta[name="theme-color"]');
@@ -751,18 +751,12 @@
   }
 
   // ---------- Lightweight network canvas ----------
-  // ---------- Hacker background: matrix code rain ----------
-  // Deliberately the ONLY full-screen animated layer on the page.
-  // An earlier build ran two canvases plus a 2133x1348 blur(46px) gradient
-  // mesh and two blur(105px) auroras, all animating at once; that is what made
-  // the page lag. Everything below is budgeted:
-  //   - one canvas, one rAF loop
-  //   - fixed ~14fps step instead of every frame
-  //   - device pixel ratio clamped to 1.5
-  //   - column count capped
-  //   - suspended entirely when the tab is hidden
-  //   - never runs on touch, narrow screens or reduced motion
-  function initHackerBackground() {
+  // ---------- Cosmic background: drifting starfield ----------
+  // The only full-screen animated layer on the page, and budgeted the same way
+  // the code rain it replaces was: one canvas, one rAF loop, a fixed ~20fps
+  // step, DPR clamped, star count capped, suspended when the tab is hidden and
+  // never started on touch, narrow screens or reduced motion.
+  function initStarfield() {
     const canvas = $('#rainCanvas');
     if (!canvas) return;
 
@@ -774,30 +768,37 @@
     const context = canvas.getContext('2d', { alpha: true });
     if (!context) { canvas.remove(); return; }
 
-    const GLYPHS = '01<>[]{}/\|=+*#$%&@ABCDEF0123456789アイウエオカキクケコサシスセソ';
-    const FONT_SIZE = 15;
-    const COLUMN_GAP = FONT_SIZE * 1.55;
-    const MAX_COLUMNS = 110;
-    const STEP_MS = 70;
+    const STEP_MS = 50;
+    const MAX_STARS = 150;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
-    let columns = [];
+    let stars = [];
     let width = 0;
     let height = 0;
     let frame = 0;
     let last = 0;
-    let trail = 'rgb(5 8 6 / .10)';
-    let glyphColour = 'rgb(0 255 156 / .45)';
-    let leadColour = 'rgb(0 255 156 / .95)';
+    let starRgb = '196 181 253';
+    let accentRgb = '155 120 255';
 
     function readColours() {
       const cs = getComputedStyle(root);
       const channel = (name, fallback) => (cs.getPropertyValue(name).trim() || fallback).replace(/\s+/g, ' ');
-      const bg = channel('--bg-rgb', '5 8 6');
-      const accent = channel('--accent-rgb', '0 255 156');
-      trail = `rgb(${bg} / .10)`;
-      glyphColour = `rgb(${accent} / .42)`;
-      leadColour = `rgb(${accent} / .95)`;
+      starRgb = channel('--accent-2-rgb', '196 181 253');
+      accentRgb = channel('--accent-rgb', '155 120 255');
+    }
+
+    function seed() {
+      const count = Math.min(MAX_STARS, Math.round((width * height) / 14000));
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 1.3 + 0.3,
+        // Drift is slow and mostly upward, so it reads as depth not motion.
+        vx: (Math.random() - 0.5) * 0.06,
+        vy: -(Math.random() * 0.09 + 0.02),
+        phase: Math.random() * Math.PI * 2,
+        twinkle: Math.random() * 0.02 + 0.006
+      }));
     }
 
     function resize() {
@@ -808,10 +809,7 @@
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context.font = `${FONT_SIZE}px ${getComputedStyle(root).getPropertyValue('--font-mono') || 'monospace'}`;
-      context.textBaseline = 'top';
-      const count = Math.min(MAX_COLUMNS, Math.ceil(width / COLUMN_GAP));
-      columns = Array.from({ length: count }, () => Math.random() * -50);
+      seed();
     }
 
     function draw(now) {
@@ -820,21 +818,23 @@
       if (now - last < STEP_MS) return;
       last = now;
 
-      context.fillStyle = trail;
-      context.fillRect(0, 0, width, height);
+      context.clearRect(0, 0, width, height);
 
-      for (let i = 0; i < columns.length; i += 1) {
-        const x = i * COLUMN_GAP;
-        const y = columns[i] * FONT_SIZE;
+      for (let i = 0; i < stars.length; i += 1) {
+        const star = stars[i];
+        star.x += star.vx;
+        star.y += star.vy;
+        star.phase += star.twinkle;
 
-        if (y > -FONT_SIZE && y < height) {
-          context.fillStyle = leadColour;
-          context.fillText(GLYPHS[(Math.random() * GLYPHS.length) | 0], x, y);
-          context.fillStyle = glyphColour;
-          context.fillText(GLYPHS[(Math.random() * GLYPHS.length) | 0], x, y - FONT_SIZE * 2);
-        }
+        if (star.y < -2) { star.y = height + 2; star.x = Math.random() * width; }
+        if (star.x < -2) star.x = width + 2;
+        if (star.x > width + 2) star.x = -2;
 
-        columns[i] = y > height && Math.random() > 0.97 ? 0 : columns[i] + 1;
+        const alpha = 0.3 + Math.sin(star.phase) * 0.3;
+        context.beginPath();
+        context.fillStyle = `rgb(${star.r > 1.1 ? accentRgb : starRgb} / ${alpha.toFixed(3)})`;
+        context.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        context.fill();
       }
     }
 
@@ -856,7 +856,7 @@
     document.addEventListener('portfolio:themechange', readColours);
     window.addEventListener('pagehide', () => cancelAnimationFrame(frame), { once: true });
   }
-  initHackerBackground();
+  initStarfield();
 
 
   // ---------- Hero glitch bursts ----------

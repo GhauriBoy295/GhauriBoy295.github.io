@@ -28,39 +28,39 @@
    increments (bg -> surface -> raised -> overlay) so depth reads
    as structure rather than as arbitrary panels. */
 :root {
-  --bg-rgb: 8 9 11;
-  --bg-deep-rgb: 4 4 6;
-  --surface-rgb: 17 18 22;
-  --surface-raised-rgb: 26 28 33;
-  --surface-overlay-rgb: 36 38 45;
-  --text-rgb: 237 238 242;
+  --bg-rgb: 6 4 12;
+  --bg-deep-rgb: 3 2 6;
+  --surface-rgb: 18 14 32;
+  --surface-raised-rgb: 28 22 48;
+  --surface-overlay-rgb: 38 30 62;
+  --text-rgb: 237 234 248;
   --text-strong-rgb: 255 255 255;
-  --muted-rgb: 150 154 165;
-  --muted-strong-rgb: 196 199 208;
-  --line-rgb: 150 154 165;
-  --accent-rgb: 124 140 255;
-  --accent-strong-rgb: 154 168 255;
-  --accent-2-rgb: 56 189 248;
-  --on-accent-rgb: 8 9 20;
+  --muted-rgb: 158 150 184;
+  --muted-strong-rgb: 200 194 222;
+  --line-rgb: 158 150 184;
+  --accent-rgb: 155 120 255;
+  --accent-strong-rgb: 182 154 255;
+  --accent-2-rgb: 196 181 253;
+  --on-accent-rgb: 12 6 24;
   --shadow-rgb: 0 0 0;
 }
 
 :root[data-theme="light"] {
-  --bg-rgb: 247 248 250;
-  --bg-deep-rgb: 236 238 242;
+  --bg-rgb: 248 246 252;
+  --bg-deep-rgb: 238 234 246;
   --surface-rgb: 255 255 255;
-  --surface-raised-rgb: 250 251 253;
+  --surface-raised-rgb: 251 249 254;
   --surface-overlay-rgb: 255 255 255;
-  --text-rgb: 17 19 24;
-  --text-strong-rgb: 8 9 12;
-  --muted-rgb: 90 95 107;
-  --muted-strong-rgb: 58 62 72;
-  --line-rgb: 40 44 56;
-  --accent-rgb: 67 84 214;
-  --accent-strong-rgb: 52 66 180;
-  --accent-2-rgb: 12 116 168;
+  --text-rgb: 24 18 38;
+  --text-strong-rgb: 13 8 24;
+  --muted-rgb: 96 88 118;
+  --muted-strong-rgb: 62 55 82;
+  --line-rgb: 52 40 84;
+  --accent-rgb: 96 54 204;
+  --accent-strong-rgb: 78 42 170;
+  --accent-2-rgb: 122 74 190;
   --on-accent-rgb: 255 255 255;
-  --shadow-rgb: 24 27 38;
+  --shadow-rgb: 32 22 56;
 }
 
 /* ---------- Derived tokens (palette independent) ---------- */
@@ -326,8 +326,11 @@ html[data-theme="light"] .cursor-aura { mix-blend-mode: multiply; opacity: .15; 
   border: 1px solid rgb(var(--accent-rgb) / .2);
   border-radius: 28px;
   overflow: hidden;
-  background: linear-gradient(145deg, rgb(var(--surface-rgb) / .91), rgb(var(--surface-rgb) / .84));
-  box-shadow: 0 45px 120px rgba(0, 0, 0, .55), 0 0 70px rgb(var(--accent-rgb) / .08);
+  /* Translucent so the eclipse orb behind it reads through the panel, which is
+     what makes the composition feel like one lit scene rather than a card
+     sitting on top of a background. */
+  background: linear-gradient(145deg, rgb(var(--surface-rgb) / .52), rgb(var(--bg-deep-rgb) / .58));
+  box-shadow: 0 45px 120px rgba(0, 0, 0, .55), 0 0 70px rgb(var(--accent-rgb) / .12);
   backdrop-filter: blur(24px);
   animation: accessCardIn .9s var(--ease-spring) both;
 }
@@ -1033,6 +1036,138 @@ dialog::backdrop { background: rgb(var(--bg-deep-rgb) / .78); backdrop-filter: b
 .toast.is-visible { opacity: 1; visibility: visible; transform: translate(-50%,0); }
 
 /* ---------- Reveal and animation utilities ---------- */
+/* =========================================================
+   COSMIC LAYER
+
+   Glow is the signature of this design. Every bloom below is a
+   radial-gradient, never a filter: blur(). Gradients are painted
+   once and composited cheaply; large blurred layers were what
+   made an earlier build lag, so they are deliberately avoided.
+   ========================================================= */
+
+/* Hero eclipse: a lit sphere with a bright rim and an outer bloom. */
+.hero-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Sized larger than the welcome panel so its lit edge and bloom read around
+     the card rather than being hidden behind it. */
+  width: min(1180px, 108vw);
+  aspect-ratio: 1;
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 36% 28%,
+      rgb(var(--accent-2-rgb) / .85) 0%,
+      rgb(var(--accent-rgb) / .58) 12%,
+      rgb(var(--accent-rgb) / .22) 26%,
+      rgb(var(--accent-rgb) / .06) 38%,
+      rgb(var(--bg-deep-rgb) / .92) 52%,
+      rgb(var(--bg-deep-rgb) / .98) 68%);
+  box-shadow:
+    0 0 120px 20px rgb(var(--accent-rgb) / .3),
+    0 0 300px 90px rgb(var(--accent-rgb) / .18);
+  animation: orbBreathe 12s ease-in-out infinite alternate;
+}
+@keyframes orbBreathe {
+  from { transform: translate3d(-50%, -50%, 0) scale(1); }
+  to   { transform: translate3d(-50%, -50%, 0) scale(1.045); }
+}
+
+/* Concentric orbit rings, each carrying a travelling dot. */
+.orbit-field {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(1080px, 150vw);
+  aspect-ratio: 1;
+  transform: translate3d(-50%, -50%, 0);
+  pointer-events: none;
+  z-index: 0;
+}
+.orbit-field i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgb(var(--line-rgb) / .13);
+  border-radius: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  animation: orbitSpin linear infinite;
+}
+.orbit-field i::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--accent-2-rgb));
+  box-shadow: 0 0 12px 2px rgb(var(--accent-rgb) / .8);
+}
+.orbit-field i:nth-child(1) { width: 44%; height: 44%; animation-duration: 34s; }
+.orbit-field i:nth-child(2) { width: 64%; height: 64%; animation-duration: 52s; animation-direction: reverse; }
+.orbit-field i:nth-child(3) { width: 86%; height: 86%; animation-duration: 76s; }
+@keyframes orbitSpin {
+  to { transform: translate3d(-50%, -50%, 0) rotate(360deg); }
+}
+
+/* Halo treatment for primary actions, matching the reference's glowing pill. */
+.button-primary {
+  box-shadow:
+    0 0 0 1px rgb(var(--accent-rgb) / .5),
+    0 0 26px rgb(var(--accent-rgb) / .45),
+    0 0 60px rgb(var(--accent-rgb) / .22);
+}
+.button-primary:hover {
+  box-shadow:
+    0 0 0 1px rgb(var(--accent-rgb) / .7),
+    0 0 34px rgb(var(--accent-rgb) / .6),
+    0 0 80px rgb(var(--accent-rgb) / .3);
+}
+
+/* Framed panel: thin border, corner ticks, and a bloom behind the content. */
+.cosmic-frame {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgb(var(--line-rgb) / .16);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.cosmic-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(58% 78% at 50% 52%, rgb(var(--accent-rgb) / .3), transparent 68%),
+    linear-gradient(rgb(var(--line-rgb) / .05) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, rgb(var(--line-rgb) / .05) 1px, transparent 1px) 0 0 / 44px 44px;
+}
+/* Corner ticks, drawn with a single element per corner pair. */
+.cosmic-frame::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  background:
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 0 0 / 1px 14px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 0 0 / 14px 1px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 100% 0 / 1px 14px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 100% 0 / 14px 1px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 0 100% / 1px 14px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 0 100% / 14px 1px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 100% 100% / 1px 14px no-repeat,
+    linear-gradient(rgb(var(--accent-2-rgb) / .55) 0 0) 100% 100% / 14px 1px no-repeat;
+}
+
+@media (max-width: 760px) {
+  .orbit-field { display: none; }
+  .hero-orb { width: min(360px, 86vw); }
+}
+
 /* Sections outside the viewport stop animating entirely. Decorative loops in
    project visuals, radars and marquees are the bulk of the page's animation
    budget and none of it is worth spending on content nobody is looking at. */
@@ -1486,9 +1621,9 @@ body.intro-complete .hero-console { animation: shellIn .9s var(--ease-out-expo) 
   inset: 0;
   z-index: -4;
   pointer-events: none;
-  /* Deliberately faint. It should register as texture in peripheral vision,
-     not as the subject of the page. */
-  opacity: .14;
+  /* Stars are sparse points rather than a wall of glyphs, so they can sit
+     brighter than the code rain did without dominating. */
+  opacity: .7;
 }
 
 /* RGB-split glitch on the hero title. Runs as a short burst, not constantly. */

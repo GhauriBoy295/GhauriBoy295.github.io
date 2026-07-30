@@ -4,8 +4,8 @@
   "description": "Professional cyber security portfolio for Sarmad Saeed.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#08090B",
-  "theme_color": "#08090B",
+  "background_color": "#06040C",
+  "theme_color": "#06040C",
   "icons": [
     {
       "src": "favicon.svg",
