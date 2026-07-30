@@ -1,0 +1,28 @@
+{
+  "name": "sarmad-saeed-portfolio",
+  "version": "1.0.0",
+  "description": "A premium, responsive and accessible static portfolio for Sarmad Saeed, an MSc Cyber Security Graduate from the University of Chester.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GhauriBoy295/GhauriBoy295.github.io.git"
+  },
+  "keywords": [
+    "portfolio",
+    "cyber-security",
+    "static-site",
+    "vercel"
+  ],
+  "author": "Sarmad Saeed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GhauriBoy295/GhauriBoy295.github.io/issues"
+  },
+  "homepage": "https://github.com/GhauriBoy295/GhauriBoy295.github.io#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
