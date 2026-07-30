@@ -1,0 +1,14 @@
+# OS and editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Local tooling
+.claude/
+node_modules/
+
+# Build output that is generated, not source
+*.zip

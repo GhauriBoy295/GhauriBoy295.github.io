@@ -1,0 +1,88 @@
+/* Offline shell for the Sarmad Saeed portfolio.
+
+   Strategy, deliberately simple:
+   - Precache the static shell on install.
+   - Navigations use network-first, falling back to the cached shell so the
+     site still opens offline. This keeps deployed updates visible immediately
+     instead of serving a stale page from cache.
+   - Same-origin assets use stale-while-revalidate: fast from cache, refreshed
+     in the background.
+   - Bump CACHE_VERSION whenever the shell changes; older caches are deleted
+     on activate.
+
+   Documents and CV files are intentionally not precached — they are large and
+   rarely needed offline. They still cache on first use via the asset path. */
+
+const CACHE_VERSION = 'v5-2-0';
+const SHELL_CACHE = `portfolio-shell-${CACHE_VERSION}`;
+
+const SHELL_ASSETS = [
+  './',
+  'index.html',
+  'styles.css',
+  'script.js',
+  'favicon.svg',
+  'site.webmanifest',
+  '404.html',
+  'assets/social-preview.png'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(SHELL_CACHE)
+      .then((cache) => cache.addAll(SHELL_ASSETS))
+      // A single missing entry must not block installation.
+      .catch(() => undefined)
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys
+          .filter((key) => key.startsWith('portfolio-shell-') && key !== SHELL_CACHE)
+          .map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Navigations: network first, cached shell as the offline fallback.
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(SHELL_CACHE).then((cache) => cache.put('index.html', copy)).catch(() => undefined);
+          return response;
+        })
+        .catch(() => caches.match('index.html').then((cached) => cached || caches.match('./')))
+    );
+    return;
+  }
+
+  // Assets: serve cached immediately, refresh in the background.
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      const network = fetch(request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const copy = response.clone();
+            caches.open(SHELL_CACHE).then((cache) => cache.put(request, copy)).catch(() => undefined);
+          }
+          return response;
+        })
+        .catch(() => cached);
+      return cached || network;
+    })
+  );
+});

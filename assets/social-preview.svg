@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#03120A"/>
+      <stop offset="0.5" stop-color="#050806"/>
+      <stop offset="1" stop-color="#03120A"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.1" cy="0.05" r="0.6">
+      <stop offset="0" stop-color="#00ff9c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#00ff9c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.95" cy="0.9" r="0.6">
+      <stop offset="0" stop-color="#b4ff39" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#b4ff39" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#00ff9c" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="shield" x1="120" y1="190" x2="272" y2="410" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00ff9c"/>
+      <stop offset="1" stop-color="#b4ff39"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#050806"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Card -->
+  <rect x="44" y="40" width="1112" height="550" rx="26"
+        fill="#0C120E" stroke="#00ff9c" stroke-opacity="0.28" stroke-width="1.5"/>
+
+  <!-- Window bar -->
+  <path d="M44 108 H1156" stroke="#00ff9c" stroke-opacity="0.18" stroke-width="1.5"/>
+  <circle cx="78" cy="74" r="6.5" fill="#ff5f57"/>
+  <circle cx="100" cy="74" r="6.5" fill="#ffc46b"/>
+  <circle cx="122" cy="74" r="6.5" fill="#00ff9c"/>
+  <text x="600" y="80" text-anchor="middle" fill="#96AD9E"
+        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="15" letter-spacing="2.6">PORTFOLIO ACCESS</text>
+  <circle cx="1028" cy="74" r="5" fill="#00ff9c"/>
+  <text x="1044" y="80" fill="#C5D6CB"
+        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="15" letter-spacing="2.2">READY</text>
+
+  <!-- Left identity mark -->
+  <circle cx="196" cy="300" r="118" fill="none" stroke="#b4ff39" stroke-opacity="0.35" stroke-width="1.5"/>
+  <circle cx="196" cy="300" r="97" fill="none" stroke="#00ff9c" stroke-opacity="0.22" stroke-width="1.5"/>
+  <circle cx="196" cy="182" r="5" fill="#00ff9c"/>
+  <circle cx="93" cy="352" r="4.5" fill="#b4ff39"/>
+  <circle cx="299" cy="348" r="4.5" fill="#00ff9c"/>
+  <path d="M196 208 L268 236 v50c0 42-28 76-72 94-44-18-72-52-72-94v-50z"
+        fill="none" stroke="url(#shield)" stroke-width="4" stroke-linejoin="round"/>
+  <text x="196" y="304" text-anchor="middle" fill="#E9F5ED"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="1">SS</text>
+  <text x="196" y="336" text-anchor="middle" fill="#6bffc0"
+        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="11" letter-spacing="1.4">CYBER SECURITY</text>
+
+  <!-- Right content -->
+  <text x="370" y="182" fill="#00ff9c"
+        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="17" letter-spacing="2.4">PROFESSIONAL CYBER SECURITY PORTFOLIO</text>
+
+  <text x="370" y="266" fill="#ffffff"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="68" font-weight="800" letter-spacing="-2">Sarmad Saeed</text>
+
+  <text x="370" y="326" fill="#E9F5ED"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" font-weight="700">MSc Cyber Security Graduate</text>
+
+  <text x="370" y="368" fill="#96AD9E"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="25">University of Chester · 2025–2026</text>
+
+  <text x="370" y="422" fill="#C5D6CB"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">Security research, threat detection, DFIR,</text>
+  <text x="370" y="454" fill="#C5D6CB"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">penetration testing and ICS/OT defence.</text>
+
+  <!-- Tag pills -->
+  <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="1">
+    <rect x="370" y="496" width="176" height="40" rx="12" fill="#00ff9c" fill-opacity="0.10" stroke="#00ff9c" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="458" y="522" text-anchor="middle" fill="#6bffc0">THREAT DETECTION</text>
+
+    <rect x="558" y="496" width="186" height="40" rx="12" fill="#00ff9c" fill-opacity="0.10" stroke="#00ff9c" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="651" y="522" text-anchor="middle" fill="#6bffc0">DIGITAL FORENSICS</text>
+
+    <rect x="756" y="496" width="104" height="40" rx="12" fill="#00ff9c" fill-opacity="0.10" stroke="#00ff9c" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="808" y="522" text-anchor="middle" fill="#6bffc0">ICS / OT</text>
+
+    <rect x="872" y="496" width="188" height="40" rx="12" fill="#00ff9c" fill-opacity="0.10" stroke="#00ff9c" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="966" y="522" text-anchor="middle" fill="#6bffc0">SECURITY RESEARCH</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="72" y="566" fill="#7A8F81"
+        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.2">Ghauri_Boy  /  United Kingdom</text>
+
+  <rect x="956" y="544" width="152" height="42" rx="13" fill="#00ff9c"/>
+  <circle cx="984" cy="565" r="5" fill="#00120A"/>
+  <text x="1000" y="571" fill="#00120A"
+        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="1">GRADUATED</text>
+</svg>

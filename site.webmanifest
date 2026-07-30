@@ -1,0 +1,17 @@
+{
+  "name": "Sarmad Saeed | Cyber Security Portfolio",
+  "short_name": "Sarmad Saeed",
+  "description": "Professional cyber security portfolio for Sarmad Saeed.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#050806",
+  "theme_color": "#050806",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

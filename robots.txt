@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Add your final live domain before publishing a sitemap, for example:
+# Sitemap: https://your-domain.example/sitemap.xml
