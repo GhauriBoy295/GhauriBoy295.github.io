@@ -27,40 +27,43 @@
    informational secondary. Surfaces step up in measured
    increments (bg -> surface -> raised -> overlay) so depth reads
    as structure rather than as arbitrary panels. */
+/* Strictly neutral. Every grey has equal R, G and B, so no surface carries a
+   colour cast. Emphasis comes from contrast, weight and spacing rather than
+   from hue, glow or gradient. */
 :root {
-  --bg-rgb: 3 5 4;
+  --bg-rgb: 10 10 10;
   --bg-deep-rgb: 0 0 0;
-  --surface-rgb: 10 15 12;
-  --surface-raised-rgb: 17 25 20;
-  --surface-overlay-rgb: 24 35 28;
-  --text-rgb: 232 245 236;
+  --surface-rgb: 22 22 22;
+  --surface-raised-rgb: 32 32 32;
+  --surface-overlay-rgb: 44 44 44;
+  --text-rgb: 245 245 245;
   --text-strong-rgb: 255 255 255;
-  --muted-rgb: 145 170 154;
-  --muted-strong-rgb: 195 214 202;
-  --line-rgb: 120 210 160;
-  --accent-rgb: 0 255 136;
-  --accent-strong-rgb: 90 255 180;
-  --accent-2-rgb: 160 255 90;
-  --on-accent-rgb: 0 14 8;
+  --muted-rgb: 160 160 160;
+  --muted-strong-rgb: 212 212 212;
+  --line-rgb: 150 150 150;
+  --accent-rgb: 255 255 255;
+  --accent-strong-rgb: 225 225 225;
+  --accent-2-rgb: 145 145 145;
+  --on-accent-rgb: 10 10 10;
   --shadow-rgb: 0 0 0;
 }
 
 :root[data-theme="light"] {
-  --bg-rgb: 243 248 245;
-  --bg-deep-rgb: 231 238 234;
+  --bg-rgb: 250 250 250;
+  --bg-deep-rgb: 238 238 238;
   --surface-rgb: 255 255 255;
-  --surface-raised-rgb: 247 251 249;
+  --surface-raised-rgb: 246 246 246;
   --surface-overlay-rgb: 255 255 255;
-  --text-rgb: 15 28 21;
-  --text-strong-rgb: 6 16 11;
-  --muted-rgb: 74 96 84;
-  --muted-strong-rgb: 46 64 54;
-  --line-rgb: 20 66 44;
-  --accent-rgb: 4 102 60;
-  --accent-strong-rgb: 3 80 47;
-  --accent-2-rgb: 62 96 8;
+  --text-rgb: 20 20 20;
+  --text-strong-rgb: 0 0 0;
+  --muted-rgb: 100 100 100;
+  --muted-strong-rgb: 58 58 58;
+  --line-rgb: 60 60 60;
+  --accent-rgb: 18 18 18;
+  --accent-strong-rgb: 0 0 0;
+  --accent-2-rgb: 110 110 110;
   --on-accent-rgb: 255 255 255;
-  --shadow-rgb: 18 42 30;
+  --shadow-rgb: 30 30 30;
 }
 
 /* ---------- Derived tokens (palette independent) ---------- */
@@ -2058,3 +2061,336 @@ body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) b
   body.printing-case .case-study-grid { grid-template-columns:1fr; }
   body.printing-case .case-study-block { break-inside:avoid; }
 }
+
+/* =========================================================
+   FLAT SURFACE LAYER
+
+   Appended deliberately as an override rather than by rewriting the
+   ~70 gradient declarations above. Editing them in place risks
+   corrupting multi-value shorthands; overriding them is reversible
+   and leaves the original rules readable.
+
+   Rules: no gradient fills, no coloured glow, no backdrop blur.
+   Depth comes from a one-pixel border and a flat surface step.
+   ========================================================= */
+
+/* Panels and cards: single flat fill. */
+.access-card,
+.console-frame,
+.spotlight-card,
+.bento-card,
+.expertise-card,
+.project-card,
+.timeline-card,
+.experience-card,
+.credential-card,
+.contact-panel,
+.dialog-shell,
+.command-dialog,
+.tool-track span,
+.module-cloud span,
+.access-tags span {
+  background-image: none;
+  background-color: var(--surface-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Decorative washes behind sections and project art. */
+.access-screen,
+.contact-copy,
+.visual-randomness,
+.visual-dfir,
+.visual-offensive,
+.visual-database,
+.visual-ics,
+.project-visual,
+.cosmic-frame::before,
+.hero::before,
+.hero::after {
+  background-image: none;
+  background-color: var(--bg);
+}
+
+/* Coloured glow is replaced by a flat border. */
+.button-primary,
+.button-primary:hover,
+.timeline-marker span,
+.data-flow i,
+.target-rings i,
+.availability-dot,
+.window-state i,
+.console-live i,
+.proof-track i,
+.identity-pulse,
+.lego-node,
+.back-to-top,
+.toast {
+  box-shadow: none;
+}
+
+/* Solid button, no halo. Inverted fill reads as the primary action. */
+.button-primary {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border: 1px solid var(--accent);
+}
+.button-primary:hover {
+  background-color: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+/* Headline: solid colour, no gradient text fill. */
+.hero-title .hero-accent {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: currentColor;
+  color: var(--muted-strong);
+}
+
+/* Radar sweep as one solid wedge rather than a blended cone. */
+.radar-sweep {
+  background: conic-gradient(from 0deg, transparent 0deg 312deg, rgb(var(--accent-rgb) / .12) 312deg 360deg);
+}
+
+/* Ambient page texture: keep the grid, drop the tint and the scanline wash. */
+.page-grid { opacity: .16; }
+.crt-scanlines { display: none; }
+.rain-canvas { opacity: .35; }
+
+/* Entrance timing: crisp, not sluggish.
+
+   The long 1.5s expo curves borrowed from the reference site left content
+   unreadable for roughly two seconds after load, which reads as slow rather
+   than as premium. Shorter durations and a tighter stagger keep the motion
+   deliberate while getting text on screen quickly. */
+.reveal {
+  transition:
+    opacity .55s var(--ease-out-expo),
+    transform .6s var(--ease-out-expo);
+}
+.stagger > * {
+  transition:
+    opacity .5s var(--ease-out-expo),
+    transform .55s var(--ease-out-expo);
+}
+.stagger.is-visible > *:nth-child(1) { transition-delay: .02s; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: .06s; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: .10s; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: .14s; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: .18s; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: .22s; }
+.stagger.is-visible > *:nth-child(n+7) { transition-delay: .26s; }
+.draw-path { transition: stroke-dashoffset .9s var(--ease-out-expo); }
+
+/* =========================================================
+   MODULAR OBJECTS — FLAT PASS
+
+   The brick / node / arm / hex set was authored during the glow
+   phase, so it carried gradient faces and coloured bloom. Here it
+   is restated in flat terms: each cube face is a distinct solid
+   grey, joints and legs are 1px strokes, and nothing blooms.
+   Isometric faces use three fixed greys, which is flat shading
+   rather than a gradient.
+   ========================================================= */
+
+.robotic-banner {
+  background-image:
+    linear-gradient(rgb(var(--line-rgb) / .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line-rgb) / .05) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px;
+  background-color: rgb(var(--bg-deep-rgb));
+}
+
+/* Brick: solid top face, darker body, flat studs. */
+.lego-brick {
+  background-image: none;
+  background-color: var(--surface-raised);
+  border: 1px solid rgb(var(--line-rgb) / .3);
+  box-shadow: none;
+}
+.lego-brick span {
+  background-image: none;
+  background-color: var(--surface-overlay);
+  border-bottom: 1px solid rgb(var(--line-rgb) / .25);
+  box-shadow: none;
+}
+.lego-brick span::before,
+.lego-brick span::after {
+  background-color: rgb(var(--line-rgb) / .5);
+  box-shadow: none;
+}
+.lego-brick i {
+  background-image: none;
+  background-color: rgb(var(--surface-rgb));
+  border: 1px solid rgb(var(--line-rgb) / .22);
+  border-top: 0;
+}
+
+/* Node: flat ring, solid core, 1px legs. */
+.lego-node {
+  background-image: none;
+  background-color: var(--surface-solid);
+  border: 1px solid rgb(var(--line-rgb) / .35);
+  box-shadow: none;
+}
+.lego-node::before {
+  background-color: var(--accent);
+  box-shadow: none;
+}
+
+/* Arm: flat segments, hollow joints. */
+.lego-arm i {
+  background-image: none;
+  background-color: var(--surface-overlay);
+  border: 1px solid rgb(var(--line-rgb) / .3);
+  box-shadow: none;
+}
+.lego-arm b {
+  background-color: var(--bg);
+  border: 1.5px solid var(--accent);
+  box-shadow: none;
+}
+
+/* Hex: outline only. */
+.lego-hex {
+  background-image: none;
+  background-color: rgb(var(--surface-rgb));
+  border: 1px solid rgb(var(--line-rgb) / .3);
+  box-shadow: none;
+}
+
+/* Banner caption sits as quiet technical metadata. */
+.robotic-banner-caption {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.robotic-banner-caption p {
+  color: var(--muted);
+  font: 600 10px/1.4 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+.robotic-banner-caption strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--text-strong);
+  font-size: clamp(18px, 2.2vw, 26px);
+  letter-spacing: -.02em;
+}
+
+/* =========================================================
+   OBJECTS: PRESENCE PASS
+
+   Flat monochrome removes glow as a tool, so the modules have to
+   earn presence through scale, stroke weight and contrast against
+   the backdrop instead. Previously they read as dark-on-dark noise.
+   ========================================================= */
+
+.robotic-banner { padding: 34px 0 38px; }
+
+.robotic-banner-caption { margin-bottom: 22px; }
+
+.lego-scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(26px, 5vw, 64px);
+  min-height: 132px;
+}
+
+/* Lighter strokes and solid faces so each module reads as an object. */
+.lego-brick {
+  background-color: rgb(var(--line-rgb) / .14);
+  border-color: rgb(var(--line-rgb) / .55);
+  transform: scale(1.35);
+}
+.lego-brick span {
+  background-color: rgb(var(--line-rgb) / .26);
+  border-bottom-color: rgb(var(--line-rgb) / .5);
+}
+.lego-brick span::before,
+.lego-brick span::after { background-color: rgb(var(--line-rgb) / .8); }
+.lego-brick i {
+  background-color: rgb(var(--line-rgb) / .08);
+  border-color: rgb(var(--line-rgb) / .45);
+}
+
+.lego-node {
+  border-color: rgb(var(--line-rgb) / .6);
+  border-width: 1.5px;
+  transform: scale(1.3);
+}
+.lego-node::before { background-color: var(--text-strong); }
+.lego-node::after { background-image: none; }
+
+.lego-arm { transform: scale(1.3); }
+.lego-arm i {
+  background-color: rgb(var(--line-rgb) / .2);
+  border-color: rgb(var(--line-rgb) / .6);
+}
+.lego-arm b { border-color: var(--text-strong); border-width: 2px; }
+
+.lego-hex {
+  background-color: rgb(var(--line-rgb) / .1);
+  border-color: rgb(var(--line-rgb) / .6);
+  border-width: 1.5px;
+  transform: scale(1.3);
+}
+
+/* Legs radiating from the node, drawn as flat 1px strokes. */
+.lego-node::after {
+  background:
+    linear-gradient(rgb(var(--line-rgb) / .55) 0 0) 50% 0 / 1.5px 16px no-repeat,
+    linear-gradient(rgb(var(--line-rgb) / .55) 0 0) 50% 100% / 1.5px 16px no-repeat,
+    linear-gradient(rgb(var(--line-rgb) / .55) 0 0) 0 50% / 16px 1.5px no-repeat,
+    linear-gradient(rgb(var(--line-rgb) / .55) 0 0) 100% 50% / 16px 1.5px no-repeat;
+}
+
+@media (max-width: 760px) {
+  .lego-scene { gap: 22px; min-height: 104px; }
+  .lego-brick, .lego-node, .lego-arm, .lego-hex { transform: scale(1); }
+}
+
+/* =========================================================
+   REVERSE FLOW
+
+   Scrolling back up plays the entrance in reverse: elements
+   retreat toward the edge they arrived from. Driven by a
+   direction flag on <html> so it is pure CSS at paint time.
+   ========================================================= */
+
+.reveal.is-leaving { opacity: 0; }
+:root[data-scroll="up"] .reveal.is-leaving { transform: translate3d(0, 40px, 0) scale(.99); }
+:root[data-scroll="up"] .reveal.is-leaving[data-reveal="left"]  { transform: translate3d(-60px, 0, 0) scale(.99); }
+:root[data-scroll="up"] .reveal.is-leaving[data-reveal="right"] { transform: translate3d(60px, 0, 0) scale(.99); }
+:root[data-scroll="up"] .reveal.is-leaving[data-reveal="back"]  { transform: perspective(1000px) translate3d(0, 24px, -90px) scale(.94); }
+:root[data-scroll="down"] .reveal.is-leaving { transform: translate3d(0, -34px, 0) scale(.99); }
+
+/* =========================================================
+   WELCOME PANEL: FIXED, NOT SCROLLING
+
+   The panel is a fixed viewport rather than a scrollable page.
+   Scrolling is only re-enabled when the content genuinely cannot
+   fit, so short screens never trap the Enter button off-screen.
+   ========================================================= */
+
+.access-screen {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+@media (max-height: 720px), (max-width: 760px) {
+  .access-screen { overflow: auto; }
+}
+
+/* Banner captions are centred, so the section-index treatment used elsewhere
+   (left padding plus a decorative leading rule) must not apply here — it was
+   pushing the text off-centre and leaving a stray dash at the left. */
+.robotic-banner-caption .section-index {
+  padding-left: 0;
+  text-align: center;
+}
+.robotic-banner-caption .section-index::before { content: none; }

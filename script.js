@@ -64,7 +64,7 @@
   }
 
   // Browser-bar colour tracks the active theme.
-  const BAR_COLOUR = { dark: '#030504', light: '#F3F8F5' };
+  const BAR_COLOUR = { dark: '#0A0A0A', light: '#FAFAFA' };
 
   function syncBrowserBar() {
     const themeMeta = $('meta[name="theme-color"]');
@@ -297,9 +297,15 @@
     item.style.setProperty('--reveal-delay', String(Number.isFinite(delay) ? delay : 0));
   });
 
+  // Reverse flow owns .reveal when motion is on: it both reveals and retreats,
+  // and observes the same elements. Running the one-shot observer as well would
+  // mean two observers toggling the same class, so this path is only used when
+  // reverse flow is inactive.
+  const reverseFlowActive = !motionReduced() && 'IntersectionObserver' in window;
+
   if (motionReduced() || !('IntersectionObserver' in window)) {
     revealItems.forEach((item) => item.classList.add('is-visible'));
-  } else {
+  } else if (!reverseFlowActive) {
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -324,11 +330,32 @@
     }
     const duration = 1150;
     const start = performance.now();
+    let settled = false;
+
+    // The displayed number is a fact about the page, so it must not depend on
+    // the animation finishing. requestAnimationFrame is throttled or suspended
+    // when the tab is hidden or the element scrolls out of view, and because
+    // dataset.counted is already set the loop can never restart — which left
+    // the counters frozen partway. This timer guarantees the final value
+    // regardless of what happens to the frame loop.
+    const settle = () => {
+      if (settled) return;
+      settled = true;
+      element.textContent = String(target);
+    };
+    const safety = window.setTimeout(settle, duration + 150);
+
     const frame = (now) => {
+      if (settled) return;
       const elapsed = Math.min(1, (now - start) / duration);
       const eased = 1 - Math.pow(1 - elapsed, 3);
       element.textContent = String(Math.round(target * eased));
-      if (elapsed < 1) requestAnimationFrame(frame);
+      if (elapsed < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        window.clearTimeout(safety);
+        settle();
+      }
     };
     requestAnimationFrame(frame);
   }
@@ -1176,6 +1203,47 @@
     sections.forEach((section) => observer.observe(section));
   }
   initIdleSections();
+
+  // ---------- Reverse flow on scroll-up ----------
+  // Direction is published as a data attribute so the retreat transforms are
+  // pure CSS; the observer only toggles a class. Elements that leave the
+  // viewport are re-armed, which is what lets the entrance replay rather than
+  // firing once for the lifetime of the page.
+  function initReverseFlow() {
+    if (!('IntersectionObserver' in window)) return;
+    const items = $$('.reveal');
+    if (!items.length) return;
+
+    let lastY = window.scrollY;
+    root.dataset.scroll = 'down';
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 4) return;
+      root.dataset.scroll = y > lastY ? 'down' : 'up';
+      lastY = y;
+    }, { passive: true });
+
+    if (motionReduced()) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target;
+        if (entry.isIntersecting) {
+          el.classList.remove('is-leaving');
+          el.classList.add('is-visible');
+        } else {
+          // Only retreat when the element leaves past the edge it came from,
+          // so content never flickers while it is still partly on screen.
+          el.classList.remove('is-visible');
+          el.classList.add('is-leaving');
+        }
+      });
+    }, { rootMargin: '-4% 0px -4% 0px', threshold: 0.06 });
+
+    items.forEach((el) => observer.observe(el));
+  }
+  initReverseFlow();
 
   // ---------- Designed motion: stagger choreography ----------
   // Grids and card rows resolve child-by-child instead of as one block.

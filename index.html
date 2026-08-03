@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#030504">
+  <meta name="theme-color" content="#0A0A0A">
   <meta name="description" content="The professional cyber security portfolio of Sarmad Saeed, an MSc Cyber Security graduate from the University of Chester, featuring security research, ICS defence, digital forensics, penetration testing and technical projects.">
   <meta name="author" content="Sarmad Saeed">
   <meta name="robots" content="index, follow">
@@ -25,8 +25,8 @@
   <title>Sarmad Saeed | Cyber Security Portfolio</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=9.0.3">
-  <script src="script.js?v=9.0.3" defer></script>
+  <link rel="stylesheet" href="styles.css?v=11.0.1">
+  <script src="script.js?v=11.0.1" defer></script>
 
   <script>
     /* Resolve the theme before first paint so a system-light visitor never sees a dark flash.
@@ -40,7 +40,7 @@
         document.documentElement.dataset.theme = theme;
 
         const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'light' ? '#F3F8F5' : '#030504');
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#FAFAFA' : '#0A0A0A');
       } catch { /* storage or matchMedia unavailable: keep the markup default */ }
     })();
   </script>
@@ -89,8 +89,6 @@
 
   <section class="access-screen" id="welcomeScreen" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-describedby="welcomeDescription">
     <div class="access-noise" aria-hidden="true"></div>
-    <div class="hero-orb" aria-hidden="true"></div>
-    <div class="orbit-field" aria-hidden="true"><i></i><i></i><i></i></div>
 
     <div class="access-card">
       <div class="window-bar">
