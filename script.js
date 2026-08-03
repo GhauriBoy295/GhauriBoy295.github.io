@@ -64,7 +64,7 @@
   }
 
   // Browser-bar colour tracks the active theme.
-  const BAR_COLOUR = { dark: '#06040C', light: '#F8F6FC' };
+  const BAR_COLOUR = { dark: '#030504', light: '#F3F8F5' };
 
   function syncBrowserBar() {
     const themeMeta = $('meta[name="theme-color"]');
@@ -105,6 +105,59 @@
     showToast(`${next[0].toUpperCase()}${next.slice(1)} theme enabled`);
   });
 
+  // ---------- Motion and flow ----------
+  // Three levels rather than a binary switch, because "some motion" is the
+  // setting most people actually want. The OS reduced-motion preference sets
+  // the default; an explicit choice overrides it and is remembered.
+  //
+  // full  — every effect, smooth scroll flow
+  // calm  — entrances and transitions only; ambient loops and canvas stop
+  // off   — no motion at all, instant scrolling
+  const MOTION_KEY = 'sarmad-portfolio-motion';
+  const MOTION_LEVELS = ['full', 'calm', 'off'];
+  const motionToggle = $('#motionToggle');
+
+  function storedMotion() {
+    try {
+      const value = localStorage.getItem(MOTION_KEY);
+      return MOTION_LEVELS.indexOf(value) > -1 ? value : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function currentMotion() {
+    return root.dataset.motion || 'full';
+  }
+
+  // Anything beyond "full" must behave as reduced motion everywhere, including
+  // in code paths that predate this control.
+  function motionReduced() {
+    return currentMotion() !== 'full' || reducedMotion.matches;
+  }
+
+  function applyMotion(level, persist = false) {
+    const next = MOTION_LEVELS.indexOf(level) > -1 ? level : 'full';
+    root.dataset.motion = next;
+    if (motionToggle) {
+      motionToggle.setAttribute('aria-label', `Motion: ${next}. Activate to change.`);
+    }
+    root.style.scrollBehavior = next === 'off' ? 'auto' : 'smooth';
+    if (persist) {
+      try { localStorage.setItem(MOTION_KEY, next); } catch { /* storage can be unavailable */ }
+    }
+    document.dispatchEvent(new CustomEvent('portfolio:motionchange', { detail: { motion: next } }));
+  }
+
+  applyMotion(storedMotion() || (reducedMotion.matches ? 'calm' : 'full'));
+
+  motionToggle?.addEventListener('click', () => {
+    const index = MOTION_LEVELS.indexOf(currentMotion());
+    const next = MOTION_LEVELS[(index + 1) % MOTION_LEVELS.length];
+    applyMotion(next, true);
+    showToast(`Motion: ${next}`);
+  });
+
   // ---------- Welcome screen ----------
   function setSiteInert(value) {
     if (!siteShell) return;
@@ -126,7 +179,7 @@
       if (focusMain) mainContent?.focus({ preventScroll: true });
     };
 
-    if (reducedMotion.matches) finish();
+    if (motionReduced()) finish();
     else state.introTimer = window.setTimeout(finish, 820);
   }
 
@@ -136,7 +189,7 @@
     closeMenu();
     if (commandDialog?.open) commandDialog.close();
     if (projectDialog?.open) projectDialog.close();
-    window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    window.scrollTo({ top: 0, behavior: motionReduced() ? 'auto' : 'smooth' });
     body.classList.remove('intro-complete', 'intro-leaving');
     body.classList.add('intro-active');
     welcomeScreen.setAttribute('aria-hidden', 'false');
@@ -214,7 +267,7 @@
   }, { passive: true });
   updateScrollState();
 
-  backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' }));
+  backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: motionReduced() ? 'auto' : 'smooth' }));
 
   // ---------- Active navigation ----------
   const navLinks = $$('#primaryNav a');
@@ -244,7 +297,7 @@
     item.style.setProperty('--reveal-delay', String(Number.isFinite(delay) ? delay : 0));
   });
 
-  if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+  if (motionReduced() || !('IntersectionObserver' in window)) {
     revealItems.forEach((item) => item.classList.add('is-visible'));
   } else {
     const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -265,7 +318,7 @@
     element.dataset.counted = 'true';
     const target = Number(element.dataset.counter || 0);
     if (!Number.isFinite(target)) return;
-    if (reducedMotion.matches) {
+    if (motionReduced()) {
       element.textContent = String(target);
       return;
     }
@@ -302,7 +355,7 @@
 
   function runTerminalTyping() {
     if (!terminalOutput) return;
-    if (reducedMotion.matches) {
+    if (motionReduced()) {
       terminalOutput.textContent = terminalMessages[0];
       return;
     }
@@ -364,7 +417,7 @@
         const shouldShow = filter === 'all' || categories.includes(filter);
         card.hidden = !shouldShow;
       });
-    }, reducedMotion.matches ? 0 : 310);
+    }, motionReduced() ? 0 : 310);
   }
 
   filterButtons.forEach((button) => {
@@ -527,7 +580,7 @@
   function goToSection(selector) {
     const target = $(selector);
     if (!target) return;
-    target.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: motionReduced() ? 'auto' : 'smooth', block: 'start' });
   }
 
   async function copyText(text) {
@@ -558,6 +611,16 @@
     { label: 'Go to Contact', description: 'Email, LinkedIn and CV downloads', hint: '06', icon: 'icon-mail', keywords: 'contact email linkedin', run: () => goToSection('#contact') },
     { label: 'Toggle colour theme', description: 'Switch between dark and light modes', hint: 'Theme', icon: 'icon-sun', keywords: 'dark light theme colour', run: () => themeToggle?.click() },
     { label: 'Keyboard shortcuts', description: 'List every keyboard control', hint: '?', icon: 'icon-code', keywords: 'keyboard shortcuts keys help', run: () => openShortcuts() },
+    ...MOTION_LEVELS.map((level) => ({
+      label: `Motion: ${level}`,
+      description: level === 'full' ? 'Every effect and smooth scrolling'
+        : level === 'calm' ? 'Entrances only, ambient loops stopped'
+        : 'No motion at all',
+      hint: 'Motion',
+      icon: 'icon-radar',
+      keywords: `motion animation flow ${level} reduce`,
+      run: () => { applyMotion(level, true); showToast(`Motion: ${level}`); }
+    })),
     { label: 'Download CV', description: 'Open the professional CV as a PDF', hint: 'PDF', icon: 'icon-download', keywords: 'resume curriculum vitae pdf', run: () => {
       const link = createElement('a');
       link.href = 'Sarmad_Saeed_CV.pdf';
@@ -620,7 +683,7 @@
     const command = state.filteredCommands[index];
     if (!command) return;
     commandDialog?.close();
-    window.setTimeout(() => command.run(), reducedMotion.matches ? 0 : 70);
+    window.setTimeout(() => command.run(), motionReduced() ? 0 : 70);
   }
 
   function openCommandDialog() {
@@ -701,7 +764,7 @@
   }
 
   // ---------- Subtle tilt ----------
-  if (finePointer.matches && !reducedMotion.matches) {
+  if (finePointer.matches && !motionReduced()) {
     $$('.tilt-card').forEach((card) => {
       card.addEventListener('pointermove', (event) => {
         const rect = card.getBoundingClientRect();
@@ -726,7 +789,7 @@
   }
 
   // ---------- Cursor aura ----------
-  if (cursorAura && finePointer.matches && !reducedMotion.matches) {
+  if (cursorAura && finePointer.matches && !motionReduced()) {
     let cursorX = -400;
     let cursorY = -400;
     let auraX = -400;
@@ -760,7 +823,7 @@
     const canvas = $('#rainCanvas');
     if (!canvas) return;
 
-    if (reducedMotion.matches || !finePointer.matches || window.innerWidth < 900) {
+    if (motionReduced() || !finePointer.matches || window.innerWidth < 900) {
       canvas.remove();
       return;
     }
@@ -864,7 +927,7 @@
   // headline stays readable.
   function initGlitch() {
     const targets = $$('.hero-title .glitch');
-    if (!targets.length || reducedMotion.matches) return;
+    if (!targets.length || motionReduced()) return;
 
     let timer = null;
 
@@ -899,7 +962,7 @@
 
     targets.forEach((element) => element.classList.add('scramble'));
 
-    if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+    if (motionReduced() || !('IntersectionObserver' in window)) return;
 
     const CHARS = '!<>-_\\/[]{}—=+*^?#01';
 
@@ -1122,7 +1185,7 @@
 
     groups.forEach((group) => group.classList.add('stagger'));
 
-    if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+    if (motionReduced() || !('IntersectionObserver' in window)) {
       groups.forEach((group) => group.classList.add('is-visible'));
       return;
     }
@@ -1142,7 +1205,7 @@
   // ---------- Designed motion: scroll-linked parallax ----------
   // Writes a custom property only; the compositor sees a plain transform.
   function initParallax() {
-    if (reducedMotion.matches || !finePointer.matches) return;
+    if (motionReduced() || !finePointer.matches) return;
 
     const layers = [
       { el: $('.hero-console'), depth: 0.06 },
@@ -1196,7 +1259,7 @@
     const drawable = $$('.draw-path');
     if (!drawable.length) return;
 
-    if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+    if (motionReduced() || !('IntersectionObserver' in window)) {
       drawable.forEach((path) => path.classList.add('is-drawn'));
       return;
     }
@@ -1218,7 +1281,7 @@
     const indices = $$('.section-index');
     if (!indices.length) return;
 
-    if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+    if (motionReduced() || !('IntersectionObserver' in window)) {
       indices.forEach((element) => element.classList.add('is-visible'));
       return;
     }

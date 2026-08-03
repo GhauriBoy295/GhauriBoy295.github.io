@@ -28,39 +28,39 @@
    increments (bg -> surface -> raised -> overlay) so depth reads
    as structure rather than as arbitrary panels. */
 :root {
-  --bg-rgb: 6 4 12;
-  --bg-deep-rgb: 3 2 6;
-  --surface-rgb: 18 14 32;
-  --surface-raised-rgb: 28 22 48;
-  --surface-overlay-rgb: 38 30 62;
-  --text-rgb: 237 234 248;
+  --bg-rgb: 3 5 4;
+  --bg-deep-rgb: 0 0 0;
+  --surface-rgb: 10 15 12;
+  --surface-raised-rgb: 17 25 20;
+  --surface-overlay-rgb: 24 35 28;
+  --text-rgb: 232 245 236;
   --text-strong-rgb: 255 255 255;
-  --muted-rgb: 158 150 184;
-  --muted-strong-rgb: 200 194 222;
-  --line-rgb: 158 150 184;
-  --accent-rgb: 155 120 255;
-  --accent-strong-rgb: 182 154 255;
-  --accent-2-rgb: 196 181 253;
-  --on-accent-rgb: 12 6 24;
+  --muted-rgb: 145 170 154;
+  --muted-strong-rgb: 195 214 202;
+  --line-rgb: 120 210 160;
+  --accent-rgb: 0 255 136;
+  --accent-strong-rgb: 90 255 180;
+  --accent-2-rgb: 160 255 90;
+  --on-accent-rgb: 0 14 8;
   --shadow-rgb: 0 0 0;
 }
 
 :root[data-theme="light"] {
-  --bg-rgb: 248 246 252;
-  --bg-deep-rgb: 238 234 246;
+  --bg-rgb: 243 248 245;
+  --bg-deep-rgb: 231 238 234;
   --surface-rgb: 255 255 255;
-  --surface-raised-rgb: 251 249 254;
+  --surface-raised-rgb: 247 251 249;
   --surface-overlay-rgb: 255 255 255;
-  --text-rgb: 24 18 38;
-  --text-strong-rgb: 13 8 24;
-  --muted-rgb: 96 88 118;
-  --muted-strong-rgb: 62 55 82;
-  --line-rgb: 52 40 84;
-  --accent-rgb: 96 54 204;
-  --accent-strong-rgb: 78 42 170;
-  --accent-2-rgb: 122 74 190;
+  --text-rgb: 15 28 21;
+  --text-strong-rgb: 6 16 11;
+  --muted-rgb: 74 96 84;
+  --muted-strong-rgb: 46 64 54;
+  --line-rgb: 20 66 44;
+  --accent-rgb: 4 102 60;
+  --accent-strong-rgb: 3 80 47;
+  --accent-2-rgb: 62 96 8;
   --on-accent-rgb: 255 255 255;
-  --shadow-rgb: 32 22 56;
+  --shadow-rgb: 18 42 30;
 }
 
 /* ---------- Derived tokens (palette independent) ---------- */
@@ -1171,6 +1171,257 @@ dialog::backdrop { background: rgb(var(--bg-deep-rgb) / .78); backdrop-filter: b
   .hero-orb { width: min(360px, 86vw); }
 }
 
+/* =========================================================
+   ROBOTIC MODULE SYSTEM
+
+   Blocky, brick-like cyber objects assembled from a handful of
+   primitives. Everything is drawn with borders, gradients and
+   transforms — no images, no filters — so it costs nothing to
+   paint and recolours from the tokens automatically.
+
+   Primitives:
+     .lego-brick   isometric stud-topped block
+     .lego-node    circuit node with radiating legs
+     .lego-arm     jointed robot arm
+     .lego-hex     hex module tile
+   ========================================================= */
+
+.lego-scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 190px;
+  perspective: 900px;
+  pointer-events: none;
+}
+
+/* ---- Isometric brick ---- */
+.lego-brick {
+  position: relative;
+  width: 74px;
+  height: 46px;
+  transform-style: preserve-3d;
+  transform: rotateX(56deg) rotateZ(45deg);
+  animation: legoFloat 7s ease-in-out infinite alternate;
+}
+.lego-brick span {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgb(var(--accent-rgb) / .55);
+  background: linear-gradient(145deg, rgb(var(--accent-rgb) / .16), rgb(var(--surface-rgb) / .9));
+  box-shadow: inset 0 0 18px rgb(var(--accent-rgb) / .18);
+}
+/* Studs on the top face, the detail that reads as "brick". */
+.lego-brick span::before,
+.lego-brick span::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid rgb(var(--accent-rgb) / .7);
+  border-radius: 50%;
+  background: rgb(var(--accent-rgb) / .12);
+}
+.lego-brick span::before { left: 11px; }
+.lego-brick span::after { right: 11px; }
+/* Extruded side wall. */
+.lego-brick i {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  border: 1.5px solid rgb(var(--accent-rgb) / .32);
+  border-top: 0;
+  background: rgb(var(--bg-deep-rgb) / .85);
+}
+@keyframes legoFloat {
+  from { transform: rotateX(56deg) rotateZ(45deg) translate3d(0, 0, 0); }
+  to   { transform: rotateX(56deg) rotateZ(45deg) translate3d(0, 0, 16px); }
+}
+
+/* ---- Circuit node ---- */
+.lego-node {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  border: 1.5px solid rgb(var(--accent-rgb) / .5);
+  border-radius: 12px;
+  background: rgb(var(--surface-rgb) / .8);
+  box-shadow: 0 0 22px rgb(var(--accent-rgb) / .2);
+}
+.lego-node::before {
+  content: "";
+  position: absolute;
+  inset: 34%;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 16px 3px rgb(var(--accent-rgb) / .7);
+  animation: nodePulse 2.8s ease-in-out infinite;
+}
+/* Four legs, drawn as one background so it stays a single paint. */
+.lego-node::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  background:
+    linear-gradient(rgb(var(--accent-rgb) / .5) 0 0) 50% 0 / 1.5px 14px no-repeat,
+    linear-gradient(rgb(var(--accent-rgb) / .5) 0 0) 50% 100% / 1.5px 14px no-repeat,
+    linear-gradient(rgb(var(--accent-rgb) / .5) 0 0) 0 50% / 14px 1.5px no-repeat,
+    linear-gradient(rgb(var(--accent-rgb) / .5) 0 0) 100% 50% / 14px 1.5px no-repeat;
+}
+@keyframes nodePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .55; transform: scale(.82); }
+}
+
+/* ---- Jointed arm ---- */
+.lego-arm {
+  position: relative;
+  width: 96px;
+  height: 76px;
+}
+.lego-arm i {
+  position: absolute;
+  height: 10px;
+  border: 1.5px solid rgb(var(--accent-rgb) / .5);
+  border-radius: 5px;
+  background: linear-gradient(90deg, rgb(var(--accent-rgb) / .2), rgb(var(--surface-rgb) / .9));
+  transform-origin: left center;
+}
+.lego-arm i:nth-child(1) { bottom: 6px; left: 4px; width: 46px; transform: rotate(-32deg); animation: armLower 5.5s ease-in-out infinite alternate; }
+.lego-arm i:nth-child(2) { bottom: 32px; left: 40px; width: 40px; transform: rotate(24deg); animation: armUpper 5.5s ease-in-out infinite alternate; }
+.lego-arm i:nth-child(3) { bottom: 46px; left: 74px; width: 16px; transform: rotate(-58deg); }
+.lego-arm b {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 24px;
+  height: 12px;
+  border: 1.5px solid rgb(var(--accent-rgb) / .55);
+  border-radius: 3px;
+  background: rgb(var(--surface-rgb) / .95);
+}
+@keyframes armLower { from { transform: rotate(-32deg); } to { transform: rotate(-20deg); } }
+@keyframes armUpper { from { transform: rotate(24deg); } to { transform: rotate(8deg); } }
+
+/* ---- Hex module ---- */
+.lego-hex {
+  width: 60px;
+  height: 68px;
+  border: 1.5px solid rgb(var(--accent-2-rgb) / .5);
+  background: rgb(var(--accent-2-rgb) / .08);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  animation: hexSpin 14s linear infinite;
+}
+@keyframes hexSpin { to { transform: rotate(360deg); } }
+
+/* ---- Banner strip ---- */
+.robotic-banner {
+  position: relative;
+  margin: 0 auto;
+  padding: 52px 0;
+  overflow: hidden;
+  border-top: 1px solid rgb(var(--line-rgb) / .12);
+  border-bottom: 1px solid rgb(var(--line-rgb) / .12);
+  background:
+    radial-gradient(60% 120% at 50% 50%, rgb(var(--accent-rgb) / .07), transparent 70%),
+    linear-gradient(rgb(var(--line-rgb) / .04) 1px, transparent 1px) 0 0 / 40px 40px;
+}
+.robotic-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 6vw, 84px);
+  flex-wrap: wrap;
+}
+.robotic-banner-caption {
+  width: min(100% - 32px, var(--section-width));
+  margin: 0 auto 34px;
+  text-align: center;
+}
+.robotic-banner-caption p {
+  margin: 10px auto 0;
+  max-width: 58ch;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+@media (max-width: 760px) {
+  .lego-scene { min-height: 150px; }
+  .robotic-banner { padding: 38px 0; }
+  .robotic-banner-inner { gap: 26px; }
+}
+
+/* =========================================================
+   MOTION LEVELS
+
+   The header control writes data-motion on the root. These rules
+   are the CSS half of it; script.js handles the JS half through
+   motionReduced(). Kept adjacent to the reduced-motion block so
+   the two are read together.
+   ========================================================= */
+
+/* Calm: entrances and state transitions stay, ambient loops stop. */
+:root[data-motion="calm"] .rain-canvas,
+:root[data-motion="calm"] .crt-scanlines,
+:root[data-motion="calm"] .cursor-aura { display: none !important; }
+/* Every infinite decorative loop. Each of these rests in a visible state, so
+   removing the animation outright is safe — unlike the one-shot entrance
+   animations, which must keep running or their elements stay at opacity 0. */
+:root[data-motion="calm"] .hero-orb,
+:root[data-motion="calm"] .orbit-field i,
+:root[data-motion="calm"] .proof-track,
+:root[data-motion="calm"] .tool-track,
+:root[data-motion="calm"] .radar-sweep,
+:root[data-motion="calm"] .radar-point,
+:root[data-motion="calm"] .brand-mark,
+:root[data-motion="calm"] .identity-pulse,
+:root[data-motion="calm"] .availability-dot,
+:root[data-motion="calm"] .terminal-caret,
+:root[data-motion="calm"] .window-state i,
+:root[data-motion="calm"] .console-live i,
+:root[data-motion="calm"] .alert-wave,
+:root[data-motion="calm"] .project-visual *,
+:root[data-motion="calm"] .lego-scene * { animation: none !important; }
+
+/* Off: nothing moves at all, and everything rests in its final state. */
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+:root[data-motion="off"] .rain-canvas,
+:root[data-motion="off"] .crt-scanlines,
+:root[data-motion="off"] .cursor-aura { display: none !important; }
+:root[data-motion="off"] .reveal,
+:root[data-motion="off"] .reveal[data-reveal],
+:root[data-motion="off"] .stagger > * { opacity: 1 !important; transform: none !important; }
+:root[data-motion="off"] .draw-path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+:root[data-motion="off"] .section-index::before { transform: scaleX(1) !important; }
+
+/* Motion control glyph: three bars that shorten as motion is reduced. */
+.motion-button .motion-glyph {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 15px;
+}
+.motion-button .motion-glyph i {
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: height .3s var(--ease), opacity .3s var(--ease);
+}
+.motion-button .motion-glyph i:nth-child(1) { height: 7px; }
+.motion-button .motion-glyph i:nth-child(2) { height: 12px; }
+.motion-button .motion-glyph i:nth-child(3) { height: 15px; }
+:root[data-motion="calm"] .motion-glyph i:nth-child(3) { height: 7px; opacity: .45; }
+:root[data-motion="off"] .motion-glyph i:nth-child(2) { height: 7px; opacity: .45; }
+:root[data-motion="off"] .motion-glyph i:nth-child(3) { height: 7px; opacity: .25; }
+
 /* Sections outside the viewport stop animating entirely. Decorative loops in
    project visuals, radars and marquees are the bulk of the page's animation
    budget and none of it is worth spending on content nobody is looking at. */
@@ -1178,6 +1429,14 @@ dialog::backdrop { background: rgb(var(--bg-deep-rgb) / .78); backdrop-filter: b
 .section-idle *,
 .section-idle *::before,
 .section-idle *::after { animation-play-state: paused !important; }
+
+/* One-shot entrance animations are exempt. They fill with `both`, so pausing
+   one before it finishes freezes the element at opacity 0 — the content then
+   stays invisible for as long as its section is off screen. Only the infinite
+   decorative loops are worth pausing. */
+body.intro-complete .site-header,
+.access-card,
+.boot-log li { animation-play-state: running !important; }
 
 /* Directional entrances. Transform + opacity only, so each one stays on the
    compositor and costs nothing on the main thread. */
@@ -1546,9 +1805,11 @@ html.no-js .reveal { opacity: 1; transform: none; }
   from { opacity: 0; transform: translate3d(0, 10px, 0); }
   to   { opacity: 1; transform: none; }
 }
+/* Only the header, which is not part of the reveal system. The hero blocks
+   deliberately do NOT get this: they already carry .reveal, and two mechanisms
+   animating opacity on one element conflict — a filling animation overrides the
+   transition and pins the element at opacity 0. */
 body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) both; }
-body.intro-complete .hero-content { animation: shellIn .8s var(--ease-out-expo) .06s both; }
-body.intro-complete .hero-console { animation: shellIn .9s var(--ease-out-expo) .14s both; }
 
 /* Section headings get a subtle accent rule that grows in. */
 .section-index { position: relative; padding-left: 34px; }
@@ -1743,9 +2004,7 @@ body.intro-complete .hero-console { animation: shellIn .9s var(--ease-out-expo) 
   .spring:hover { transform:none!important; }
   .draw-path { stroke-dasharray:none!important; stroke-dashoffset:0!important; }
   .section-index::before { transform:scaleX(1)!important; }
-  body.intro-complete .site-header,
-  body.intro-complete .hero-content,
-  body.intro-complete .hero-console { animation:none!important; }
+  body.intro-complete .site-header { animation:none!important; }
   .reveal, .reveal[data-reveal] { opacity:1!important; transform:none!important; }
   .primary-nav { clip-path:none!important; transition:none!important; }
   .primary-nav a { opacity:1!important; transform:none!important; transition:none!important; }

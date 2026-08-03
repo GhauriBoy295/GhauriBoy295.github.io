@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#06040C">
+  <meta name="theme-color" content="#030504">
   <meta name="description" content="The professional cyber security portfolio of Sarmad Saeed, an MSc Cyber Security graduate from the University of Chester, featuring security research, ICS defence, digital forensics, penetration testing and technical projects.">
   <meta name="author" content="Sarmad Saeed">
   <meta name="robots" content="index, follow">
@@ -25,8 +25,8 @@
   <title>Sarmad Saeed | Cyber Security Portfolio</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=8.1.0">
-  <script src="script.js?v=8.1.0" defer></script>
+  <link rel="stylesheet" href="styles.css?v=9.0.3">
+  <script src="script.js?v=9.0.3" defer></script>
 
   <script>
     /* Resolve the theme before first paint so a system-light visitor never sees a dark flash.
@@ -40,7 +40,7 @@
         document.documentElement.dataset.theme = theme;
 
         const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'light' ? '#F8F6FC' : '#06040C');
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#F3F8F5' : '#030504');
       } catch { /* storage or matchMedia unavailable: keep the markup default */ }
     })();
   </script>
@@ -182,6 +182,9 @@
             <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
             <span>Navigate</span>
             <kbd>⌘K</kbd>
+          </button>
+          <button class="icon-button motion-button" id="motionToggle" type="button" aria-label="Motion: full. Activate to change.">
+            <span class="motion-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
           </button>
           <button class="icon-button" id="themeToggle" type="button" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="icon theme-icon-sun" aria-hidden="true"><use href="#icon-sun"></use></svg>
@@ -385,6 +388,20 @@
         </div>
       </section>
 
+      <section class="robotic-banner" aria-label="Systems and tooling">
+        <div class="robotic-banner-caption reveal" data-reveal="up">
+          <p class="section-index">Systems</p>
+          <p>Security work is modular: instrument the system, watch the signal, act on the evidence.</p>
+        </div>
+        <div class="robotic-banner-inner lego-scene" aria-hidden="true">
+          <div class="lego-brick"><span></span><i></i></div>
+          <div class="lego-node"></div>
+          <div class="lego-arm"><i></i><i></i><i></i><b></b></div>
+          <div class="lego-hex"></div>
+          <div class="lego-brick"><span></span><i></i></div>
+        </div>
+      </section>
+
       <section class="content-section section-shell" id="projects">
         <div class="section-heading project-heading reveal" data-reveal="up">
           <div>
@@ -515,6 +532,20 @@
               <div class="module-cloud"><span>Network Security</span><span>Digital Forensics</span><span>Cryptography</span><span>Reverse Engineering</span><span>Vulnerability Assessment</span><span>Programming</span></div>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="robotic-banner" aria-label="Defensive modules">
+        <div class="robotic-banner-caption reveal" data-reveal="up">
+          <p class="section-index">Modules</p>
+          <p>Detection, forensics and controlled testing assemble into one connected discipline.</p>
+        </div>
+        <div class="robotic-banner-inner lego-scene" aria-hidden="true">
+          <div class="lego-hex"></div>
+          <div class="lego-node"></div>
+          <div class="lego-brick"><span></span><i></i></div>
+          <div class="lego-node"></div>
+          <div class="lego-hex"></div>
         </div>
       </section>
 
