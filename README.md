@@ -13,7 +13,7 @@ The portfolio is intentionally designed as a professional security-operations in
 - **Academic year:** 2025–2026
 - **Status:** Graduated
 - **Location:** United Kingdom
-- **LinkedIn:** linkedin.com/in/sarmad-saeed-845a7b267
+- **LinkedIn:** linkedin.com/in/sarmad-saeed-cyber
 
 ## Main features
 

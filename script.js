@@ -657,7 +657,7 @@
       link.remove();
     } },
     { label: 'Copy email address', description: 'Copy sarmadsaeed2002@gmail.com', hint: 'Copy', icon: 'icon-copy', keywords: 'email clipboard copy', run: async () => showToast(await copyText('sarmadsaeed2002@gmail.com') ? 'Email copied to clipboard' : 'Unable to copy email') },
-    { label: 'Open LinkedIn', description: 'View Sarmad Saeed on LinkedIn', hint: 'External', icon: 'icon-arrow-up-right', keywords: 'linkedin social profile', run: () => window.open('https://www.linkedin.com/in/sarmad-saeed-845a7b267', '_blank', 'noopener,noreferrer') },
+    { label: 'Open LinkedIn', description: 'View Sarmad Saeed on LinkedIn', hint: 'External', icon: 'icon-arrow-up-right', keywords: 'linkedin social profile', run: () => window.open('https://www.linkedin.com/in/sarmad-saeed-cyber', '_blank', 'noopener,noreferrer') },
     { label: 'Replay welcome screen', description: 'Return to the portfolio access screen', hint: 'Replay', icon: 'icon-arrow-right', keywords: 'intro welcome opening', run: showIntro }
   ];
 
