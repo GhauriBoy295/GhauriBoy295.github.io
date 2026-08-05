@@ -64,7 +64,7 @@
   }
 
   // Browser-bar colour tracks the active theme.
-  const BAR_COLOUR = { dark: '#0A0A0A', light: '#FAFAFA' };
+  const BAR_COLOUR = { dark: '#121214', light: '#F8F9FB' };
 
   function syncBrowserBar() {
     const themeMeta = $('meta[name="theme-color"]');
@@ -464,6 +464,7 @@
       kicker: 'Research case study',
       meta: 'MSc Dissertation · University of Chester · 2025–2026',
       title: 'Integrated Randomness Testing Suite',
+      framework: { fn: 'Protect', note: 'Cryptographic assurance. Randomness quality underpins the key material that protective controls depend on.' },
       summary: 'A research-led project exploring how a consolidated testing workflow can help evaluate PRNG/TRNG output, identify statistical weaknesses and support more informed security assessment of randomness used in cryptographic contexts.',
       stack: ['Python', 'PRNG / TRNG', 'Statistical testing', 'Entropy analysis', 'Security research'],
       details: [
@@ -477,6 +478,7 @@
       kicker: 'Defensive security case study',
       meta: 'Final Year Project · Air University · 2023–2024',
       title: 'Intrusion Detection for Industrial Control Systems',
+      framework: { fn: 'Detect', note: 'Anomaly and event detection in an environment where continuous monitoring must not disturb the process.' },
       summary: 'An intrusion-detection concept focused on industrial environments, where availability, safety and legacy technology make monitoring and response fundamentally different from conventional IT networks.',
       stack: ['ICS / OT security', 'Intrusion detection', 'Anomaly awareness', 'Network monitoring', 'Alert logic'],
       details: [
@@ -490,6 +492,7 @@
       kicker: 'Investigation case study',
       meta: 'Academic Labs · University of Chester · 2025–2026',
       title: 'Digital Forensics & Incident Response Labs',
+      framework: { fn: 'Respond', note: 'Analysis, evidence handling and the reasoning that holds an incident response together.' },
       summary: 'A collection of structured academic exercises covering evidence acquisition, artefact review, forensic workflow and incident-response reasoning using recognised forensic tools.',
       stack: ['Autopsy', 'FTK Imager', 'OS Forensics', 'Evidence handling', 'Incident response'],
       details: [
@@ -503,6 +506,7 @@
       kicker: 'Offensive security case study',
       meta: 'Authorised Academic Labs · 2025–2026',
       title: 'Security Assessment & Active Defence Labs',
+      framework: { fn: 'Identify', note: 'Asset and vulnerability identification, and the judgement about which findings actually carry risk.' },
       summary: 'Controlled, authorised lab work covering reconnaissance, vulnerability identification, validation and the translation of technical findings into practical defensive recommendations.',
       stack: ['Nmap', 'Burp Suite', 'Metasploit', 'Nessus', 'OpenVAS', 'Wireshark'],
       details: [
@@ -548,6 +552,23 @@
     title.textContent = project.title;
     summary.textContent = project.summary;
     stack.replaceChildren(...project.stack.map((item) => createElement('span', { text: item })));
+
+    /* NIST CSF alignment. Only rendered where the mapping is genuine — the
+       database project has no framework key and simply shows nothing. */
+    const frameworkSlot = $('#projectDialogFramework');
+    if (frameworkSlot) {
+      if (project.framework) {
+        frameworkSlot.hidden = false;
+        frameworkSlot.replaceChildren(
+          createElement('span', { className: 'framework-tag', text: 'NIST CSF' }),
+          createElement('strong', { text: project.framework.fn }),
+          createElement('p', { text: project.framework.note })
+        );
+      } else {
+        frameworkSlot.hidden = true;
+        frameworkSlot.replaceChildren();
+      }
+    }
 
     const detailBlocks = project.details.map((detail) => {
       const block = createElement('article', { className: 'case-study-block' });

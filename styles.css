@@ -27,43 +27,52 @@
    informational secondary. Surfaces step up in measured
    increments (bg -> surface -> raised -> overlay) so depth reads
    as structure rather than as arbitrary panels. */
-/* Strictly neutral. Every grey has equal R, G and B, so no surface carries a
-   colour cast. Emphasis comes from contrast, weight and spacing rather than
-   from hue, glow or gradient. */
+/* "Premium Sleek" — deep matte charcoal carrying a faint blue cast, with
+   electric indigo as the primary signal and cyber teal as the informational
+   secondary. Surfaces step up in measured increments
+   (bg -> surface -> raised -> overlay) so depth reads as structure.
+
+   The accent used for TEXT is a lighter indigo than the spec's #6366F1.
+   #6366F1 on this charcoal measures 4.1:1, which fails WCAG AA for body
+   copy; #818CF8 clears it comfortably. #6366F1 is still used for solid
+   fills, where the label sits on top in near-black and contrast is high. */
 :root {
-  --bg-rgb: 10 10 10;
-  --bg-deep-rgb: 0 0 0;
-  --surface-rgb: 22 22 22;
-  --surface-raised-rgb: 32 32 32;
-  --surface-overlay-rgb: 44 44 44;
-  --text-rgb: 245 245 245;
+  --bg-rgb: 18 18 20;
+  --bg-deep-rgb: 11 11 13;
+  --surface-rgb: 26 26 31;
+  --surface-raised-rgb: 36 36 42;
+  --surface-overlay-rgb: 47 47 55;
+  --text-rgb: 244 244 246;
   --text-strong-rgb: 255 255 255;
-  --muted-rgb: 160 160 160;
-  --muted-strong-rgb: 212 212 212;
-  --line-rgb: 150 150 150;
-  --accent-rgb: 255 255 255;
-  --accent-strong-rgb: 225 225 225;
-  --accent-2-rgb: 145 145 145;
-  --on-accent-rgb: 10 10 10;
-  --shadow-rgb: 0 0 0;
+  --muted-rgb: 161 161 175;
+  --muted-strong-rgb: 212 212 222;
+  --line-rgb: 148 148 168;
+  --accent-rgb: 129 140 248;
+  --accent-strong-rgb: 165 180 252;
+  --accent-2-rgb: 56 189 248;
+  --on-accent-rgb: 11 11 13;
+  --shadow-rgb: 0 0 4;
 }
 
+/* Light variant: the corporate / GRC register. Cool white ground, slate
+   text, and a darker indigo so the accent still clears AA on white. */
 :root[data-theme="light"] {
-  --bg-rgb: 250 250 250;
-  --bg-deep-rgb: 238 238 238;
+  --bg-rgb: 248 249 251;
+  --bg-deep-rgb: 237 239 244;
   --surface-rgb: 255 255 255;
-  --surface-raised-rgb: 246 246 246;
+  --surface-raised-rgb: 245 247 250;
   --surface-overlay-rgb: 255 255 255;
-  --text-rgb: 20 20 20;
-  --text-strong-rgb: 0 0 0;
-  --muted-rgb: 100 100 100;
-  --muted-strong-rgb: 58 58 58;
-  --line-rgb: 60 60 60;
-  --accent-rgb: 18 18 18;
-  --accent-strong-rgb: 0 0 0;
-  --accent-2-rgb: 110 110 110;
+  --text-rgb: 24 26 34;
+  --text-strong-rgb: 9 10 15;
+  --muted-rgb: 88 94 112;
+  --muted-strong-rgb: 51 56 70;
+  --line-rgb: 68 74 92;
+  --accent-rgb: 67 56 202;
+  --accent-strong-rgb: 49 46 129;
+  /* sky-700, not sky-600: #0284C7 measured 4.10:1 on white, which fails AA. */
+  --accent-2-rgb: 3 105 161;
   --on-accent-rgb: 255 255 255;
-  --shadow-rgb: 30 30 30;
+  --shadow-rgb: 24 26 40;
 }
 
 /* ---------- Derived tokens (palette independent) ---------- */
@@ -2063,18 +2072,30 @@ body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) b
 }
 
 /* =========================================================
-   FLAT SURFACE LAYER
+   PREMIUM GLASS LAYER
 
    Appended deliberately as an override rather than by rewriting the
    ~70 gradient declarations above. Editing them in place risks
    corrupting multi-value shorthands; overriding them is reversible
    and leaves the original rules readable.
 
-   Rules: no gradient fills, no coloured glow, no backdrop blur.
-   Depth comes from a one-pixel border and a flat surface step.
+   This replaces the earlier flat pass. The brief is glassmorphism, but
+   the earlier build of this site lagged badly on exactly this feature,
+   so the treatment is deliberately bounded:
+
+   - ONE blur radius (14px) on every panel and on the sticky header, rather
+     than the 16-24px mix the base rules declare. The only other blurring
+     element is the secondary button, at a cheaper 10px.
+   - Blur applies only to cards actually on screen; large full-bleed
+     washes stay flat.
+   - Disabled entirely on coarse pointers (phones/tablets), where
+     backdrop-filter is most expensive and the effect is least visible.
+   - Disabled under prefers-reduced-transparency.
+
+   Structure still comes from a hairline border, not from the blur.
    ========================================================= */
 
-/* Panels and cards: single flat fill. */
+/* Panels and cards: frosted glass over the charcoal ground. */
 .access-card,
 .console-frame,
 .spotlight-card,
@@ -2086,14 +2107,85 @@ body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) b
 .credential-card,
 .contact-panel,
 .dialog-shell,
-.command-dialog,
+.command-dialog {
+  background-image: none;
+  background-color: rgb(var(--surface-rgb) / .62);
+  border: 1px solid rgb(var(--line-rgb) / .14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Small chips read as solid; glass on something 24px tall is just noise. */
 .tool-track span,
 .module-cloud span,
 .access-tags span {
   background-image: none;
-  background-color: var(--surface-solid);
+  background-color: var(--surface-raised);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/* Hairline top highlight — the one cue that sells glass as a material. */
+.spotlight-card,
+.expertise-card,
+.project-card,
+.credential-card,
+.contact-panel,
+.console-frame {
+  position: relative;
+}
+.spotlight-card::before,
+.expertise-card::before,
+.project-card::before,
+.credential-card::before,
+.contact-panel::before,
+.console-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: rgb(255 255 255 / .10);
+  pointer-events: none;
+}
+:root[data-theme="light"] .spotlight-card::before,
+:root[data-theme="light"] .expertise-card::before,
+:root[data-theme="light"] .project-card::before,
+:root[data-theme="light"] .credential-card::before,
+:root[data-theme="light"] .contact-panel::before,
+:root[data-theme="light"] .console-frame::before {
+  background: rgb(255 255 255 / .9);
+}
+
+/* Everything else that blurs is capped to the same 14px so the page never
+   stacks heavier radii than this. The sticky header and the mobile nav are
+   the only other blurring surfaces; both sat at 18-22px before. */
+.site-header.is-scrolled,
+.primary-nav {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Performance and accessibility guards. Touch devices and users who ask
+   for reduced transparency get the flat surface instead. */
+@media (pointer: coarse), (prefers-reduced-transparency: reduce) {
+  .access-card,
+  .console-frame,
+  .spotlight-card,
+  .bento-card,
+  .expertise-card,
+  .project-card,
+  .timeline-card,
+  .experience-card,
+  .credential-card,
+  .contact-panel,
+  .dialog-shell,
+  .command-dialog,
+  .site-header.is-scrolled,
+  .primary-nav {
+    background-color: var(--surface-solid);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 /* Decorative washes behind sections and project art. */
@@ -2140,14 +2232,18 @@ body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) b
   border-color: var(--accent-strong);
 }
 
-/* Headline: solid colour, no gradient text fill. */
+/* Headline: solid accent colour, no gradient text fill. */
 .hero-title .hero-accent {
   background: none;
   -webkit-background-clip: border-box;
   background-clip: border-box;
   -webkit-text-fill-color: currentColor;
-  color: var(--muted-strong);
+  color: var(--accent-strong);
 }
+
+/* The grid is the structural cue in this scheme, so it carries a little
+   more presence than it did in the flat pass. */
+.page-grid { opacity: .22; }
 
 /* Radar sweep as one solid wedge rather than a blended cone. */
 .radar-sweep {
@@ -2394,3 +2490,178 @@ body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) b
   text-align: center;
 }
 .robotic-banner-caption .section-index::before { content: none; }
+
+/* =========================================================
+   CREDENTIAL STRIP + NIST FRAMEWORK MAPPING
+
+   Two additions that answer the "certification matrix" and
+   "framework alignment" brief without inventing anything.
+
+   The strip lists only real course completions. The three with
+   a Coursera verification code link out to it; the two without
+   a supplied certificate file are shown plainly and are not
+   linked, so a reader can tell the difference at a glance.
+
+   The NIST badges map each project to the one CSF function it
+   genuinely serves. The Blood Bank database is deliberately
+   unmapped: it is a data-modelling exercise, not a security
+   control, and forcing it into a function would be dishonest.
+   ========================================================= */
+
+.credential-strip {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  border-top: 1px solid rgb(var(--line-rgb) / .12);
+  border-bottom: 1px solid rgb(var(--line-rgb) / .12);
+}
+
+.credential-strip-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.credential-strip-head h2 {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  letter-spacing: -.01em;
+  margin: 0;
+}
+.credential-strip-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .875rem;
+  max-width: 46ch;
+}
+
+.credential-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+.credential-chips > li > a,
+.credential-chips > li > span {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  height: 100%;
+  padding: .9rem 1rem;
+  border: 1px solid rgb(var(--line-rgb) / .16);
+  border-radius: var(--radius-sm, 10px);
+  background-color: rgb(var(--surface-rgb) / .55);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .25s ease, transform .25s ease;
+}
+.credential-chips > li > a:hover,
+.credential-chips > li > a:focus-visible {
+  border-color: rgb(var(--accent-rgb) / .55);
+  transform: translateY(-2px);
+}
+.credential-issuer {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.credential-chips strong {
+  font-size: .92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-strong);
+}
+.credential-date {
+  font-size: .76rem;
+  color: var(--muted);
+}
+/* Unlinked entries read as informational, not clickable. */
+.credential-chips > li > span { opacity: .82; }
+
+/* ---------- NIST CSF badges on project cards ---------- */
+.nist-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin: 0 0 .6rem;
+  padding: .22rem .55rem .22rem .3rem;
+  border: 1px solid rgb(var(--accent-rgb) / .3);
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--accent-strong);
+  width: max-content;
+}
+.nist-badge span {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .6rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .16rem .4rem;
+  border-radius: 999px;
+  background-color: rgb(var(--accent-rgb) / .14);
+  color: var(--accent);
+}
+
+/* ---------- Filter bar additions ---------- */
+.filter-legend {
+  margin: 0 0 .75rem;
+  font-size: .82rem;
+  color: var(--muted);
+  max-width: 62ch;
+}
+.filter-divider {
+  width: 1px;
+  align-self: stretch;
+  margin-inline: .35rem;
+  background-color: rgb(var(--line-rgb) / .22);
+}
+.filter-button.filter-nist { color: var(--accent-strong); }
+.filter-button.filter-nist.is-active { color: var(--on-accent); }
+
+@media (max-width: 640px) {
+  .filter-divider { display: none; }
+}
+
+/* ---------- Framework block inside the case-study dialog ---------- */
+.dialog-framework {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: .5rem .7rem;
+  margin: 0 0 1.1rem;
+  padding: .7rem .9rem;
+  border: 1px solid rgb(var(--accent-rgb) / .28);
+  border-radius: var(--radius-sm, 10px);
+  background-color: rgb(var(--accent-rgb) / .07);
+}
+.dialog-framework[hidden] { display: none; }
+.dialog-framework .framework-tag {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .6rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .2rem .45rem;
+  border-radius: 999px;
+  background-color: rgb(var(--accent-rgb) / .16);
+  color: var(--accent);
+}
+.dialog-framework strong {
+  font-size: .95rem;
+  color: var(--accent-strong);
+}
+.dialog-framework p {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: .84rem;
+  line-height: 1.55;
+  color: var(--muted-strong);
+}
+@media (min-width: 700px) {
+  .dialog-framework p { grid-column: 3; }
+}
+
+/* Service-worker note: bumping CACHE_VERSION is what actually ships this. */

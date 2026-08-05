@@ -13,7 +13,7 @@
    Documents and CV files are intentionally not precached — they are large and
    rarely needed offline. They still cache on first use via the asset path. */
 
-const CACHE_VERSION = 'v7-0-2';
+const CACHE_VERSION = 'v8-0-0';
 const SHELL_CACHE = `portfolio-shell-${CACHE_VERSION}`;
 
 const SHELL_ASSETS = [

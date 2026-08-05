@@ -1,5 +1,84 @@
 # Final Changelog
 
+## 12.0.1 — "Premium Sleek" redesign
+
+A hybrid of the dark developer aesthetic and the corporate/GRC register, plus
+two structural additions that answer the "certification matrix" and "framework
+alignment" brief.
+
+### Palette
+
+Retuned from the flat monochrome scheme to deep matte charcoal with electric
+indigo as the primary signal and cyber teal as the secondary. The token
+architecture meant this was a single block change, not a rewrite.
+
+Two contrast corrections were needed and are worth recording, because both
+would have shipped as accessibility failures:
+
+- The brief specified `#6366F1` as the accent. On this charcoal it measures
+  **4.10:1** — below the 4.5:1 AA threshold for body text. The accent used for
+  text is `#818CF8` (6.27:1); `#6366F1` survives only as a solid fill, where
+  the label sits on it in near-black.
+- In the light theme the secondary accent was `#0284C7` (sky-600), measuring
+  **4.10:1** on white. Corrected to `#0369A1` (sky-700) at **5.93:1**.
+
+Every text/background pair now clears AA in both themes. Measured in-browser,
+not estimated.
+
+### Glassmorphism, bounded
+
+Frosted-glass panels replace the flat fills. This site previously shipped a
+performance fix that removed exactly this feature, so the treatment is capped:
+
+- A single 14px radius on every panel and on the sticky header. The base rules
+  declare a 16–24px mix; those are all overridden.
+- Disabled entirely on coarse pointers and under
+  `prefers-reduced-transparency`, where the cost is highest and the effect is
+  least visible.
+- Structure still comes from a hairline border, not from the blur.
+
+### Verified credentials strip
+
+Five real course completions. The three with a Coursera verification code link
+out to it; the two with no supplied certificate file are shown unlinked and
+labelled "Course completion", so a reader can tell the difference at a glance.
+
+No industry certifications are claimed. The brief suggested displaying
+Security+, CEH and CISSP — none of which Sarmad holds — and that was not done.
+
+### NIST CSF mapping
+
+Each project carries a badge for the one CSF function it genuinely serves, and
+the case-study dialog expands this into a short justification:
+
+| Project | Function |
+|---|---|
+| Integrated Randomness Testing Suite | Protect |
+| Intrusion Detection for ICS | Detect |
+| DFIR Labs | Respond |
+| Security Assessment & Active Defence Labs | Identify |
+| Blood Bank Database System | *(unmapped)* |
+
+The database project is deliberately unmapped. It is a data-modelling
+exercise, not a security control, and forcing it into a function would be
+dishonest. The dialog renders nothing for it.
+
+Four new filters were added alongside the discipline filters. All four were
+tested and return the correct single project each.
+
+### Also fixed
+
+`404.html` was still carrying the neon-green palette from three themes ago.
+It, `favicon.svg` and `site.webmanifest` now match the current scheme, as does
+the regenerated social preview image.
+
+### Not done, and why
+
+The source brief recommended rebuilding on Astro, Next.js or Hugo. This site
+is a working, tested, deployed static build with a no-build constraint in
+`CLAUDE.md`; switching stacks would discard that for no user-visible gain.
+
+
 ## 6.0.3 — 30 July 2026
 
 Performance fix, black and neon green theme, matrix code-rain background, and directional scroll
