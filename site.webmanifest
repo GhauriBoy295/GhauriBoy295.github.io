@@ -1,17 +1,16 @@
 {
   "name": "Sarmad Saeed | Cyber Security Portfolio",
   "short_name": "Sarmad Saeed",
-  "description": "Professional cyber security portfolio for Sarmad Saeed.",
+  "description": "Professional cyber security portfolio for Sarmad Saeed, MSc Cyber Security Graduate, University of Chester.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#121214",
-  "theme_color": "#121214",
+  "background_color": "#06111f",
+  "theme_color": "#06111f",
   "icons": [
-    {
-      "src": "favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

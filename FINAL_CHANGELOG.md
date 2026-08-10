@@ -1,5 +1,63 @@
 # Final Changelog
 
+## 13.0.0 — "Sentinel Executive"
+
+Palette rebuilt around black, deep navy, secure green and incident red, with
+colour used semantically rather than decoratively: green means secure /
+confirmed / active, red means risk / incident. Neither is alternated for
+variety.
+
+### Correctness fixes
+
+- **The H1 is now the person.** It was the slogan "Defend systems. Analyse
+  signals. Build resilience."; the candidate's name was not a heading at all.
+  Name -> role -> institution -> tagline -> lead is now the hierarchy.
+- **Hero metrics carry real values in the HTML.** They were hard-coded `0`
+  with the true value in a data attribute, so screen-reader users, no-JS
+  users and crawlers all saw zero. JavaScript now animates presentation only.
+- **The credential count no longer contradicts itself.** The hero said three
+  course completions while the credentials strip listed five. Now split into
+  "Verified credentials (3)" — those with a public verification link — and
+  "Additional course completions (2)", labelled *Unverified*.
+- **`Ghauri_Boy` removed from the welcome-screen identity block**, where it
+  sat beside degree status. It remains only as `alternateName` in structured
+  data, which is what a handle is for.
+- **Service-worker precache actually works.** It precached `styles.css` and
+  `script.js` while the document requested `styles.css?v=...`, so the two
+  largest assets never came from the precache. Both now derive from a single
+  `ASSET_REV` constant.
+- **Version drift resolved.** HTML assets, service-worker cache, changelog
+  and test report were on four different versions — the shipped test report
+  documented `6.0.3` against a `12.0.1` build. All now `13.0.0`.
+
+### Accessibility
+
+Target sizes audited at 320px and 1024px and fixed in two passes:
+
+- Coarse pointer / narrow: hero CTAs (36.6px), footer brand (32px), text
+  links (25.2px) and footer links (16.5px) were under the 44px minimum.
+- Fine pointer: `.hero-scroll` (9px tall), `.text-link` (21px), "Replay
+  welcome" (17px) and "Back to top" (17px) were under the WCAG 2.2 AA 24x24
+  floor. None qualify for the inline-link exception.
+
+Contrast measured in-browser across both themes: **zero failures**. Two
+supplied palette values had to change to get there — `--line-500` is 1.3:1 on
+navy and is now hairlines only; `--red-500` is 4.3:1 and text-bearing red
+uses `--red-400` at 5.2:1.
+
+### Added
+
+Canonical URL, `sitemap.xml`, updated `robots.txt`, PWA icons at 192/512 plus
+an Apple touch icon and a maskable entry, GitHub profile and source-repository
+links in contact and structured data.
+
+### Not done
+
+The brief asked for `styles.css` and `script.js` to be split into modules.
+Deferred deliberately — reasoning in `AUDIT_BASELINE.md`. Lighthouse is
+reported as *Not measured* because no Lighthouse binary is available here.
+
+
 ## 12.0.1 — "Premium Sleek" redesign
 
 A hybrid of the dark developer aesthetic and the corporate/GRC register, plus

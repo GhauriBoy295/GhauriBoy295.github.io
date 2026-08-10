@@ -64,7 +64,7 @@
   }
 
   // Browser-bar colour tracks the active theme.
-  const BAR_COLOUR = { dark: '#121214', light: '#F8F9FB' };
+  const BAR_COLOUR = { dark: '#06111F', light: '#F4F7FA' };
 
   function syncBrowserBar() {
     const themeMeta = $('meta[name="theme-color"]');

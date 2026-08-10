@@ -27,52 +27,89 @@
    informational secondary. Surfaces step up in measured
    increments (bg -> surface -> raised -> overlay) so depth reads
    as structure rather than as arbitrary panels. */
-/* "Premium Sleek" — deep matte charcoal carrying a faint blue cast, with
-   electric indigo as the primary signal and cyber teal as the informational
-   secondary. Surfaces step up in measured increments
-   (bg -> surface -> raised -> overlay) so depth reads as structure.
+/* "Sentinel Executive" — black and deep navy structure, secure green as the
+   primary signal, incident red as the exception state.
 
-   The accent used for TEXT is a lighter indigo than the spec's #6366F1.
-   #6366F1 on this charcoal measures 4.1:1, which fails WCAG AA for body
-   copy; #818CF8 clears it comfortably. #6366F1 is still used for solid
-   fills, where the label sits on top in near-black and contrast is high. */
+   Colour is SEMANTIC in this scheme, which is the whole point of it:
+     green  = secure, active, confirmed, primary action, focus
+     red    = risk, incident, alert, destructive
+   Neither is used decoratively, and they are never alternated for variety.
+   Structural surfaces carry 75-85% of the page; green sits around 10-18%;
+   red stays under 5%.
+
+   Two deviations from the supplied palette, both forced by contrast testing
+   and both measured in-browser rather than estimated:
+
+   --line-500 (#1c3852) was supplied as the border token. At 1.3:1 against
+   the navy surface it is invisible as a border and unusable for any text or
+   icon. It is kept for hairline dividers only; a lighter --line-rgb drives
+   anything that has to be seen.
+
+   --red-500 (#ff3b4e) measures 4.3:1 on --navy-900, just under the 4.5:1 AA
+   floor. Text-bearing red uses --red-400 (#ff5a6b) at 5.2:1; #ff3b4e stays
+   for fills and indicator dots where nothing sits on top of it. */
 :root {
-  --bg-rgb: 18 18 20;
-  --bg-deep-rgb: 11 11 13;
-  --surface-rgb: 26 26 31;
-  --surface-raised-rgb: 36 36 42;
-  --surface-overlay-rgb: 47 47 55;
-  --text-rgb: 244 244 246;
+  /* Raw palette, kept addressable so components can reach a specific step. */
+  --black-950: #020405;
+  --black-900: #050809;
+  --navy-950: #06111f;
+  --navy-900: #071426;
+  --navy-800: #0b1f33;
+  --navy-700: #102b46;
+  --green-500: #00e676;
+  --green-400: #22f28a;
+  --green-300: #72ffb0;
+  --red-500: #ff3b4e;
+  --red-400: #ff5a6b;
+  --line-500: #1c3852;
+
+  /* Semantic tokens. Everything downstream derives from these. */
+  --bg-rgb: 6 17 31;
+  --bg-deep-rgb: 2 4 5;
+  --surface-rgb: 7 20 38;
+  --surface-raised-rgb: 11 31 51;
+  --surface-overlay-rgb: 16 43 70;
+  --text-rgb: 244 247 250;
   --text-strong-rgb: 255 255 255;
-  --muted-rgb: 161 161 175;
-  --muted-strong-rgb: 212 212 222;
-  --line-rgb: 148 148 168;
-  --accent-rgb: 129 140 248;
-  --accent-strong-rgb: 165 180 252;
-  --accent-2-rgb: 56 189 248;
-  --on-accent-rgb: 11 11 13;
-  --shadow-rgb: 0 0 4;
+  --muted-rgb: 147 164 184;
+  --muted-strong-rgb: 219 228 236;
+  --line-rgb: 120 145 170;
+  --accent-rgb: 0 230 118;
+  --accent-strong-rgb: 114 255 176;
+  --accent-2-rgb: 255 90 107;
+  --on-accent-rgb: 2 4 5;
+  --shadow-rgb: 0 0 0;
+
+  /* Explicit state tokens so components stop reaching for raw accents. */
+  --state-secure-rgb: 0 230 118;
+  --state-incident-rgb: 255 90 107;
+  --state-incident-fill-rgb: 255 59 78;
 }
 
-/* Light variant: the corporate / GRC register. Cool white ground, slate
-   text, and a darker indigo so the accent still clears AA on white. */
+/* Light variant, retained for print and for visitors whose OS asks for it.
+   Navy text on near-white keeps the same identity; green and red both darken
+   substantially because the supplied values are far too light on white
+   (#00e676 measures 1.6:1 there). */
 :root[data-theme="light"] {
-  --bg-rgb: 248 249 251;
-  --bg-deep-rgb: 237 239 244;
+  --bg-rgb: 244 247 250;
+  --bg-deep-rgb: 228 235 242;
   --surface-rgb: 255 255 255;
-  --surface-raised-rgb: 245 247 250;
+  --surface-raised-rgb: 240 245 250;
   --surface-overlay-rgb: 255 255 255;
-  --text-rgb: 24 26 34;
-  --text-strong-rgb: 9 10 15;
-  --muted-rgb: 88 94 112;
-  --muted-strong-rgb: 51 56 70;
-  --line-rgb: 68 74 92;
-  --accent-rgb: 67 56 202;
-  --accent-strong-rgb: 49 46 129;
-  /* sky-700, not sky-600: #0284C7 measured 4.10:1 on white, which fails AA. */
-  --accent-2-rgb: 3 105 161;
+  --text-rgb: 7 20 38;
+  --text-strong-rgb: 2 4 5;
+  --muted-rgb: 74 93 114;
+  --muted-strong-rgb: 11 31 51;
+  --line-rgb: 60 82 105;
+  --accent-rgb: 0 106 56;
+  --accent-strong-rgb: 0 77 41;
+  --accent-2-rgb: 190 18 40;
   --on-accent-rgb: 255 255 255;
-  --shadow-rgb: 24 26 40;
+  --shadow-rgb: 7 20 38;
+
+  --state-secure-rgb: 0 106 56;
+  --state-incident-rgb: 190 18 40;
+  --state-incident-fill-rgb: 190 18 40;
 }
 
 /* ---------- Derived tokens (palette independent) ---------- */
@@ -2665,3 +2702,158 @@ body.intro-complete .site-header { animation: shellIn .7s var(--ease-out-expo) b
 }
 
 /* Service-worker note: bumping CACHE_VERSION is what actually ships this. */
+
+/* =========================================================
+   SENTINEL: HERO IDENTITY + SEMANTIC STATE
+
+   The H1 is now the person, not the slogan, so the hero needs a
+   real hierarchy: name -> role -> institution -> tagline -> lead.
+   ========================================================= */
+
+.hero-title {
+  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -.03em;
+  margin: 0 0 .5rem;
+  color: var(--text-strong);
+}
+
+.hero-role {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hero-institution {
+  margin: 0 0 1.1rem;
+  font-size: .95rem;
+  color: var(--muted);
+}
+
+/* Green is a STATE here, not decoration: it means "confirmed". */
+.status-secure {
+  color: rgb(var(--state-secure-rgb));
+  font-weight: 600;
+}
+.status-secure::before {
+  content: "";
+  display: inline-block;
+  width: .45rem;
+  height: .45rem;
+  margin-right: .4rem;
+  border-radius: 50%;
+  background: rgb(var(--state-secure-rgb));
+  vertical-align: middle;
+}
+
+.hero-tagline {
+  margin: 0 0 1.1rem;
+  font-size: clamp(1rem, 1.9vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -.01em;
+}
+
+/* =========================================================
+   CREDENTIALS: VERIFIED vs ADDITIONAL
+
+   Two lists, visually distinct, so nobody reads five and hears
+   "five verified". The count badge states the number in text, so
+   the distinction is not carried by colour alone.
+   ========================================================= */
+
+.count-badge {
+  display: inline-block;
+  margin-left: .45rem;
+  padding: .1rem .5rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  background: rgb(var(--state-secure-rgb) / .16);
+  color: rgb(var(--state-secure-rgb));
+  border: 1px solid rgb(var(--state-secure-rgb) / .35);
+  vertical-align: middle;
+}
+.count-badge-muted {
+  background: rgb(var(--line-rgb) / .12);
+  color: var(--muted-strong);
+  border-color: rgb(var(--line-rgb) / .3);
+}
+
+.credential-strip-secondary { margin-top: 2rem; }
+.credential-strip-secondary h3 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -.01em;
+}
+
+/* Verified entries carry a green edge; unverified carry none. The
+   "Verify" / "Unverified" text does the real work. */
+.credential-chips > li > a { border-left: 2px solid rgb(var(--state-secure-rgb) / .55); }
+.credential-chips-muted > li > span {
+  border-left: 2px solid rgb(var(--line-rgb) / .3);
+  opacity: .78;
+}
+.credential-chips-muted .credential-issuer { color: var(--muted-strong); }
+.credential-chips-muted .credential-date { font-style: italic; }
+
+/* =========================================================
+   TOUCH TARGETS — WCAG 2.2 AA (2.5.8 Target Size, Minimum)
+
+   Audited at 320px. The filter buttons already carried
+   min-height:44px, but these did not and measured well under:
+
+     .button        36.6px   (hero CTAs)
+     .project-link  37.9px
+     .footer-brand  32.0px
+     .text-link     25.2px
+     footer links   16.5px
+
+   Applied at coarse pointer OR narrow viewport, so a phone in
+   landscape is covered as well as a narrow desktop window.
+   ========================================================= */
+@media (pointer: coarse), (max-width: 960px) {
+  .button,
+  .project-link,
+  .footer-brand,
+  .text-link,
+  .site-footer a,
+  .contact-links a,
+  .credential-chips > li > a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Inline links inside prose must not become block-level boxes;
+     give them vertical padding instead so the line box grows. */
+  .text-link,
+  .site-footer a {
+    padding-block: .6rem;
+  }
+
+  /* Keep the filter row comfortably clear of the 44px floor rather
+     than sitting exactly on it, where sub-pixel rounding can dip under. */
+  .filter-button { min-height: 46px; }
+}
+
+/* WCAG 2.2 AA 2.5.8 also applies on fine pointers, where the floor is
+   24x24 rather than 44x44. Audited at 1024px; these four standalone
+   controls measured 9-21px tall and are not exempt (they are not inline
+   links within a sentence):
+
+     .hero-scroll        148x9
+     .text-link          127x21
+     footer replay       76x17
+     footer back-to-top  54x17 */
+.hero-scroll,
+.text-link,
+.site-footer a,
+.site-footer button,
+.footer-actions a,
+.footer-actions button {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+}

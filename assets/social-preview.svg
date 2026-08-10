@@ -1,97 +1,97 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#121214"/>
-      <stop offset="0.5" stop-color="#0B0B0D"/>
-      <stop offset="1" stop-color="#121214"/>
+      <stop offset="0" stop-color="#06111f"/>
+      <stop offset="0.5" stop-color="#020405"/>
+      <stop offset="1" stop-color="#06111f"/>
     </linearGradient>
     <radialGradient id="glowA" cx="0.1" cy="0.05" r="0.6">
-      <stop offset="0" stop-color="#818CF8" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="#818CF8" stop-opacity="0"/>
+      <stop offset="0" stop-color="#00e676" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#00e676" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="glowB" cx="0.95" cy="0.9" r="0.6">
-      <stop offset="0" stop-color="#A5B4FC" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#A5B4FC" stop-opacity="0"/>
+      <stop offset="0" stop-color="#72ffb0" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#72ffb0" stop-opacity="0"/>
     </radialGradient>
     <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-      <path d="M48 0H0V48" fill="none" stroke="#818CF8" stroke-opacity="0.06" stroke-width="1"/>
+      <path d="M48 0H0V48" fill="none" stroke="#00e676" stroke-opacity="0.06" stroke-width="1"/>
     </pattern>
     <linearGradient id="shield" x1="120" y1="190" x2="272" y2="410" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#818CF8"/>
-      <stop offset="1" stop-color="#A5B4FC"/>
+      <stop offset="0" stop-color="#00e676"/>
+      <stop offset="1" stop-color="#72ffb0"/>
     </linearGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="#0B0B0D"/>
+  <rect width="1200" height="630" fill="#020405"/>
   <rect width="1200" height="630" fill="url(#grid)"/>
 
   <!-- Card -->
   <rect x="44" y="40" width="1112" height="550" rx="26"
-        fill="#1A1A1F" stroke="#818CF8" stroke-opacity="0.28" stroke-width="1.5"/>
+        fill="#0b1f33" stroke="#00e676" stroke-opacity="0.28" stroke-width="1.5"/>
 
   <!-- Window bar -->
-  <path d="M44 108 H1156" stroke="#818CF8" stroke-opacity="0.18" stroke-width="1.5"/>
+  <path d="M44 108 H1156" stroke="#00e676" stroke-opacity="0.18" stroke-width="1.5"/>
   <circle cx="78" cy="74" r="6.5" fill="#ff5f57"/>
-  <circle cx="100" cy="74" r="6.5" fill="#38BDF8"/>
-  <circle cx="122" cy="74" r="6.5" fill="#818CF8"/>
-  <text x="600" y="80" text-anchor="middle" fill="#A1A1AF"
+  <circle cx="100" cy="74" r="6.5" fill="#ff5a6b"/>
+  <circle cx="122" cy="74" r="6.5" fill="#00e676"/>
+  <text x="600" y="80" text-anchor="middle" fill="#93a4b8"
         font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="15" letter-spacing="2.6">PORTFOLIO ACCESS</text>
-  <circle cx="1028" cy="74" r="5" fill="#818CF8"/>
-  <text x="1044" y="80" fill="#D4D4DE"
+  <circle cx="1028" cy="74" r="5" fill="#00e676"/>
+  <text x="1044" y="80" fill="#dbe4ec"
         font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="15" letter-spacing="2.2">READY</text>
 
   <!-- Left identity mark -->
-  <circle cx="196" cy="300" r="118" fill="none" stroke="#A5B4FC" stroke-opacity="0.35" stroke-width="1.5"/>
-  <circle cx="196" cy="300" r="97" fill="none" stroke="#818CF8" stroke-opacity="0.22" stroke-width="1.5"/>
-  <circle cx="196" cy="182" r="5" fill="#818CF8"/>
-  <circle cx="93" cy="352" r="4.5" fill="#A5B4FC"/>
-  <circle cx="299" cy="348" r="4.5" fill="#818CF8"/>
+  <circle cx="196" cy="300" r="118" fill="none" stroke="#72ffb0" stroke-opacity="0.35" stroke-width="1.5"/>
+  <circle cx="196" cy="300" r="97" fill="none" stroke="#00e676" stroke-opacity="0.22" stroke-width="1.5"/>
+  <circle cx="196" cy="182" r="5" fill="#00e676"/>
+  <circle cx="93" cy="352" r="4.5" fill="#72ffb0"/>
+  <circle cx="299" cy="348" r="4.5" fill="#00e676"/>
   <path d="M196 208 L268 236 v50c0 42-28 76-72 94-44-18-72-52-72-94v-50z"
         fill="none" stroke="url(#shield)" stroke-width="4" stroke-linejoin="round"/>
-  <text x="196" y="304" text-anchor="middle" fill="#F4F4F6"
+  <text x="196" y="304" text-anchor="middle" fill="#f4f7fa"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="1">SS</text>
-  <text x="196" y="336" text-anchor="middle" fill="#A5B4FC"
+  <text x="196" y="336" text-anchor="middle" fill="#72ffb0"
         font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="11" letter-spacing="1.4">CYBER SECURITY</text>
 
   <!-- Right content -->
-  <text x="370" y="182" fill="#818CF8"
+  <text x="370" y="182" fill="#00e676"
         font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="17" letter-spacing="2.4">PROFESSIONAL CYBER SECURITY PORTFOLIO</text>
 
   <text x="370" y="266" fill="#ffffff"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="68" font-weight="800" letter-spacing="-2">Sarmad Saeed</text>
 
-  <text x="370" y="326" fill="#F4F4F6"
+  <text x="370" y="326" fill="#f4f7fa"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" font-weight="700">MSc Cyber Security Graduate</text>
 
-  <text x="370" y="368" fill="#A1A1AF"
+  <text x="370" y="368" fill="#93a4b8"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="25">University of Chester · 2025–2026</text>
 
-  <text x="370" y="422" fill="#D4D4DE"
+  <text x="370" y="422" fill="#dbe4ec"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">Security research, threat detection, DFIR,</text>
-  <text x="370" y="454" fill="#D4D4DE"
+  <text x="370" y="454" fill="#dbe4ec"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">penetration testing and ICS/OT defence.</text>
 
   <!-- Tag pills -->
   <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="1">
-    <rect x="370" y="496" width="176" height="40" rx="12" fill="#818CF8" fill-opacity="0.10" stroke="#818CF8" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="458" y="522" text-anchor="middle" fill="#A5B4FC">THREAT DETECTION</text>
+    <rect x="370" y="496" width="176" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="458" y="522" text-anchor="middle" fill="#72ffb0">THREAT DETECTION</text>
 
-    <rect x="558" y="496" width="186" height="40" rx="12" fill="#818CF8" fill-opacity="0.10" stroke="#818CF8" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="651" y="522" text-anchor="middle" fill="#A5B4FC">DIGITAL FORENSICS</text>
+    <rect x="558" y="496" width="186" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="651" y="522" text-anchor="middle" fill="#72ffb0">DIGITAL FORENSICS</text>
 
-    <rect x="756" y="496" width="104" height="40" rx="12" fill="#818CF8" fill-opacity="0.10" stroke="#818CF8" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="808" y="522" text-anchor="middle" fill="#A5B4FC">ICS / OT</text>
+    <rect x="756" y="496" width="104" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="808" y="522" text-anchor="middle" fill="#72ffb0">ICS / OT</text>
 
-    <rect x="872" y="496" width="188" height="40" rx="12" fill="#818CF8" fill-opacity="0.10" stroke="#818CF8" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="966" y="522" text-anchor="middle" fill="#A5B4FC">SECURITY RESEARCH</text>
+    <rect x="872" y="496" width="188" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
+    <text x="966" y="522" text-anchor="middle" fill="#72ffb0">SECURITY RESEARCH</text>
   </g>
 
   <!-- Footer -->
-  <text x="72" y="566" fill="#8A8A9C"
+  <text x="72" y="566" fill="#93a4b8"
         font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.2">Ghauri_Boy  /  United Kingdom</text>
 
-  <rect x="956" y="544" width="152" height="42" rx="13" fill="#818CF8"/>
-  <circle cx="984" cy="565" r="5" fill="#16161A"/>
-  <text x="1000" y="571" fill="#16161A"
+  <rect x="956" y="544" width="152" height="42" rx="13" fill="#00e676"/>
+  <circle cx="984" cy="565" r="5" fill="#071426"/>
+  <text x="1000" y="571" fill="#071426"
         font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="1">GRADUATED</text>
 </svg>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#121214">
+  <meta name="theme-color" content="#06111f">
   <meta name="description" content="The professional cyber security portfolio of Sarmad Saeed, an MSc Cyber Security graduate from the University of Chester, featuring security research, ICS defence, digital forensics, penetration testing and technical projects.">
   <meta name="author" content="Sarmad Saeed">
   <meta name="robots" content="index, follow">
@@ -23,10 +23,14 @@
   <meta name="twitter:image" content="https://ghauriboy295.github.io/assets/social-preview.png">
 
   <title>Sarmad Saeed | Cyber Security Portfolio</title>
+  <link rel="canonical" href="https://ghauriboy295.github.io/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=12.0.1">
-  <script src="script.js?v=12.0.1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=13.0.0">
+  <script src="script.js?v=13.0.0" defer></script>
 
   <script>
     /* Resolve the theme before first paint so a system-light visitor never sees a dark flash.
@@ -40,7 +44,7 @@
         document.documentElement.dataset.theme = theme;
 
         const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'light' ? '#F8F9FB' : '#121214');
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#F4F7FA' : '#06111F');
       } catch { /* storage or matchMedia unavailable: keep the markup default */ }
     })();
   </script>
@@ -64,7 +68,10 @@
         {"@type": "CollegeOrUniversity", "name": "University of Chester"},
         {"@type": "CollegeOrUniversity", "name": "Air University"}
       ],
-      "sameAs": ["https://www.linkedin.com/in/sarmad-saeed-cyber"],
+      "sameAs": [
+        "https://www.linkedin.com/in/sarmad-saeed-cyber",
+        "https://github.com/GhauriBoy295"
+      ],
       "knowsAbout": [
         "Cyber Security",
         "Threat Detection",
@@ -122,7 +129,7 @@
             <div><span>Academic year</span><strong>2025–2026</strong></div>
             <div><span>Degree status</span><strong class="success-text">Graduated</strong></div>
             <div><span>Location</span><strong>United Kingdom</strong></div>
-            <div><span>Profile alias</span><strong>Ghauri_Boy</strong></div>
+            <div><span>Bachelor</span><strong>Cyber Security, Air University</strong></div>
           </div>
 
           <div class="access-tags" aria-label="Specialist areas">
@@ -202,8 +209,10 @@
             <span class="availability-dot"></span>
             Open to UK cyber security opportunities
           </div>
-          <p class="eyebrow">MSc Cyber Security Graduate · University of Chester</p>
-          <h1 class="hero-title"><span class="glitch" data-text="Defend systems.">Defend systems.</span><br><span class="hero-accent glitch" data-text="Analyse signals.">Analyse signals.</span><br><span class="glitch" data-text="Build resilience.">Build resilience.</span></h1>
+          <h1 class="hero-title">Sarmad Saeed</h1>
+          <p class="hero-role">MSc Cyber Security Graduate</p>
+          <p class="hero-institution">University of Chester · 2025&ndash;2026 · <span class="status-secure">Graduated</span></p>
+          <p class="hero-tagline"><span class="hero-accent">Defend systems. Analyse signals. Build resilience.</span></p>
           <p class="hero-lead">I combine security research, defensive analysis and practical technical work across threat detection, digital forensics, penetration testing and industrial control systems security.</p>
 
           <div class="hero-actions">
@@ -218,10 +227,10 @@
           </div>
 
           <dl class="hero-metrics" aria-label="Portfolio summary">
-            <div><dt data-counter="2">0</dt><dd>Cyber security degrees</dd></div>
-            <div><dt data-counter="5">0</dt><dd>Featured case studies</dd></div>
-            <div><dt data-counter="3">0</dt><dd>Course completions</dd></div>
-            <div><dt data-counter="6">0</dt><dd>Core security domains</dd></div>
+            <div><dt data-counter="2">2</dt><dd>Cyber security degrees</dd></div>
+            <div><dt data-counter="5">5</dt><dd>Featured case studies</dd></div>
+            <div><dt data-counter="3">3</dt><dd>Verified course credentials</dd></div>
+            <div><dt data-counter="6">6</dt><dd>Core security domains</dd></div>
           </dl>
         </div>
 
@@ -281,8 +290,8 @@
 
       <section class="credential-strip section-shell" aria-labelledby="credentialStripTitle">
         <div class="credential-strip-head reveal" data-reveal="up">
-          <h2 id="credentialStripTitle">Verified credentials</h2>
-          <p>Course completions, each independently verifiable. No industry certifications are claimed.</p>
+          <h2 id="credentialStripTitle">Verified credentials <span class="count-badge">3</span></h2>
+          <p>Course completions with a public verification link. These are course completions, not industry certifications.</p>
         </div>
         <ul class="credential-chips stagger reveal" data-reveal="up">
           <li>
@@ -306,18 +315,25 @@
               <span class="credential-date">Jul 2023 · Verify</span>
             </a>
           </li>
+        </ul>
+
+        <div class="credential-strip-head credential-strip-secondary reveal" data-reveal="up">
+          <h3>Additional course completions <span class="count-badge count-badge-muted">2</span></h3>
+          <p>Completed, but no verification link was supplied for these two. Listed separately rather than counted as verified.</p>
+        </div>
+        <ul class="credential-chips credential-chips-muted stagger reveal" data-reveal="up">
           <li>
             <span>
               <span class="credential-issuer">Google</span>
               <strong>Connect and Protect: Networks and Network Security</strong>
-              <span class="credential-date">Course completion</span>
+              <span class="credential-date">Unverified</span>
             </span>
           </li>
           <li>
             <span>
               <span class="credential-issuer">Google</span>
               <strong>Assets, Threats, and Vulnerabilities</strong>
-              <span class="credential-date">Course completion</span>
+              <span class="credential-date">Unverified</span>
             </span>
           </li>
         </ul>
@@ -692,6 +708,8 @@
             </div>
             <a href="mailto:sarmadsaeed2002@gmail.com"><span>Email</span><strong>sarmadsaeed2002@gmail.com</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
             <a href="https://www.linkedin.com/in/sarmad-saeed-cyber" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><strong>sarmad-saeed-cyber</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
+            <a href="https://github.com/GhauriBoy295" target="_blank" rel="noopener noreferrer"><span>GitHub</span><strong>GhauriBoy295</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
+            <a href="https://github.com/GhauriBoy295/GhauriBoy295.github.io" target="_blank" rel="noopener noreferrer"><span>Source</span><strong>This portfolio on GitHub</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
             <a href="Sarmad_Saeed_CV.pdf" download><span>Curriculum vitae</span><strong>Download PDF</strong><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg></a>
             <a href="Sarmad_Saeed_CV.docx" download><span>Editable document</span><strong>Download DOCX</strong><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg></a>
           </div>
