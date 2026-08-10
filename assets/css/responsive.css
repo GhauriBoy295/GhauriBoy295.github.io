@@ -1,0 +1,68 @@
+/* =========================================================
+   TOUCH TARGETS — WCAG 2.2 AA (2.5.8 Target Size, Minimum)
+
+   Audited at 320px. The filter buttons already carried
+   min-height:44px, but these did not and measured well under:
+
+     .button        36.6px   (hero CTAs)
+     .project-link  37.9px
+     .footer-brand  32.0px
+     .text-link     25.2px
+     footer links   16.5px
+
+   Applied at coarse pointer OR narrow viewport, so a phone in
+   landscape is covered as well as a narrow desktop window.
+   ========================================================= */
+@media (pointer: coarse), (max-width: 960px) {
+  .button,
+  .project-link,
+  .footer-brand,
+  .text-link,
+  .site-footer a,
+  .contact-links a,
+  .credential-chips > li > a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Inline links inside prose must not become block-level boxes;
+     give them vertical padding instead so the line box grows. */
+  .text-link,
+  .site-footer a {
+    padding-block: .6rem;
+  }
+
+  /* Keep the filter row comfortably clear of the 44px floor rather
+     than sitting exactly on it, where sub-pixel rounding can dip under. */
+  .filter-button { min-height: 46px; }
+}
+
+/* WCAG 2.2 AA 2.5.8 also applies on fine pointers, where the floor is
+   24x24 rather than 44x44. Audited at 1024px; these four standalone
+   controls measured 9-21px tall and are not exempt (they are not inline
+   links within a sentence):
+
+     .hero-scroll        148x9
+     .text-link          127x21
+     footer replay       76x17
+     footer back-to-top  54x17 */
+/* Scoped to fine pointers on wide viewports ONLY.
+
+   Unscoped, this sits after the 44px block above with equal specificity and
+   therefore wins everywhere — silently dropping every one of these controls
+   from 44px to 24px on phones. That regression is exactly what happened and
+   was caught at 320px, where .text-link measured 41px. The two rules must
+   never be able to compete. */
+@media (min-width: 961px) and (pointer: fine) {
+  .hero-scroll,
+  .text-link,
+  .site-footer a,
+  .site-footer button,
+  .footer-actions a,
+  .footer-actions button {
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+  }
+}

@@ -1,0 +1,40 @@
+/* =========================================================
+   REVERSE FLOW
+
+   Scrolling back up plays the entrance in reverse: elements
+   retreat toward the edge they arrived from. Driven by a
+   direction flag on <html> so it is pure CSS at paint time.
+   ========================================================= */
+
+.reveal.is-leaving { opacity: 0; }
+:root[data-scroll="up"] .reveal.is-leaving { transform: translate3d(0, 40px, 0) scale(.99); }
+:root[data-scroll="up"] .reveal.is-leaving[data-reveal="left"]  { transform: translate3d(-60px, 0, 0) scale(.99); }
+:root[data-scroll="up"] .reveal.is-leaving[data-reveal="right"] { transform: translate3d(60px, 0, 0) scale(.99); }
+:root[data-scroll="up"] .reveal.is-leaving[data-reveal="back"]  { transform: perspective(1000px) translate3d(0, 24px, -90px) scale(.94); }
+:root[data-scroll="down"] .reveal.is-leaving { transform: translate3d(0, -34px, 0) scale(.99); }
+
+/* =========================================================
+   WELCOME PANEL: FIXED, NOT SCROLLING
+
+   The panel is a fixed viewport rather than a scrollable page.
+   Scrolling is only re-enabled when the content genuinely cannot
+   fit, so short screens never trap the Enter button off-screen.
+   ========================================================= */
+
+.access-screen {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+@media (max-height: 720px), (max-width: 760px) {
+  .access-screen { overflow: auto; }
+}
+
+/* Banner captions are centred, so the section-index treatment used elsewhere
+   (left padding plus a decorative leading rule) must not apply here — it was
+   pushing the text off-centre and leaving a stray dash at the left. */
+.robotic-banner-caption .section-index {
+  padding-left: 0;
+  text-align: center;
+}
+.robotic-banner-caption .section-index::before { content: none; }
+

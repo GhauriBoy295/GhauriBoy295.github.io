@@ -1,0 +1,173 @@
+/* =========================================================
+   Red terminal layer
+   Heavier ambient motion. Every effect here is decorative,
+   pointer-events:none, and switched off under reduced motion,
+   on touch-first devices, and in print.
+   ========================================================= */
+
+/* CRT scanlines over the whole page. */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  opacity: .28;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(var(--accent-rgb) / .045) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+/* Code-rain canvas. Injected by script.js on capable devices only. */
+.rain-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
+  /* Stars are sparse points rather than a wall of glyphs, so they can sit
+     brighter than the code rain did without dominating. */
+  opacity: .7;
+}
+
+/* RGB-split glitch on the hero title. Runs as a short burst, not constantly. */
+.glitch { position: relative; display: inline-block; }
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  clip-path: inset(0 0 0 0);
+}
+.glitch::before { color: var(--accent); transform: translate3d(-2px, 0, 0); }
+.glitch::after { color: var(--blue); transform: translate3d(2px, 0, 0); }
+.glitch.is-glitching::before { animation: glitchTop .42s steps(2, end) 1; }
+.glitch.is-glitching::after { animation: glitchBottom .42s steps(2, end) 1; }
+@keyframes glitchTop {
+  0%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  20% { opacity: .75; clip-path: inset(0 0 62% 0); transform: translate3d(-4px, -2px, 0); }
+  55% { opacity: .55; clip-path: inset(24% 0 38% 0); transform: translate3d(3px, 1px, 0); }
+  80% { opacity: .4; clip-path: inset(8% 0 74% 0); transform: translate3d(-2px, 2px, 0); }
+}
+@keyframes glitchBottom {
+  0%, 100% { opacity: 0; clip-path: inset(100% 0 0 0); }
+  25% { opacity: .6; clip-path: inset(58% 0 0 0); transform: translate3d(4px, 2px, 0); }
+  60% { opacity: .5; clip-path: inset(72% 0 12% 0); transform: translate3d(-3px, -1px, 0); }
+  85% { opacity: .35; clip-path: inset(46% 0 30% 0); transform: translate3d(2px, -2px, 0); }
+}
+
+/* Scramble pass on section indices while they resolve. */
+.scramble.is-scrambling { color: var(--accent); text-shadow: 0 0 12px var(--accent-glow); }
+
+/* Brand mark flicker, occasional and short. */
+.brand-mark { animation: markFlicker 11s steps(1, end) infinite; }
+@keyframes markFlicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: .45; }
+  98% { opacity: 1; }
+  99% { opacity: .6; }
+}
+
+/* Accent glow pulse for live status dots. */
+.window-state i, .console-live i { animation: redPulse 1.6s ease-in-out infinite; }
+@keyframes redPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--accent-glow); opacity: 1; }
+  50% { box-shadow: 0 0 20px 3px var(--accent-glow); opacity: .65; }
+}
+
+/* Terminal boot lines on the welcome panel. */
+.boot-log {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(var(--accent-rgb) / .12);
+  color: var(--muted);
+  font: 500 10px/1.75 var(--font-mono);
+  letter-spacing: .04em;
+}
+.boot-log li { display: flex; gap: 8px; opacity: 0; animation: bootLineIn .32s var(--ease) forwards; }
+.boot-log li::before { content: "›"; color: var(--accent); }
+.boot-log li:nth-child(1) { animation-delay: .15s; }
+.boot-log li:nth-child(2) { animation-delay: .45s; }
+.boot-log li:nth-child(3) { animation-delay: .75s; }
+@keyframes bootLineIn { to { opacity: 1; } }
+
+@media (max-width: 760px) {
+  .crt-scanlines { opacity: .18; }
+  .boot-log { display: none; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .rain-canvas { display: none; }
+  .brand-mark { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  *, *::before, *::after { animation-duration:.001ms!important; animation-iteration-count:1!important; transition-duration:.001ms!important; scroll-behavior:auto!important; }
+  .cursor-aura, .access-scan, .access-orbit { display:none!important; }
+  .crt-scanlines, .rain-canvas { display:none!important; }
+  .glitch::before, .glitch::after { display:none!important; }
+  .brand-mark { animation:none!important; }
+  .boot-log li { opacity:1!important; }
+  /* Designed motion layer off */
+  .stagger > * { opacity:1!important; transform:none!important; transition:none!important; }
+  .parallax { transform:none!important; }
+  .spring:hover { transform:none!important; }
+  .draw-path { stroke-dasharray:none!important; stroke-dashoffset:0!important; }
+  .section-index::before { transform:scaleX(1)!important; }
+  body.intro-complete .site-header { animation:none!important; }
+  .reveal, .reveal[data-reveal] { opacity:1!important; transform:none!important; }
+  .primary-nav { clip-path:none!important; transition:none!important; }
+  .primary-nav a { opacity:1!important; transform:none!important; transition:none!important; }
+  .hero-orb { animation:none!important; }
+  .proof-track, .tool-track { animation:none!important; }
+  .proof-rail, .tool-marquee { overflow-x:auto; }
+}
+
+@media print {
+  .access-screen, .site-header, .page-grid, .cursor-aura,
+  .scroll-progress, .back-to-top, .proof-rail, .tool-marquee, .hero-scroll, .footer-actions,
+  .toast, .crt-scanlines, .rain-canvas,
+  dialog, .dialog-actions, .dialog-close { display:none!important; }
+
+  /* Ink-on-paper overrides. Declared as literals, not as tokens, because the
+     screen palette is not a printable one. */
+  :root {
+    --bg:#fff; --bg-deep:#fff; --surface:#fff; --surface-solid:#fff; --surface-raised:#fff;
+    --surface-overlay:#fff; --surface-muted:#f4f4f5; --surface-soft:#fff;
+    --text:#111; --text-strong:#000; --muted:#444; --muted-strong:#222;
+    --line:#ccc; --line-strong:#999;
+    --accent:#1a3fa0; --accent-strong:#122d73; --accent-2:#0d5f68; --on-accent:#fff;
+    --shadow:none; --shadow-soft:none;
+  }
+  body { background:#fff; color:#111; }
+  .site-shell { opacity:1!important; visibility:visible!important; }
+  .section-shell { width:100%; }
+  .hero { min-height:0; padding:20px 0; grid-template-columns:1fr; }
+  .hero-console { display:none; }
+  .content-section { padding:25px 0; }
+  .reveal, .stagger > * { opacity:1!important; transform:none!important; }
+  .spotlight-card, .bento-card, .expertise-card, .project-card, .timeline-card,
+  .experience-card, .credential-card, .contact-panel { box-shadow:none!important; break-inside:avoid; }
+
+  /* Printing a single case study: the page collapses to just the open dialog. */
+  body.printing-case > *:not(#projectDialog) { display:none!important; }
+  body.printing-case #projectDialog {
+    display:block!important;
+    position:static!important;
+    max-width:none;
+    max-height:none;
+    margin:0;
+    padding:0;
+    border:0;
+    background:#fff;
+    color:#111;
+  }
+  body.printing-case #projectDialog::backdrop { display:none; }
+  body.printing-case .dialog-shell { width:100%; box-shadow:none; border:0; }
+  body.printing-case .dialog-topbar { border-bottom:1px solid #ccc; }
+  body.printing-case .case-study-grid { grid-template-columns:1fr; }
+  body.printing-case .case-study-block { break-inside:avoid; }
+}
+

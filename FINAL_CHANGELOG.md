@@ -1,5 +1,52 @@
 # Final Changelog
 
+## 14.0.0 — module split + design presence pass
+
+### Modules
+
+`styles.css` (2,859 lines) is now nine files under `assets/css/`, and
+`script.js` is two ES modules under `assets/js/`.
+
+The CSS split was done by a script with a hard safety contract: concatenating
+the outputs in load order must be **byte-identical** to the input, or nothing
+is written. The first run failed that check — grouping blocks by module had
+reordered them, which would have silently broken the cascade. Rewritten to
+keep contiguous source order; second run verified identical.
+
+For JavaScript, the interaction code genuinely shares one closure (DOM refs,
+`state`, `showToast`, `motionReduced`). Threading that through imports buys
+nothing, so what came out is what was actually separable: the 71-line
+`projectData` object is now `project-data.js`, imported by `app.js`. The IIFE
+became module scope.
+
+`tools/verify_portfolio.py` was updated to match the new layout and now
+syntax-checks all three JS files rather than one.
+
+### Design
+
+The palette was right but the page read as basic. Causes, from a 1440px
+capture: enormous hero gaps, every surface on one plane, no scale contrast
+under the H1, the accent on a single button, and a hero visual too dim to be
+a focal point.
+
+- H1 to `clamp(3.2rem, 9vw, 7rem)` at weight 800 with -.045em tracking and
+  optical margin correction.
+- Metrics became a bordered readout — large monospace numerals in the secure
+  colour instead of small grey text.
+- Depth: one fine noise layer, a lit top edge and a real shadow per card.
+- Accent used where it means something: section markers, tagline rule, focus
+  ring, selection, availability state, active nav.
+- Radar sweep and rings brightened; one soft field behind the console.
+
+### Regression caught and fixed
+
+The 24px desktop target rule from 13.0.0 was unscoped. Sitting after the 44px
+mobile block with equal specificity, it won everywhere — quietly dropping
+every affected control to 24px on phones. Found at 320px, where `.text-link`
+measured 41px. Now scoped to `(min-width: 961px) and (pointer: fine)` so the
+two rules cannot compete. Re-verified: 0 undersized at 320px and at 1440px.
+
+
 ## 13.0.0 — "Sentinel Executive"
 
 Palette rebuilt around black, deep navy, secure green and incident red, with
