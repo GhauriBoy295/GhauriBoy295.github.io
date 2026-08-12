@@ -286,3 +286,58 @@ body::after {
   .hero-metrics dt { color: #000 !important; }
   .button-primary { box-shadow: none !important; }
 }
+
+/* =========================================================
+   SEMANTIC COLOUR CORRECTION
+
+   The decorative visuals inherited --accent-2 from an older palette
+   where the secondary was teal. In this scheme --accent-2 is
+   INCIDENT RED, so those rules were painting red across a signal
+   graph, an ICS map and a database diagram — none of which represent
+   an incident. Caught in a 1440px capture of the projects section,
+   where the randomness-testing bars read amber-to-red.
+
+   Red must mean risk. These get a dimmer green instead, which keeps
+   the depth the gradients were providing without the false alarm.
+
+   The ONE place red is kept is the ICS alert wave, because that
+   genuinely does depict an alert condition.
+   ========================================================= */
+
+:root {
+  /* A muted green for structural/decorative use, so components stop
+     reaching for the incident colour when they just want a second tone. */
+  --viz-2-rgb: 0 150 90;
+}
+:root[data-theme="light"] { --viz-2-rgb: 0 92 55; }
+
+.signal-lines i {
+  background: linear-gradient(to top,
+    rgb(var(--accent-rgb) / .05),
+    rgb(var(--viz-2-rgb)),
+    rgb(var(--accent-rgb) / .85));
+}
+
+.visual-ics {
+  background: radial-gradient(circle at 60% 50%, rgb(var(--viz-2-rgb) / .15), transparent 45%), var(--bg);
+}
+.factory-map::before {
+  background: linear-gradient(90deg, transparent, rgb(var(--viz-2-rgb) / .65), transparent);
+}
+.factory-map span {
+  border-color: rgb(var(--viz-2-rgb) / .42);
+  box-shadow: 0 0 0 5px rgb(var(--viz-2-rgb) / .035), 0 0 20px rgb(var(--viz-2-rgb) / .09);
+}
+
+.visual-database {
+  background: radial-gradient(circle, rgb(var(--viz-2-rgb) / .13), transparent 48%), var(--bg);
+}
+.database-stack span { border-color: rgb(var(--viz-2-rgb) / .45); }
+.database-stack::before,
+.database-stack::after {
+  background: rgb(var(--viz-2-rgb) / .45);
+  box-shadow: 119px 0 rgb(var(--viz-2-rgb) / .45);
+}
+
+/* Kept red on purpose: this one really is an alert. */
+.alert-wave { border-color: rgb(var(--state-incident-rgb) / .55); }
