@@ -1,6 +1,7 @@
 # Portfolio Content and Design Update Guide
 
-This guide explains where to change the most important content without rebuilding the entire site.
+This guide explains where to change the most important content without rebuilding
+the entire site. The site is static — no npm, no framework, no build step.
 
 ## Personal details
 
@@ -13,125 +14,176 @@ Sarmad Saeed
 Ghauri_Boy
 University of Chester
 sarmadsaeed2002@gmail.com
+sarmad-saeed-845a7b267
 ```
 
-Update every relevant occurrence consistently, including the structured profile data in the `<head>`.
+Update every relevant occurrence consistently, including the JSON-LD structured
+profile in the `<head>`, the Open Graph and Twitter tags, `site.webmanifest` and
+`assets/social-preview.svg`.
+
+### Facts that must stay consistent everywhere
+
+| Fact | Value |
+|---|---|
+| Title | MSc Cyber Security Graduate |
+| University | University of Chester |
+| Academic year | 2025–2026 |
+| Status | Graduated |
+| Current base | United Kingdom |
+| Opportunity availability | Worldwide |
+| Work modes | Remote, hybrid, on-site, relocation |
+
+Never write `candidate`, `expected 2026`, `currently studying`, `pursuing MSc`, or
+UK-only opportunity wording. `tools/verify_portfolio.py` in the parent workspace
+fails the build on any of them.
 
 ## CV files
 
-The primary website buttons use:
+The website buttons use:
 
 ```text
 Sarmad_Saeed_CV.pdf
 Sarmad_Saeed_CV.docx
 ```
 
-When replacing a CV, keep the same file names to avoid changing every link. The two `Professional_Resume` files are retained for compatibility with previous portfolio links.
+When replacing a CV, keep the same file names to avoid changing every link. The two
+`Professional_Resume` files are identical copies retained for compatibility with
+previous portfolio links — update both pairs together.
 
-## Projects
+## Missions (projects)
 
-Project cards are written in the `#projects` section of `index.html`.
+A mission exists in two places:
 
-The detailed case-study content is stored in the `projectData` object inside `script.js`. Each project uses the same ID in both places, for example:
+1. The card in the `#missions-section` section of `index.html`, including its
+   original inline SVG artwork.
+2. The case-study content in `assets/js/project-data.js`.
+
+Both use the same ID:
 
 ```html
-data-project="randomness"
-data-open-project="randomness"
+<article class="mission" data-class="defence" data-categories="defence nist-detect">
+  …
+  <button class="mission-open" data-open-mission="ics-ids">
 ```
 
-and:
-
 ```javascript
-randomness: {
-  title: 'Integrated Randomness Testing Suite',
-  ...
+'ics-ids': {
+  title: 'Intrusion Detection for Industrial Control Systems',
+  classification: 'defence',
+  side: 'blue',
+  panels: [ … ],
+  timeline: [ … ],
+  artefacts: [ … ]
 }
 ```
 
-Keep these IDs identical.
+Keep these IDs identical, and keep the ID in the `order` array at the top of
+`project-data.js` — that array drives the Previous/Next buttons inside a report.
 
-## Project filters
+### Case-study structure
+
+- `panels` — the tabs in the report's left rail. Each needs `id`, `label`, `title`,
+  `body`, and optionally `list`.
+- `timeline` — the "Evidence timeline" tab. Describes process, never a measured result.
+- `artefacts` — the "Working material" panel. Describes the *kind* of material the
+  work involved, never a quantity or an outcome.
+- `framework` — optional. Omit it entirely when there is no genuine NIST mapping;
+  the block hides itself.
+
+## Mission filters
 
 A card can belong to one or more categories:
 
 ```html
-data-categories="research development"
+data-categories="research nist-protect"
 ```
 
-Available categories are:
+Available categories:
 
 ```text
-research
-defence
-offensive
-development
+research  defence  offensive  development
+nist-identify  nist-protect  nist-detect  nist-respond
 ```
 
-When adding or removing cards, update the numbers shown inside the filter buttons.
+When adding or removing cards, update the count in each filter button (`<b>5</b>`)
+and the mission count in the section heading and the Recruiter Quick View.
 
 ## Colours
 
-The global design colours are at the top of `styles.css`.
+All design tokens are in `assets/css/tokens.css`.
 
-Key variables:
+- `:root, :root[data-theme="dark"]` — BlackICE Night
+- `:root[data-theme="light"]` — Forensic Daylight
 
-```css
---bg
---surface
---text
---muted
---accent
---blue
---line
-```
-
-Dark-theme variables are under `:root`. Light-theme values are under:
+The two themes are defined independently, not derived from each other. Key tokens:
 
 ```css
-html[data-theme="light"]
+--canvas --obsidian --surface-1..4      /* structure: black and navy */
+--border --border-soft --border-strong
+--secure --secure-hover --secure-deep   /* secure states, primary actions */
+--incident --incident-hover             /* incidents, offensive, risk only */
+--evidence                              /* forensic artefact labels */
+--text-1 --text-2 --text-3
+--glow-secure --glow-incident           /* flat in the light theme by design */
 ```
+
+Semantic rule: red is only ever used for incident, offensive and risk states. Green
+is a signal, not a background wash. Never introduce purple.
+
+After changing any colour, re-run the contrast audit — every text/background pair
+must clear WCAG AA (4.5:1, or 3:1 for large text).
 
 ## Motion
 
-Animation keyframes are near the end of `styles.css`. JavaScript-enhanced effects are in `script.js`:
+Motion is driven by one attribute, `html[data-motion]`, with values `full`, `calm`
+and `off`. All motion rules live in `assets/css/motion.css` and are nested under
+that attribute, so the base stylesheet describes a completely static page.
 
-- Reveal animations
-- Counter animations
-- Terminal typing
-- Project filtering
-- Command palette
-- Card spotlight and tilt
-- Magnetic buttons
-- Cursor aura
-- Network canvas
+To add an effect, add it under the appropriate `:root[data-motion="…"]` block. Never
+put a hiding rule (`opacity: 0`) outside those blocks — that is what would leave
+content invisible when motion is off.
 
-Do not remove the reduced-motion media query. It protects accessibility and mobile performance.
+JavaScript-enhanced behaviour lives in:
 
-## Cache version
+- `assets/js/app.js` — preferences, welcome, navigation, reveals, filters, palette
+- `assets/js/globe.js` — the canvas cyber globe
+- `assets/js/report.js` — the case-study report dialog
+- `assets/js/core.js` — shared helpers, theme and motion resolution
 
-The main files are linked as:
+## Asset revision
+
+Every CSS and JS request in `index.html` carries `?v=<release>`, the JS imports in
+`app.js`, `globe.js` and `report.js` carry the same string, and `service-worker.js`
+holds `ASSET_REV` and `CACHE_VERSION`.
+
+Bump all of them together:
 
 ```html
-styles.css?v=3.0.0
-script.js?v=3.0.0
+<link rel="stylesheet" href="assets/css/tokens.css?v=16.0.0">
 ```
 
-After a future major update, change `3.0.0` to a new version such as `3.1.0`. This helps browsers request the latest CSS and JavaScript.
+```javascript
+import { … } from './core.js?v=16.0.0';
+```
+
+```javascript
+const CACHE_VERSION = 'v16-0-0';
+const ASSET_REV = '16.0.0';
+```
+
+`tools/verify_live_workspace.py` fails if the HTML carries more than one distinct
+version string, or if the HTML and the service worker disagree.
 
 ## Social preview
 
-The LinkedIn/social preview image is:
+The source is `assets/social-preview.svg`; the published image is
+`assets/social-preview.png` at exactly 1200 × 630.
 
-```text
-assets/social-preview.png
+To regenerate after editing the SVG:
+
+```bash
+chrome --headless --disable-gpu --hide-scrollbars --window-size=1200,630 --screenshot=assets/social-preview.png wrapper.html
 ```
 
-Keep it at 1200 × 630 pixels. After connecting a custom domain, use the full public image URL in the Open Graph and Twitter metadata.
-
-## Safe content rules
-
-- Keep the MSc wording as **Graduate** and **Graduated**.
-- Keep the University of Chester academic year as **2025–2026**.
-- Do not use “candidate”, “expected 2026” or “currently studying”.
-- Do not add unsupported scores, employment claims or project outcomes.
-- Describe penetration testing only in authorised or controlled contexts.
+where `wrapper.html` is a minimal page embedding the SVG at 1200 × 630 with zero
+margin. Keep both files in step.

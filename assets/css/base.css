@@ -1,0 +1,325 @@
+/* AEGIS NEXUS — reset, typography and shared primitives. */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* The UA rule for [hidden] is a bare type-less selector, so any component that
+   sets `display` beats it and the attribute silently stops working. Several
+   components below are grid or flex, and the tab panels, the install button
+   and the local-time block all rely on `hidden` being real. */
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--space-5));
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--text-2);
+  background: var(--canvas);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* The page must never scroll sideways: every wide child owns its own
+     overflow container instead. `clip` rather than `hidden` — hidden would
+     make body a scroll container and break the sticky header. */
+  overflow-x: clip;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: var(--text-1);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-h1); letter-spacing: -0.045em; }
+h2 { font-size: var(--text-h2); letter-spacing: -0.03em; }
+h3 { font-size: var(--text-h3); letter-spacing: -0.015em; line-height: 1.25; }
+
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img, svg, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+dialog { color: inherit; }
+
+:target { scroll-margin-top: calc(var(--header-h) + var(--space-5)); }
+
+/* ---------- Focus ---------- */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 200;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--secure);
+  color: var(--secure-ink);
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform var(--duration-control) var(--ease-enter);
+}
+
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* ---------- Utilities ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-pad);
+}
+
+.section {
+  padding-block: var(--section-gap);
+  scroll-margin-top: var(--header-h);
+}
+
+.section-head {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+  max-width: 62rem;
+}
+
+.section-head p { color: var(--text-3); max-width: 60ch; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--secure);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--secure);
+}
+
+.eyebrow-index { color: var(--text-3); }
+.eyebrow-index::before { background: var(--border-strong); }
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lede { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--text-2); }
+
+/* Inline emphasis on the secure signal colour. Used inside headings and
+   status values, so it has to be a real utility rather than something each
+   component redefines. */
+.is-secure-text { color: var(--secure); }
+.is-incident-text { color: var(--incident); }
+
+/* ---------- Icon ---------- */
+.icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 46px;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--text-small);
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: background var(--duration-control) var(--ease-standard),
+              border-color var(--duration-control) var(--ease-standard),
+              color var(--duration-control) var(--ease-standard),
+              transform var(--duration-control) var(--ease-standard);
+}
+
+.btn-primary {
+  background: var(--secure);
+  color: var(--secure-ink);
+  box-shadow: var(--glow-secure);
+}
+
+.btn-primary:hover { background: var(--secure-hover); }
+
+.btn-secondary {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text-1);
+}
+
+.btn-secondary:hover { border-color: var(--border-strong); background: var(--surface-3); }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-2);
+}
+
+.btn-ghost:hover { color: var(--text-1); border-color: var(--border-strong); }
+
+.btn-block { width: 100%; }
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.badge-secure {
+  border-color: var(--secure-line);
+  background: var(--secure-soft);
+  color: var(--secure);
+}
+
+.badge-incident {
+  border-color: var(--incident-line);
+  background: var(--incident-soft);
+  color: var(--incident);
+}
+
+.badge-evidence {
+  border-color: var(--evidence);
+  background: var(--evidence-soft);
+  color: var(--evidence);
+}
+
+.badge-dot::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---------- Panels ---------- */
+.panel {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+}
+
+.panel-raised { box-shadow: var(--shadow-1); }
+
+kbd {
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--text-2);
+}
+
+/* ---------- Page backdrop ---------- */
+.page-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.24;
+  mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 20%, transparent 78%);
+}
+
+:root[data-theme="light"] .page-grid { opacity: 0.5; }
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--z-header) + 2);
+  width: 100%;
+  height: 2px;
+  pointer-events: none;
+}
+
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  background: var(--secure);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
