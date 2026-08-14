@@ -159,16 +159,16 @@ holds `ASSET_REV` and `CACHE_VERSION`.
 Bump all of them together:
 
 ```html
-<link rel="stylesheet" href="assets/css/tokens.css?v=16.0.0">
+<link rel="stylesheet" href="assets/css/tokens.css?v=17.0.0">
 ```
 
 ```javascript
-import { … } from './core.js?v=16.0.0';
+import { … } from './core.js?v=17.0.0';
 ```
 
 ```javascript
-const CACHE_VERSION = 'v16-0-0';
-const ASSET_REV = '16.0.0';
+const CACHE_VERSION = 'v17-0-0';
+const ASSET_REV = '17.0.0';
 ```
 
 `tools/verify_live_workspace.py` fails if the HTML carries more than one distinct

@@ -32,16 +32,16 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=16.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=16.0.0">
-  <script type="module" src="assets/js/app.js?v=16.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=17.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=17.0.0">
+  <script type="module" src="assets/js/app.js?v=17.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -689,25 +689,47 @@
             <!-- 01 Randomness -->
             <article class="mission" data-class="research" data-categories="research nist-protect">
               <div class="mission-art">
-                <svg viewBox="0 0 320 180" role="img" aria-label="Entropy cells, a statistical distribution curve, a bitstream and a cryptographic shield.">
-                  <rect width="320" height="180" fill="var(--surface-2)"/>
-                  <g fill="var(--secure)" opacity=".5">
-                    <rect x="16" y="20" width="12" height="12" rx="2"/><rect x="32" y="20" width="12" height="12" rx="2" opacity=".4"/>
-                    <rect x="48" y="20" width="12" height="12" rx="2" opacity=".8"/><rect x="64" y="20" width="12" height="12" rx="2" opacity=".25"/>
-                    <rect x="16" y="36" width="12" height="12" rx="2" opacity=".3"/><rect x="32" y="36" width="12" height="12" rx="2" opacity=".9"/>
-                    <rect x="48" y="36" width="12" height="12" rx="2" opacity=".2"/><rect x="64" y="36" width="12" height="12" rx="2" opacity=".6"/>
-                    <rect x="16" y="52" width="12" height="12" rx="2" opacity=".7"/><rect x="32" y="52" width="12" height="12" rx="2" opacity=".2"/>
-                    <rect x="48" y="52" width="12" height="12" rx="2" opacity=".55"/><rect x="64" y="52" width="12" height="12" rx="2" opacity=".35"/>
+                <svg viewBox="0 0 320 180" role="img" aria-label="An entropy cell matrix, a statistical distribution curve over a bitstream, and a lit cryptographic shield.">
+                  <defs>
+                    <linearGradient id="rndSky" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
+                    </linearGradient>
+                    <radialGradient id="rndGlow" cx="0.75" cy="0.5" r="0.5">
+                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.35"/>
+                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="rndArea" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.35"/>
+                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="320" height="180" fill="url(#rndSky)"/>
+                  <g stroke="var(--border-soft)" stroke-opacity=".5">
+                    <path d="M0 45h320M0 90h320M0 135h320M80 0v180M160 0v180M240 0v180"/>
                   </g>
-                  <path d="M16 148 C 52 148, 62 96, 96 96 S 140 148, 176 148" fill="none" stroke="var(--secure)" stroke-width="2"/>
-                  <path d="M16 148 H176" stroke="var(--border-strong)"/>
-                  <g font-family="var(--font-mono)" font-size="9" fill="var(--text-3)">
-                    <text x="16" y="112">01001101 10110</text>
-                    <text x="16" y="126">11010010 01101</text>
+                  <rect width="320" height="180" fill="url(#rndGlow)"/>
+                  <g fill="var(--secure)">
+                    <rect x="18" y="18" width="13" height="13" rx="2" opacity=".85"/><rect x="35" y="18" width="13" height="13" rx="2" opacity=".28"/>
+                    <rect x="52" y="18" width="13" height="13" rx="2" opacity=".6"/><rect x="69" y="18" width="13" height="13" rx="2" opacity=".2"/>
+                    <rect x="18" y="35" width="13" height="13" rx="2" opacity=".3"/><rect x="35" y="35" width="13" height="13" rx="2" opacity=".9"/>
+                    <rect x="52" y="35" width="13" height="13" rx="2" opacity=".18"/><rect x="69" y="35" width="13" height="13" rx="2" opacity=".55"/>
+                    <rect x="18" y="52" width="13" height="13" rx="2" opacity=".65"/><rect x="35" y="52" width="13" height="13" rx="2" opacity=".22"/>
+                    <rect x="52" y="52" width="13" height="13" rx="2" opacity=".8"/><rect x="69" y="52" width="13" height="13" rx="2" opacity=".35"/>
                   </g>
-                  <path d="M240 34 288 50v30c0 25-16 45-42 56-26-11-42-31-42-56V50l42-16Z" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="2"/>
-                  <path d="m226 88 12 12 26-27" fill="none" stroke="var(--secure)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--secure)" opacity="0"/>
+                  <path d="M18 150 C 54 150, 62 100, 96 100 S 140 150, 176 150 Z" fill="url(#rndArea)"/>
+                  <path d="M18 150 C 54 150, 62 100, 96 100 S 140 150, 176 150" fill="none" stroke="var(--secure)" stroke-width="2.2"/>
+                  <path d="M18 150 H176" stroke="var(--border-strong)"/>
+                  <circle cx="96" cy="100" r="3.2" fill="var(--secure)"/>
+                  <g font-family="var(--font-mono)" font-size="8.5" fill="var(--text-3)" opacity=".9">
+                    <text x="18" y="86">01001101 10110 01</text>
+                    <text x="18" y="98">11010010 01101 10</text>
+                  </g>
+                  <g transform="translate(244 90)">
+                    <circle r="46" fill="var(--secure)" opacity=".08"/>
+                    <path d="M0 -46 40 -30v28c0 23-15 41-40 51-25-10-40-28-40-51v-28L0 -46Z" fill="var(--surface-1)" stroke="var(--secure)" stroke-width="2.4"/>
+                    <path d="m-15 4 11 11 24-25" fill="none" stroke="var(--secure)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--secure)" opacity="0"/>
                 </svg>
               </div>
               <div class="mission-body">
@@ -724,30 +746,51 @@
             <!-- 02 ICS IDS -->
             <article class="mission" data-class="defence" data-categories="defence nist-detect">
               <div class="mission-art">
-                <svg viewBox="0 0 320 180" role="img" aria-label="An industrial plant silhouette with a segmented OT network, sensor nodes, an anomaly route and a protective shield.">
-                  <rect width="320" height="180" fill="var(--surface-2)"/>
-                  <g fill="var(--surface-4)" stroke="var(--border-strong)">
-                    <rect x="16" y="104" width="46" height="60"/>
-                    <rect x="70" y="86" width="34" height="78"/>
-                    <rect x="112" y="120" width="28" height="44"/>
-                    <rect x="80" y="58" width="12" height="28"/>
+                <svg viewBox="0 0 320 180" role="img" aria-label="A lit industrial plant with tanks and towers, a segmented OT network with sensor nodes, a red anomaly path and a protective shield.">
+                  <defs>
+                    <linearGradient id="icsSky" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
+                    </linearGradient>
+                    <radialGradient id="icsHaze" cx="0.28" cy="0.9" r="0.6">
+                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.3"/>
+                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="320" height="180" fill="url(#icsSky)"/>
+                  <rect width="320" height="180" fill="url(#icsHaze)"/>
+                  <g fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="1.2">
+                    <rect x="14" y="104" width="40" height="58" rx="2"/>
+                    <rect x="60" y="82" width="26" height="80" rx="2"/>
+                    <rect x="92" y="120" width="30" height="42" rx="2"/>
+                    <path d="M66 82v-22h14v22"/>
                   </g>
-                  <path d="M16 164 H304" stroke="var(--border-strong)"/>
-                  <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".85">
-                    <path d="M170 40 H286"/><path d="M170 76 H286"/><path d="M170 112 H286"/>
-                    <path d="M170 40 V112"/>
-                    <path class="packet-route" d="M170 76 H286"/>
+                  <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".9">
+                    <path d="M20 118h28M20 130h28M20 142h18"/>
+                    <path d="M66 96h14M66 108h14M66 120h14"/>
+                    <path d="M98 132h18M98 144h18"/>
+                  </g>
+                  <path d="M54 150 Q78 138 92 150" stroke="var(--secure)" stroke-width="1.6" fill="none" opacity=".7"/>
+                  <path d="M8 162 H312" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".9">
+                    <path d="M178 38 H296"/><path d="M178 74 H296"/><path d="M178 110 H296"/>
+                    <path d="M178 38 V110"/><path d="M296 38 V110"/>
+                    <path class="packet-route" d="M178 74 H296"/>
                   </g>
                   <g fill="var(--secure)">
-                    <circle cx="170" cy="40" r="4"/><circle cx="228" cy="40" r="4"/><circle cx="286" cy="40" r="4"/>
-                    <circle cx="170" cy="76" r="4"/><circle cx="286" cy="76" r="4"/>
-                    <circle cx="170" cy="112" r="4"/><circle cx="228" cy="112" r="4"/><circle cx="286" cy="112" r="4"/>
+                    <circle cx="178" cy="38" r="4.2"/><circle cx="237" cy="38" r="4.2"/><circle cx="296" cy="38" r="4.2"/>
+                    <circle cx="178" cy="74" r="4.2"/><circle cx="296" cy="74" r="4.2"/>
+                    <circle cx="178" cy="110" r="4.2"/><circle cx="237" cy="110" r="4.2"/><circle cx="296" cy="110" r="4.2"/>
                   </g>
-                  <path d="M228 76 L266 132" stroke="var(--incident)" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
-                  <circle cx="228" cy="76" r="6" fill="var(--incident)"/>
-                  <text x="252" y="150" font-family="var(--font-mono)" font-size="9" fill="var(--incident)">anomaly</text>
-                  <path d="M118 22 146 32v18c0 15-10 27-28 34-18-7-28-19-28-34V32l28-10Z" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.6"/>
-                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--secure)" opacity="0"/>
+                  <circle cx="237" cy="74" r="14" fill="var(--incident)" opacity=".16"/>
+                  <path d="M237 74 L276 132" stroke="var(--incident)" stroke-width="1.8" stroke-dasharray="4 4" fill="none"/>
+                  <circle cx="237" cy="74" r="6.4" fill="var(--incident)"/>
+                  <text x="252" y="148" font-family="var(--font-mono)" font-size="9" fill="var(--incident)">anomaly</text>
+                  <g transform="translate(140 52)">
+                    <circle r="30" fill="var(--secure)" opacity=".1"/>
+                    <path d="M0 -30 26 -20v18c0 15-10 27-26 33-16-6-26-18-26-33v-18L0 -30Z" fill="var(--surface-1)" stroke="var(--secure)" stroke-width="2"/>
+                    <path d="m-10 2 7 7 15-16" fill="none" stroke="var(--secure)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--secure)" opacity="0"/>
                 </svg>
               </div>
               <div class="mission-body">
@@ -764,35 +807,52 @@
             <!-- 03 DFIR -->
             <article class="mission" data-class="defence" data-categories="defence nist-respond">
               <div class="mission-art">
-                <svg viewBox="0 0 320 180" role="img" aria-label="A disk evidence icon, an artefact timeline, a fingerprint and a chain-of-custody path.">
-                  <rect width="320" height="180" fill="var(--surface-2)"/>
-                  <g stroke="var(--border-strong)" fill="var(--surface-4)">
-                    <ellipse cx="70" cy="52" rx="40" ry="14"/>
-                    <path d="M30 52v40c0 8 18 14 40 14s40-6 40-14V52"/>
+                <svg viewBox="0 0 320 180" role="img" aria-label="An evidence disk, a lit fingerprint under a magnifier, and a four-step chain-of-custody timeline.">
+                  <defs>
+                    <linearGradient id="dfSky" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
+                    </linearGradient>
+                    <radialGradient id="dfGlow" cx="0.68" cy="0.38" r="0.45">
+                      <stop offset="0" stop-color="var(--evidence)" stop-opacity="0.32"/>
+                      <stop offset="1" stop-color="var(--evidence)" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="320" height="180" fill="url(#dfSky)"/>
+                  <g stroke="var(--border-soft)" stroke-opacity=".45">
+                    <path d="M0 40h320M0 80h320M0 120h320"/>
                   </g>
-                  <ellipse cx="70" cy="52" rx="16" ry="6" fill="none" stroke="var(--evidence)"/>
-                  <g fill="none" stroke="var(--secure)" stroke-width="1.6">
-                    <path d="M150 132 H300"/>
-                    <path class="packet-route" d="M150 132 H300"/>
+                  <rect width="320" height="180" fill="url(#dfGlow)"/>
+                  <g stroke="var(--border-strong)" fill="var(--surface-1)" stroke-width="1.2">
+                    <ellipse cx="70" cy="48" rx="42" ry="15"/>
+                    <path d="M28 48v42c0 8.3 18.8 15 42 15s42-6.7 42-15V48"/>
+                  </g>
+                  <ellipse cx="70" cy="48" rx="17" ry="6" fill="none" stroke="var(--evidence)" stroke-width="1.4"/>
+                  <ellipse cx="70" cy="48" rx="30" ry="10.5" fill="none" stroke="var(--evidence)" stroke-opacity=".4"/>
+                  <g fill="none" stroke="var(--evidence)" stroke-width="2" stroke-linecap="round">
+                    <path d="M186 46a36 36 0 0 1 72 0"/>
+                    <path d="M196 68v11c0 15-4 24-10 30"/>
+                    <path d="M206 48a16 16 0 0 1 32 0v21c0 15 5 26 10 32"/>
+                    <path d="M248 63v15c0 11 3 18 9 26"/>
+                    <path d="M206 74c0 13-3 24-9 32"/>
+                  </g>
+                  <g fill="none" stroke="var(--text-3)" stroke-width="1.6" opacity=".8">
+                    <circle cx="252" cy="52" r="14"/><path d="m262 62 9 9"/>
+                  </g>
+                  <g fill="none" stroke="var(--secure)" stroke-width="1.8">
+                    <path d="M20 140 H300"/>
+                    <path class="packet-route" d="M20 140 H300"/>
                   </g>
                   <g fill="var(--secure)">
-                    <rect x="148" y="128" width="8" height="8" rx="1"/>
-                    <rect x="196" y="128" width="8" height="8" rx="1"/>
-                    <rect x="244" y="128" width="8" height="8" rx="1"/>
-                    <rect x="292" y="128" width="8" height="8" rx="1"/>
+                    <rect x="16" y="135" width="9" height="9" rx="1.5"/>
+                    <rect x="108" y="135" width="9" height="9" rx="1.5"/>
+                    <rect x="200" y="135" width="9" height="9" rx="1.5"/>
+                    <rect x="292" y="135" width="9" height="9" rx="1.5"/>
                   </g>
-                  <g font-family="var(--font-mono)" font-size="8" fill="var(--text-3)">
-                    <text x="146" y="150">acquire</text><text x="192" y="150">examine</text>
-                    <text x="240" y="150">analyse</text><text x="284" y="150">report</text>
+                  <g font-family="var(--font-mono)" font-size="8.5" fill="var(--text-3)">
+                    <text x="14" y="160">acquire</text><text x="104" y="160">examine</text>
+                    <text x="196" y="160">analyse</text><text x="278" y="160">report</text>
                   </g>
-                  <g fill="none" stroke="var(--evidence)" stroke-width="1.6" stroke-linecap="round">
-                    <path d="M186 40a34 34 0 0 1 68 0"/>
-                    <path d="M196 62v10c0 14-4 22-9 28"/>
-                    <path d="M206 42a14 14 0 0 1 28 0v20c0 14 5 24 9 30"/>
-                    <path d="M244 58v14c0 10 3 17 8 24"/>
-                    <path d="M206 68c0 12-3 22-8 30"/>
-                  </g>
-                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--evidence)" opacity="0"/>
+                  <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--evidence)" opacity="0"/>
                 </svg>
               </div>
               <div class="mission-body">
@@ -809,31 +869,46 @@
             <!-- 04 Assessment -->
             <article class="mission" data-class="offensive" data-categories="offensive nist-identify">
               <div class="mission-art">
-                <svg viewBox="0 0 320 180" role="img" aria-label="An authorised attack graph in red crossing defensive controls drawn in green and navy.">
-                  <rect width="320" height="180" fill="var(--surface-2)"/>
-                  <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".75">
-                    <path d="M40 140 H280"/>
-                    <path d="M40 100 H280"/>
+                <svg viewBox="0 0 320 180" role="img" aria-label="A lit server rack with a red authorised attack path crossing green defensive control bars.">
+                  <defs>
+                    <linearGradient id="asSky" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
+                    </linearGradient>
+                    <radialGradient id="asGlow" cx="0.55" cy="0.24" r="0.5">
+                      <stop offset="0" stop-color="var(--incident)" stop-opacity="0.28"/>
+                      <stop offset="1" stop-color="var(--incident)" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="320" height="180" fill="url(#asSky)"/>
+                  <g fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="1.1" opacity=".9">
+                    <rect x="24" y="96" width="52" height="66" rx="3"/>
+                    <rect x="86" y="82" width="52" height="80" rx="3"/>
+                    <rect x="182" y="90" width="52" height="72" rx="3"/>
+                    <rect x="244" y="104" width="52" height="58" rx="3"/>
                   </g>
-                  <g fill="var(--secure-soft)" stroke="var(--secure)">
-                    <rect x="60" y="90" width="44" height="20" rx="4"/>
-                    <rect x="140" y="90" width="44" height="20" rx="4"/>
-                    <rect x="220" y="90" width="44" height="20" rx="4"/>
+                  <g stroke="var(--secure)" stroke-width="1.3" opacity=".8">
+                    <path d="M32 108h36M32 118h36M32 128h22"/>
+                    <path d="M94 94h36M94 104h36M94 114h22"/>
+                    <path d="M190 102h36M190 112h36M190 122h22"/>
+                    <path d="M252 116h36M252 126h36"/>
                   </g>
-                  <g fill="none" stroke="var(--incident)" stroke-width="1.8">
-                    <path class="packet-route" d="M40 40 L110 62 L180 40 L250 66"/>
+                  <rect width="320" height="180" fill="url(#asGlow)"/>
+                  <g fill="none" stroke="var(--incident)" stroke-width="2">
+                    <path class="packet-route" d="M26 40 L108 62 L192 38 L272 66"/>
                   </g>
                   <g fill="var(--incident)">
-                    <circle cx="40" cy="40" r="5"/><circle cx="110" cy="62" r="5"/>
-                    <circle cx="180" cy="40" r="5"/><circle cx="250" cy="66" r="5"/>
+                    <circle cx="26" cy="40" r="5.4"/><circle cx="108" cy="62" r="5.4"/>
+                    <circle cx="192" cy="38" r="5.4"/><circle cx="272" cy="66" r="5.4"/>
                   </g>
-                  <path d="M250 66 L250 90" stroke="var(--incident)" stroke-dasharray="3 3"/>
-                  <g font-family="var(--font-mono)" font-size="8">
-                    <text x="34" y="30" fill="var(--incident)">recon</text>
-                    <text x="168" y="30" fill="var(--incident)">validate</text>
-                    <text x="60" y="158" fill="var(--secure)">controls hold the line</text>
+                  <circle cx="272" cy="66" r="13" fill="none" stroke="var(--incident)" stroke-opacity=".45"/>
+                  <path d="M272 72 V90" stroke="var(--incident)" stroke-dasharray="3 3"/>
+                  <path d="M24 168 H296" stroke="var(--secure)" stroke-width="2.4" opacity=".95"/>
+                  <g font-family="var(--font-mono)" font-size="8.5">
+                    <text x="18" y="28" fill="var(--incident)">recon</text>
+                    <text x="176" y="26" fill="var(--incident)">validate</text>
+                    <text x="24" y="178" fill="var(--secure)">controls hold the line</text>
                   </g>
-                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--incident)" opacity="0"/>
+                  <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--incident)" opacity="0"/>
                 </svg>
               </div>
               <div class="mission-body">
@@ -850,32 +925,55 @@
             <!-- 05 Blood bank -->
             <article class="mission" data-class="development" data-categories="development">
               <div class="mission-art">
-                <svg viewBox="0 0 320 180" role="img" aria-label="A secure data vault with relational record nodes, inventory rows and a privacy shield.">
-                  <rect width="320" height="180" fill="var(--surface-2)"/>
-                  <g stroke="var(--border-strong)" fill="var(--surface-4)">
-                    <ellipse cx="76" cy="46" rx="42" ry="13"/>
-                    <path d="M34 46v58c0 7 19 13 42 13s42-6 42-13V46"/>
-                    <path d="M34 75c0 7 19 13 42 13s42-6 42-13"/>
+                <svg viewBox="0 0 320 180" role="img" aria-label="A lit database vault linked to donor, inventory and distribution records, with a privacy shield.">
+                  <defs>
+                    <linearGradient id="bbSky" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
+                    </linearGradient>
+                    <radialGradient id="bbGlow" cx="0.24" cy="0.42" r="0.48">
+                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.3"/>
+                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="320" height="180" fill="url(#bbSky)"/>
+                  <g stroke="var(--border-soft)" stroke-opacity=".45">
+                    <path d="M0 46h320M0 92h320M0 138h320"/>
                   </g>
-                  <g stroke="var(--secure)" fill="none" stroke-width="1.4">
-                    <path d="M118 60 H176"/><path d="M118 100 H176"/>
-                    <path class="packet-route" d="M118 80 H176"/>
+                  <rect width="320" height="180" fill="url(#bbGlow)"/>
+                  <g stroke="var(--border-strong)" fill="var(--surface-1)" stroke-width="1.2">
+                    <ellipse cx="72" cy="44" rx="44" ry="14"/>
+                    <path d="M28 44v58c0 7.7 19.7 14 44 14s44-6.3 44-14V44"/>
+                    <path d="M28 73c0 7.7 19.7 14 44 14s44-6.3 44-14"/>
+                  </g>
+                  <ellipse cx="72" cy="44" rx="26" ry="8" fill="none" stroke="var(--secure)" stroke-opacity=".55"/>
+                  <g stroke="var(--secure)" fill="none" stroke-width="1.5">
+                    <path d="M120 58 H176"/><path d="M120 102 H176"/>
+                    <path class="packet-route" d="M120 80 H176"/>
                   </g>
                   <g fill="var(--secure)">
-                    <circle cx="180" cy="60" r="5"/><circle cx="180" cy="80" r="5"/><circle cx="180" cy="100" r="5"/>
+                    <circle cx="180" cy="58" r="5.2"/><circle cx="180" cy="80" r="5.2"/><circle cx="180" cy="102" r="5.2"/>
                   </g>
-                  <g fill="var(--surface-1)" stroke="var(--border-strong)">
-                    <rect x="200" y="48" width="96" height="16" rx="3"/>
-                    <rect x="200" y="70" width="96" height="16" rx="3"/>
-                    <rect x="200" y="92" width="96" height="16" rx="3"/>
+                  <g fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="1.1">
+                    <rect x="200" y="46" width="100" height="18" rx="3"/>
+                    <rect x="200" y="70" width="100" height="18" rx="3"/>
+                    <rect x="200" y="94" width="100" height="18" rx="3"/>
                   </g>
-                  <g font-family="var(--font-mono)" font-size="8" fill="var(--text-3)">
-                    <text x="206" y="60">donor record</text>
-                    <text x="206" y="82">inventory unit</text>
-                    <text x="206" y="104">distribution</text>
+                  <g fill="var(--secure)" opacity=".8">
+                    <rect x="206" y="53" width="4" height="4" rx="1"/>
+                    <rect x="206" y="77" width="4" height="4" rx="1"/>
+                    <rect x="206" y="101" width="4" height="4" rx="1"/>
                   </g>
-                  <path d="M76 118 108 130v16c0 14-13 25-32 31-19-6-32-17-32-31v-16l32-12Z" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.6"/>
-                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--secure)" opacity="0"/>
+                  <g font-family="var(--font-mono)" font-size="8.5" fill="var(--text-3)">
+                    <text x="216" y="59">donor record</text>
+                    <text x="216" y="83">inventory unit</text>
+                    <text x="216" y="107">distribution</text>
+                  </g>
+                  <g transform="translate(72 138)">
+                    <circle r="28" fill="var(--secure)" opacity=".09"/>
+                    <path d="M0 -26 24 -17v16c0 14-9 25-24 30-15-5-24-16-24-30v-16L0 -26Z" fill="var(--surface-1)" stroke="var(--secure)" stroke-width="1.9"/>
+                    <path d="m-9 1 6 6 13-14" fill="none" stroke="var(--secure)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--secure)" opacity="0"/>
                 </svg>
               </div>
               <div class="mission-body">
@@ -994,18 +1092,18 @@
               <p class="skills-legend">Tools used in academic labs, the ICS project and the MSc dissertation. Marks below are original monograms, not vendor logos.</p>
 
               <ul class="tool-grid stagger">
-                <li><span class="tool-mark" aria-hidden="true">Nm</span><strong>Nmap</strong><small>Discovery</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Ws</span><strong>Wireshark</strong><small>Traffic analysis</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Bp</span><strong>Burp Suite</strong><small>Web testing</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Ms</span><strong>Metasploit</strong><small>Validation</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Ns</span><strong>Nessus</strong><small>Vulnerability scan</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Ov</span><strong>OpenVAS</strong><small>Vulnerability scan</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Au</span><strong>Autopsy</strong><small>Forensics</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Ftk</span><strong>FTK Imager</strong><small>Acquisition</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Py</span><strong>Python</strong><small>Analysis</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Sql</span><strong>SQL</strong><small>Data modelling</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Kl</span><strong>Kali Linux</strong><small>Lab platform</small></li>
-                <li><span class="tool-mark" aria-hidden="true">Ub</span><strong>Ubuntu</strong><small>Lab platform</small></li>
+                <li data-kind="offensive"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-scan"></use></svg></span><strong>Nmap</strong><small>Discovery</small></li>
+                <li data-kind="analysis"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-packet"></use></svg></span><strong>Wireshark</strong><small>Traffic analysis</small></li>
+                <li data-kind="offensive"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-intercept"></use></svg></span><strong>Burp Suite</strong><small>Web testing</small></li>
+                <li data-kind="offensive"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-payload"></use></svg></span><strong>Metasploit</strong><small>Validation</small></li>
+                <li data-kind="defence"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-vuln"></use></svg></span><strong>Nessus</strong><small>Vulnerability scan</small></li>
+                <li data-kind="defence"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-vuln-open"></use></svg></span><strong>OpenVAS</strong><small>Vulnerability scan</small></li>
+                <li data-kind="forensic"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-print"></use></svg></span><strong>Autopsy</strong><small>Forensics</small></li>
+                <li data-kind="forensic"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-image"></use></svg></span><strong>FTK Imager</strong><small>Acquisition</small></li>
+                <li data-kind="build"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-script"></use></svg></span><strong>Python</strong><small>Analysis</small></li>
+                <li data-kind="build"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-db"></use></svg></span><strong>SQL</strong><small>Data modelling</small></li>
+                <li data-kind="platform"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-terminal"></use></svg></span><strong>Kali Linux</strong><small>Lab platform</small></li>
+                <li data-kind="platform"><span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-server"></use></svg></span><strong>Ubuntu</strong><small>Lab platform</small></li>
               </ul>
             </article>
           </div>
@@ -1115,7 +1213,7 @@
             <p class="register-note-text">Each entry below has a public verification link.</p>
             <div class="cert-grid stagger">
               <a class="cert-card" href="https://coursera.org/verify/M5XKN4EQEFHG" target="_blank" rel="noopener noreferrer">
-                <span class="tool-mark" aria-hidden="true">G</span>
+                <span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-certificate"></use></svg></span>
                 <div>
                   <strong>Foundations of Cybersecurity</strong>
                   <span class="cert-issuer">Google · Coursera</span>
@@ -1123,7 +1221,7 @@
                 <span class="cert-meta"><span class="mono">Jul 2023</span><span class="badge badge-secure badge-dot">Verify</span></span>
               </a>
               <a class="cert-card" href="https://coursera.org/verify/75KLRQTGMFWF" target="_blank" rel="noopener noreferrer">
-                <span class="tool-mark" aria-hidden="true">G</span>
+                <span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-certificate"></use></svg></span>
                 <div>
                   <strong>Tools of the Trade: Linux and SQL</strong>
                   <span class="cert-issuer">Google · Coursera</span>
@@ -1131,7 +1229,7 @@
                 <span class="cert-meta"><span class="mono">Aug 2024</span><span class="badge badge-secure badge-dot">Verify</span></span>
               </a>
               <a class="cert-card" href="https://coursera.org/verify/GJP79NMV2MYR" target="_blank" rel="noopener noreferrer">
-                <span class="tool-mark" aria-hidden="true">IBM</span>
+                <span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-certificate"></use></svg></span>
                 <div>
                   <strong>Introduction to Cybersecurity Tools &amp; Cyber Attacks</strong>
                   <span class="cert-issuer">IBM · Coursera</span>
@@ -1146,7 +1244,7 @@
             <p class="register-note-text">Completed, but no verification link was supplied. Listed separately rather than counted as verified.</p>
             <div class="cert-grid">
               <div class="cert-card is-muted">
-                <span class="tool-mark" aria-hidden="true">G</span>
+                <span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-certificate"></use></svg></span>
                 <div>
                   <strong>Connect and Protect: Networks and Network Security</strong>
                   <span class="cert-issuer">Google · Coursera</span>
@@ -1154,7 +1252,7 @@
                 <span class="cert-meta"><span class="badge">Unverified</span></span>
               </div>
               <div class="cert-card is-muted">
-                <span class="tool-mark" aria-hidden="true">G</span>
+                <span class="tool-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="#tool-certificate"></use></svg></span>
                 <div>
                   <strong>Assets, Threats, and Vulnerabilities</strong>
                   <span class="cert-issuer">Google · Coursera</span>
@@ -1356,7 +1454,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 16.0.0</span>
+          <span>Release 17.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>
@@ -1516,6 +1614,22 @@
     <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
     <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
     <symbol id="icon-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+
+    <!-- Tool glyphs. Each depicts what the tool does; none reproduces a
+         vendor logo or trademark. -->
+    <symbol id="tool-scan" viewBox="0 0 32 32"><circle cx="14" cy="14" r="8"/><path d="m20 20 6 6M14 9v10M9 14h10"/></symbol>
+    <symbol id="tool-packet" viewBox="0 0 32 32"><path d="M3 16h4l3-8 4 16 3-11 3 6h9"/></symbol>
+    <symbol id="tool-intercept" viewBox="0 0 32 32"><path d="M4 10h9M19 10h9M4 22h9M19 22h9"/><rect x="12" y="6" width="8" height="20" rx="2"/><path d="M16 12v8"/></symbol>
+    <symbol id="tool-payload" viewBox="0 0 32 32"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="3"/><path d="M16 2v6M16 24v6M2 16h6M24 16h6"/></symbol>
+    <symbol id="tool-vuln" viewBox="0 0 32 32"><path d="M16 3l11 4v9c0 7-4.6 12-11 14-6.4-2-11-7-11-14V7Z"/><path d="M16 11v6M16 21h.01"/></symbol>
+    <symbol id="tool-vuln-open" viewBox="0 0 32 32"><path d="M16 3l11 4v9c0 7-4.6 12-11 14-6.4-2-11-7-11-14V7Z"/><circle cx="16" cy="15" r="4"/><path d="m19 18 4 4"/></symbol>
+    <symbol id="tool-print" viewBox="0 0 32 32"><path d="M6 13a10 10 0 0 1 20 0"/><path d="M9 18v3c0 4-1 7-3 9"/><path d="M12 13a4 4 0 0 1 8 0v6c0 4 1 7 3 9"/><path d="M23 17v4c0 3 1 5 2 7"/><path d="M13 20c0 4-1 7-3 9"/></symbol>
+    <symbol id="tool-image" viewBox="0 0 32 32"><ellipse cx="16" cy="8" rx="11" ry="4"/><path d="M5 8v16c0 2.2 4.9 4 11 4s11-1.8 11-4V8"/><path d="M5 16c0 2.2 4.9 4 11 4s11-1.8 11-4"/></symbol>
+    <symbol id="tool-script" viewBox="0 0 32 32"><path d="M11 6 4 16l7 10M21 6l7 10-7 10M19 4l-6 24"/></symbol>
+    <symbol id="tool-db" viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="11" ry="4"/><path d="M5 7v18c0 2.2 4.9 4 11 4s11-1.8 11-4V7"/><path d="M5 13c0 2.2 4.9 4 11 4s11-1.8 11-4M5 19c0 2.2 4.9 4 11 4s11-1.8 11-4"/></symbol>
+    <symbol id="tool-terminal" viewBox="0 0 32 32"><rect x="3" y="5" width="26" height="22" rx="3"/><path d="M8 13l4 3-4 3M16 21h7"/></symbol>
+    <symbol id="tool-server" viewBox="0 0 32 32"><rect x="4" y="5" width="24" height="9" rx="2"/><rect x="4" y="18" width="24" height="9" rx="2"/><path d="M9 9.5h.01M9 22.5h.01M14 9.5h6M14 22.5h6"/></symbol>
+    <symbol id="tool-certificate" viewBox="0 0 32 32"><circle cx="16" cy="12" r="8"/><path d="m11 19-3 10 8-4 8 4-3-10M12 12l3 3 5-5"/></symbol>
   </svg>
 
   <noscript>

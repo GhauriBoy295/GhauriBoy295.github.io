@@ -1,0 +1,84 @@
+name: Verify
+
+# Runs the portfolio's own correctness checks on every push and pull request.
+# These are the same checks used during development: JavaScript syntax, asset
+# revision synchronisation, and the truthfulness rules the site must never
+# violate (worldwide availability wording, the correct LinkedIn URL, no
+# "candidate"/"expected 2026" phrasing, no duplicate IDs, one H1).
+
+on:
+  push:
+    branches: [main, 'redesign/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: JavaScript syntax
+        run: |
+          for file in assets/js/*.js service-worker.js; do
+            node --check "$file"
+          done
+
+      - name: Asset revision is synchronised
+        run: |
+          html_versions=$(grep -o '?v=[0-9]\+\.[0-9]\+\.[0-9]\+' index.html | sort -u | sed 's/?v=//')
+          count=$(echo "$html_versions" | wc -l)
+          if [ "$count" -ne 1 ]; then
+            echo "index.html carries $count distinct asset revisions:"
+            echo "$html_versions"
+            exit 1
+          fi
+          sw_version=$(grep -o "ASSET_REV = '[^']*'" service-worker.js | sed "s/ASSET_REV = '//;s/'//")
+          if [ "$html_versions" != "$sw_version" ]; then
+            echo "Revision mismatch: HTML $html_versions vs service worker $sw_version"
+            exit 1
+          fi
+          echo "Asset revision $html_versions is consistent."
+
+      - name: Content rules
+        run: |
+          fail=0
+          require() {
+            if ! grep -qi "$1" index.html; then
+              echo "MISSING required text: $1"; fail=1
+            fi
+          }
+          forbid() {
+            if grep -qi "$1" index.html; then
+              echo "FORBIDDEN text present: $1"; fail=1
+            fi
+          }
+          require "MSc Cyber Security Graduate"
+          require "University of Chester"
+          require "Graduated"
+          require "worldwide"
+          require "sarmad-saeed-845a7b267"
+          forbid "sarmad-saeed-cyber"
+          forbid "msc candidate"
+          forbid "expected 2026"
+          forbid "currently studying"
+          forbid "pursuing msc"
+          forbid "open to uk cyber security opportunities"
+          h1=$(grep -o '<h1' index.html | wc -l)
+          if [ "$h1" -ne 1 ]; then echo "Expected exactly one H1, found $h1"; fail=1; fi
+          exit $fail
+
+      - name: Required files exist
+        run: |
+          for file in index.html service-worker.js site.webmanifest 404.html \
+                      robots.txt sitemap.xml .nojekyll \
+                      Sarmad_Saeed_CV.pdf Sarmad_Saeed_CV.docx \
+                      assets/social-preview.png; do
+            test -f "$file" || { echo "Missing $file"; exit 1; }
+          done
+          echo "All required files present."

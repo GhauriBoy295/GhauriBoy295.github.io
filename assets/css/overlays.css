@@ -514,3 +514,23 @@ body.dialog-open { overflow: hidden; }
   transform: translate(-50%, 0);
   transition-delay: 0s;
 }
+
+/* Report banner — the same artwork the card carried, reused at the head of the
+   report so the two read as one object. Ratio is reserved so the panel below
+   never shifts while the clone is inserted. */
+.report-banner {
+  position: relative;
+  aspect-ratio: 16 / 7;
+  margin-bottom: var(--space-5);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.report-banner svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}

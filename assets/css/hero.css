@@ -171,6 +171,28 @@
   isolation: isolate;
 }
 
+/* Atmosphere. A single contained radial gradient behind the sphere — this is
+   the one place on the page allowed to bloom, and it stops well inside its own
+   box so it never washes the section behind it. */
+.globe-frame::before {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--secure) 26%, transparent) 0%,
+    color-mix(in srgb, var(--secure) 10%, transparent) 38%,
+    transparent 68%);
+  pointer-events: none;
+}
+
+:root[data-theme="light"] .globe-frame::before {
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--secure) 12%, transparent) 0%,
+    transparent 66%);
+}
+
 .globe-frame canvas,
 .globe-frame .globe-static {
   position: absolute;

@@ -96,7 +96,19 @@ Every CSS and JS request carries `?v=<release>`, the JS module graph imports car
 same string, and the service worker holds `ASSET_REV` and `CACHE_VERSION`. All three must
 be bumped together — `tools/verify_live_workspace.py` fails the build if they drift.
 
-Current release: **16.0.0** (`CACHE_VERSION = 'v16-0-0'`).
+Current release: **17.0.0** (`CACHE_VERSION = 'v17-0-0'`).
+
+## Continuous integration and deployment
+
+- `.github/workflows/verify.yml` — runs on every push and pull request: JS
+  syntax, asset-revision synchronisation, required files, and the content rules
+  (worldwide wording, correct LinkedIn URL, one H1, no forbidden status phrasing).
+- `.github/workflows/deploy.yml` — runs on every push to `main` and publishes to
+  Vercel and Netlify. Each job skips cleanly until its secrets are added:
+  `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `NETLIFY_AUTH_TOKEN`,
+  `NETLIFY_SITE_ID`, under Settings → Secrets and variables → Actions.
+- GitHub Pages is not in that workflow — this repository publishes straight from
+  `main`, so Pages already rebuilds on every push.
 
 ## Local preview
 
