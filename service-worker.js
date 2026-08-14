@@ -1,4 +1,4 @@
-/* Offline shell for the Sarmad Saeed portfolio.
+/* Offline shell for the AEGIS NEXUS portfolio.
 
    Strategy, deliberately simple:
    - Precache the static shell on install.
@@ -13,22 +13,23 @@
    Documents and CV files are intentionally not precached — they are large and
    rarely needed offline. They still cache on first use via the asset path. */
 
-const CACHE_VERSION = 'v14-0-1';
+const CACHE_VERSION = 'v16-0-0';
 const SHELL_CACHE = `portfolio-shell-${CACHE_VERSION}`;
 
-/* Must match the query strings the document actually requests, or the
-   precache stores a URL the page never asks for and the two largest assets
-   silently fall through to the network. Keep ASSET_REV in step with the
-   ?v= values in index.html. */
-const ASSET_REV = '14.0.1';
+/* Must match the query strings the document and the module graph actually
+   request, or the precache stores URLs the page never asks for and the
+   largest assets silently fall through to the network. Keep ASSET_REV in step
+   with the ?v= values in index.html and in the import specifiers in app.js. */
+const ASSET_REV = '16.0.0';
+
+const CSS_MODULES = ['tokens', 'base', 'shell', 'hero', 'sections', 'missions', 'overlays', 'motion', 'print'];
+const JS_MODULES = ['app', 'core', 'globe', 'report', 'project-data'];
 
 const SHELL_ASSETS = [
   './',
   'index.html',
-  ...['tokens','effects','motion','terminal','surfaces','flow','sentinel','responsive','design']
-      .map((m) => `assets/css/${m}.css?v=${ASSET_REV}`),
-  `assets/js/app.js?v=${ASSET_REV}`,
-  'assets/js/project-data.js',
+  ...CSS_MODULES.map((name) => `assets/css/${name}.css?v=${ASSET_REV}`),
+  ...JS_MODULES.map((name) => `assets/js/${name}.js?v=${ASSET_REV}`),
   'favicon.svg',
   'icon-192.png',
   'icon-512.png',

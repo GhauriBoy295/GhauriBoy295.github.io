@@ -115,7 +115,7 @@ Recording these so they are not "fixed" twice.
   the tokens themselves are internally consistent. Comment hygiene, not a bug.
 - **LinkedIn URL** — the brief says the source contains a URL differing from
   the user-provided one and asks for a revert to `sarmad-saeed-845a7b267`.
-  The source currently contains `sarmad-saeed-cyber`, which is the **custom
+  The source currently contains `<previous-vanity-slug>`, which is the **custom
   vanity URL claimed on the live LinkedIn profile at the user's explicit
   request**. `845a7b267` is the superseded auto-generated slug and now
   redirects. Reverting would point the site at a non-canonical URL.

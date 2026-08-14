@@ -1,0 +1,148 @@
+/* AEGIS NEXUS — Neo-Forensics print layout.
+
+   Two print jobs are supported:
+   1. The whole page as a profile document.
+   2. A single case study as an evidence report (body.printing-case), which
+      is what the Print button inside the report dialog produces.
+
+   Printing always uses the Forensic Daylight palette regardless of the
+   on-screen theme: ink on white, no glow, visible URLs. */
+
+@media print {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --canvas: #FFFFFF;
+    --obsidian: #FFFFFF;
+    --surface-1: #FFFFFF;
+    --surface-2: #FFFFFF;
+    --surface-3: #FFFFFF;
+    --surface-4: #FFFFFF;
+    --border: #7A8C99;
+    --border-soft: #B8C6D1;
+    --border-strong: #56697A;
+    --secure: #0A5A38;
+    --secure-soft: #FFFFFF;
+    --secure-line: #0A5A38;
+    --incident: #93202F;
+    --incident-soft: #FFFFFF;
+    --incident-line: #93202F;
+    --evidence: #6E4800;
+    --evidence-soft: #FFFFFF;
+    --text-1: #000000;
+    --text-2: #1C2A36;
+    --text-3: #3E4E5C;
+    --shadow-1: none;
+    --shadow-2: none;
+    --glow-secure: none;
+    --glow-incident: none;
+  }
+
+  @page {
+    margin: 16mm;
+  }
+
+  body {
+    background: #FFFFFF;
+    color: #1C2A36;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  .page-grid,
+  .scroll-progress,
+  .boot,
+  .site-header,
+  .back-to-top,
+  .toast,
+  .command,
+  .sheet,
+  .hero-globe,
+  .hero-panels,
+  .hero-terminal,
+  .hero-scroll,
+  .about-orbit,
+  .feature-strip,
+  .redblue-diagram,
+  .location-map,
+  .reach-map,
+  .report-rail,
+  .report-actions,
+  .report-nav,
+  .report-close,
+  .redblue-switch,
+  .filters,
+  .mission-open,
+  .footer-links button,
+  .skip-link {
+    display: none !important;
+  }
+
+  .section { padding-block: 8mm; break-inside: auto; }
+
+  h1 { font-size: 26pt; }
+  h2 { font-size: 16pt; margin-bottom: 3mm; }
+  h3 { font-size: 12pt; }
+
+  .panel,
+  .mission,
+  .edu-card,
+  .cert-card,
+  .skills-panel,
+  .stat-item,
+  .route-card,
+  .contact-grid,
+  .redblue {
+    border: 0.4pt solid #B8C6D1 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  /* Show the destination of every off-site link, which is what makes a
+     printed copy verifiable. */
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    color: #3E4E5C;
+    overflow-wrap: anywhere;
+  }
+
+  .missions { grid-template-columns: 1fr 1fr; }
+  .mission-art { display: none; }
+
+  /* ---------- Single case-study report ---------- */
+  body.printing-case > .site-shell,
+  body.printing-case > .toast,
+  body.printing-case > .back-to-top { display: none !important; }
+
+  body.printing-case .report,
+  body.printing-case .report-shell {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: none;
+    border: 0;
+    overflow: visible;
+  }
+
+  body.printing-case .report::backdrop { background: #FFFFFF; }
+
+  body.printing-case .report-body { display: block; overflow: visible; }
+  body.printing-case .report-main,
+  body.printing-case .report-aside { overflow: visible; padding: 0; border: 0; }
+  body.printing-case .report-aside { margin-top: 6mm; break-inside: avoid; }
+
+  /* Every panel prints, not just the selected tab — a report with four of its
+     five sections hidden would be a misleading document. */
+  body.printing-case .report-panel[hidden] { display: grid !important; }
+  body.printing-case .report-panel { break-inside: avoid; margin-bottom: 6mm; }
+
+  body.printing-case .report-bar {
+    position: static;
+    border-bottom: 0.8pt solid #56697A;
+    padding: 0 0 4mm;
+    margin-bottom: 6mm;
+  }
+}

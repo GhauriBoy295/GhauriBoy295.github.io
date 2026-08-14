@@ -4,22 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#06111f">
-  <meta name="description" content="The professional cyber security portfolio of Sarmad Saeed, an MSc Cyber Security graduate from the University of Chester, featuring security research, ICS defence, digital forensics, penetration testing and technical projects.">
+  <meta name="theme-color" content="#04090E">
+  <meta name="description" content="AEGIS NEXUS — the cyber security portfolio of Sarmad Saeed, MSc Cyber Security Graduate of the University of Chester. Based in the United Kingdom and open to cyber security opportunities worldwide across SOC operations, DFIR, ICS/OT security and security research.">
   <meta name="author" content="Sarmad Saeed">
   <meta name="robots" content="index, follow">
 
   <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Sarmad Saeed — Cyber Security Portfolio">
   <meta property="og:title" content="Sarmad Saeed | Cyber Security Portfolio">
-  <meta property="og:description" content="Cyber security graduate portfolio covering security research, threat detection, DFIR, penetration testing and ICS/OT security.">
+  <meta property="og:description" content="MSc Cyber Security Graduate. Based in the United Kingdom, open to cyber security opportunities worldwide — SOC operations, DFIR, ICS/OT security, vulnerability assessment and security research.">
   <meta property="og:url" content="https://ghauriboy295.github.io/">
   <meta property="og:image" content="https://ghauriboy295.github.io/assets/social-preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Sarmad Saeed cyber security portfolio preview">
+  <meta property="og:image:alt" content="Sarmad Saeed, MSc Cyber Security Graduate — portfolio preview">
+  <meta property="og:locale" content="en_GB">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Sarmad Saeed | Cyber Security Portfolio">
-  <meta name="twitter:description" content="MSc Cyber Security graduate focused on security analysis, DFIR, penetration testing and ICS/OT security.">
+  <meta name="twitter:description" content="MSc Cyber Security Graduate based in the United Kingdom, open to cyber security opportunities worldwide.">
   <meta name="twitter:image" content="https://ghauriboy295.github.io/assets/social-preview.png">
 
   <title>Sarmad Saeed | Cyber Security Portfolio</title>
@@ -29,31 +31,51 @@
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="assets/css/tokens.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/effects.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/motion.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/terminal.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/surfaces.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/flow.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/sentinel.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/responsive.css?v=14.0.1">
-  <link rel="stylesheet" href="assets/css/design.css?v=14.0.1">
-  <script type="module" src="assets/js/app.js?v=14.0.1"></script>
+
+  <link rel="stylesheet" href="assets/css/tokens.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=16.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=16.0.0">
+  <script type="module" src="assets/js/app.js?v=16.0.0"></script>
 
   <script>
-    /* Resolve the theme before first paint so a system-light visitor never sees a dark flash.
-       Mirrors the resolution order in script.js: stored choice, then system preference. */
-    (() => {
-      try {
-        const stored = localStorage.getItem('sarmad-portfolio-theme');
-        const theme = stored === 'light' || stored === 'dark'
-          ? stored
-          : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        document.documentElement.dataset.theme = theme;
+    /* Resolve both preferences before first paint.
 
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'light' ? '#F4F7FA' : '#06111F');
-      } catch { /* storage or matchMedia unavailable: keep the markup default */ }
+       Theme: a system-light visitor must never see a dark flash.
+       Motion: the reveal system hides content under [data-motion], so the
+       attribute has to exist from the very first frame — otherwise the page
+       paints its content and then hides it again. Both resolutions mirror
+       core.js exactly; that module re-applies the same values on load. */
+    (() => {
+      const html = document.documentElement;
+      const read = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
+
+      let choice = read('aegis-theme');
+      if (choice !== 'dark' && choice !== 'light' && choice !== 'system') {
+        const legacy = read('sarmad-portfolio-theme');
+        choice = legacy === 'dark' || legacy === 'light' ? legacy : 'system';
+      }
+      const theme = choice === 'system'
+        ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+        : choice;
+      html.dataset.theme = theme;
+      html.dataset.themeChoice = choice;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#EDF2F6' : '#04090E');
+
+      let motion = read('aegis-motion');
+      if (motion !== 'full' && motion !== 'calm' && motion !== 'off') {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const coarse = !window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 720;
+        const weak = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+        motion = reduce ? 'off' : (coarse || weak ? 'calm' : 'full');
+      }
+      html.dataset.motion = motion;
     })();
   </script>
 
@@ -62,147 +84,175 @@
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     "name": "Sarmad Saeed Cyber Security Portfolio",
+    "url": "https://ghauriboy295.github.io/",
+    "inLanguage": "en-GB",
     "mainEntity": {
       "@type": "Person",
       "name": "Sarmad Saeed",
       "alternateName": "Ghauri_Boy",
-      "jobTitle": "Cyber Security Graduate",
+      "jobTitle": "MSc Cyber Security Graduate",
       "email": "mailto:sarmadsaeed2002@gmail.com",
+      "url": "https://ghauriboy295.github.io/",
       "address": {
         "@type": "PostalAddress",
-        "addressCountry": "United Kingdom"
+        "addressCountry": "GB"
       },
       "alumniOf": [
         {"@type": "CollegeOrUniversity", "name": "University of Chester"},
         {"@type": "CollegeOrUniversity", "name": "Air University"}
       ],
       "sameAs": [
-        "https://www.linkedin.com/in/sarmad-saeed-cyber",
+        "https://www.linkedin.com/in/sarmad-saeed-845a7b267",
         "https://github.com/GhauriBoy295"
       ],
+      "seeks": {
+        "@type": "Demand",
+        "name": "Cyber security opportunities worldwide",
+        "availableAtOrFrom": {
+          "@type": "Place",
+          "name": "Worldwide — remote, hybrid, on-site and relocation"
+        }
+      },
       "knowsAbout": [
         "Cyber Security",
+        "Security Operations",
         "Threat Detection",
         "Digital Forensics",
         "Incident Response",
         "Penetration Testing",
+        "Vulnerability Assessment",
         "Industrial Control Systems Security",
-        "Network Security"
+        "Network Security",
+        "Security Research"
       ]
     }
   }
   </script>
 </head>
-<body class="intro-active">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
-  <canvas id="rainCanvas" class="rain-canvas" aria-hidden="true"></canvas>
+<body class="boot-active">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
   <div class="page-grid" aria-hidden="true"></div>
-  <div class="crt-scanlines" aria-hidden="true"></div>
-  <div class="cursor-aura" id="cursorAura" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
 
-  <section class="access-screen" id="welcomeScreen" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-describedby="welcomeDescription">
-    <div class="access-noise" aria-hidden="true"></div>
-
-    <div class="access-card">
-      <div class="window-bar">
-        <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-        <span>Portfolio access</span>
-        <span class="window-state"><i></i> Ready</span>
+  <!-- ============================ Secure welcome ============================ -->
+  <section class="boot" id="boot" role="dialog" aria-modal="true" aria-labelledby="bootName" aria-describedby="bootBrief" tabindex="-1">
+    <div class="boot-panel">
+      <div class="boot-bar">
+        <span class="win-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>Secure profile · access</span>
+        <span class="boot-bar-state">Ready</span>
       </div>
 
-      <div class="access-layout">
-        <div class="access-identity">
-          <div class="identity-mark" aria-hidden="true">
-            <svg viewBox="0 0 120 120" role="img">
+      <div class="boot-body">
+        <div class="boot-mark">
+          <div class="boot-crest" aria-hidden="true">
+            <svg viewBox="0 0 120 120" role="presentation">
               <path d="M60 8 104 25v31c0 26-17 47-44 58C33 103 16 82 16 56V25L60 8Z" fill="none" stroke="currentColor" stroke-width="3"/>
               <path d="m39 60 14 14 30-31" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M29 34c18-7 42-7 62 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/>
+              <path d="M29 34c18-7 42-7 62 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
+              <rect class="crest-scan" x="12" y="56" width="96" height="2" fill="currentColor" opacity="0"/>
             </svg>
-            <span class="identity-pulse"></span>
           </div>
-          <div>
-            <p class="micro-label">Professional cyber security portfolio</p>
-            <p class="access-name" id="welcomeTitle">Sarmad Saeed</p>
-            <p class="access-role">MSc Cyber Security Graduate</p>
-            <p class="access-university">University of Chester</p>
-          </div>
+          <p class="mono" style="color:var(--text-3)">AEGIS NEXUS</p>
+          <p class="boot-name" id="bootName">Sarmad Saeed</p>
+          <p class="boot-role">MSc Cyber Security Graduate</p>
+          <p class="boot-place">University of Chester · 2025–2026</p>
         </div>
 
-        <div class="access-brief">
-          <p id="welcomeDescription">A focused portfolio of security research, threat detection, digital forensics, penetration testing and ICS/OT defence.</p>
+        <div>
+          <p id="bootBrief">A portfolio of security research, threat detection, digital forensics, authorised security assessment and ICS/OT defence. Based in the United Kingdom and open to cyber security opportunities worldwide.</p>
 
-          <div class="access-facts" aria-label="Academic and professional summary">
-            <div><span>Academic year</span><strong>2025–2026</strong></div>
-            <div><span>Degree status</span><strong class="success-text">Graduated</strong></div>
-            <div><span>Location</span><strong>United Kingdom</strong></div>
+          <dl class="boot-facts" aria-label="Profile summary">
+            <div><span>Degree status</span><strong class="is-secure">Graduated</strong></div>
+            <div><span>Current base</span><strong>United Kingdom</strong></div>
+            <div><span>Availability</span><strong class="is-secure">Worldwide</strong></div>
             <div><span>Bachelor</span><strong>Cyber Security, Air University</strong></div>
-          </div>
+          </dl>
 
-          <div class="access-tags" aria-label="Specialist areas">
-            <span>Threat Detection</span>
-            <span>DFIR</span>
-            <span>Penetration Testing</span>
-            <span>ICS Security</span>
-          </div>
+          <ul class="boot-checks" aria-hidden="true">
+            <li style="--line:0">Profile record loaded<b>OK</b></li>
+            <li style="--line:1">Case studies indexed<b>OK</b></li>
+            <li style="--line:2">Credential register verified<b>OK</b></li>
+            <li style="--line:3">Awaiting operator input<b>···</b></li>
+          </ul>
 
-          <div class="access-actions">
-            <button class="button button-primary magnetic" id="enterPortfolio" type="button">
+          <div class="boot-actions">
+            <button class="btn btn-primary" id="bootEnter" type="button">
               <span>Enter portfolio</span>
               <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
             </button>
-            <a class="button button-ghost" href="Sarmad_Saeed_CV.pdf" download>
+            <button class="btn btn-ghost" id="bootSkip" type="button">Skip sequence</button>
+            <a class="btn btn-secondary" href="Sarmad_Saeed_CV.pdf" download>
               <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
               <span>Download CV</span>
             </a>
           </div>
 
-          <ul class="boot-log" aria-hidden="true">
-            <li>Profile loaded</li>
-            <li>Case studies indexed</li>
-            <li>Awaiting operator input</li>
-          </ul>
-
-          <p class="access-hint"><kbd>Enter</kbd> to continue · motion adapts to your device settings</p>
+          <p class="boot-hint" style="margin-top:1rem"><kbd>Enter</kbd> to continue · <kbd>Esc</kbd> to skip · motion follows your device settings</p>
         </div>
       </div>
     </div>
   </section>
 
   <div class="site-shell" id="siteShell">
+    <!-- ============================ Header ============================ -->
     <header class="site-header" id="siteHeader">
       <div class="header-inner">
-        <a class="brand" href="#home" aria-label="Sarmad Saeed home">
+        <a class="brand" href="#home" aria-label="Sarmad Saeed — home">
           <span class="brand-mark" aria-hidden="true">SS</span>
           <span class="brand-copy">
             <strong>Sarmad Saeed</strong>
-            <small>Cyber Security Portfolio</small>
+            <small>AEGIS NEXUS</small>
           </span>
         </a>
 
-        <nav class="primary-nav" id="primaryNav" aria-label="Primary navigation">
+        <nav class="primary-nav" id="primaryNav" aria-label="Primary">
+          <a href="#home">Home</a>
           <a href="#about">About</a>
-          <a href="#expertise">Expertise</a>
-          <a href="#projects">Projects</a>
           <a href="#education">Education</a>
           <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#certifications">Certifications</a>
           <a href="#contact">Contact</a>
         </nav>
 
         <div class="header-actions">
-          <button class="header-command" id="commandTrigger" type="button" aria-label="Open command menu">
+          <button class="header-command" id="commandTrigger" type="button" aria-label="Open command palette">
             <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
-            <span>Navigate</span>
-            <kbd>⌘K</kbd>
+            <span>Command</span>
+            <kbd>Ctrl K</kbd>
           </button>
-          <button class="icon-button motion-button" id="motionToggle" type="button" aria-label="Motion: full. Activate to change.">
-            <span class="motion-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
-          </button>
-          <button class="icon-button" id="themeToggle" type="button" aria-label="Switch to light theme" aria-pressed="false">
-            <svg class="icon theme-icon-sun" aria-hidden="true"><use href="#icon-sun"></use></svg>
-            <svg class="icon theme-icon-moon" aria-hidden="true"><use href="#icon-moon"></use></svg>
-          </button>
+
+          <div class="pref">
+            <button class="icon-btn" id="motionTrigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Motion. Activate to change.">
+              <svg class="icon" aria-hidden="true"><use href="#icon-activity"></use></svg>
+            </button>
+            <div class="pref-menu" id="motionMenu" role="menu" aria-label="Motion level" hidden>
+              <button type="button" role="menuitemradio" aria-checked="false" data-value="full" data-name="Full"><span>Full<small>Complete choreography</small></span></button>
+              <button type="button" role="menuitemradio" aria-checked="false" data-value="calm" data-name="Calm"><span>Calm<small>Short fades only</small></span></button>
+              <button type="button" role="menuitemradio" aria-checked="false" data-value="off" data-name="Off"><span>Off<small>No motion at all</small></span></button>
+            </div>
+          </div>
+
+          <div class="pref">
+            <button class="icon-btn" id="themeTrigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Theme. Activate to change.">
+              <svg class="icon" aria-hidden="true"><use href="#icon-contrast"></use></svg>
+            </button>
+            <div class="pref-menu" id="themeMenu" role="menu" aria-label="Colour theme" hidden>
+              <button type="button" role="menuitemradio" aria-checked="false" data-value="system" data-name="System"><span>System<small>Follow the device</small></span></button>
+              <button type="button" role="menuitemradio" aria-checked="false" data-value="dark" data-name="Dark"><span>Dark<small>BlackICE Night</small></span></button>
+              <button type="button" role="menuitemradio" aria-checked="false" data-value="light" data-name="Light"><span>Light<small>Forensic Daylight</small></span></button>
+            </div>
+          </div>
+
+          <a class="btn btn-primary header-cv" href="Sarmad_Saeed_CV.pdf" download>
+            <span>Download CV</span>
+            <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+          </a>
+
           <button class="menu-toggle" id="menuToggle" type="button" aria-controls="primaryNav" aria-expanded="false" aria-label="Open navigation menu">
             <span></span><span></span>
           </button>
@@ -210,448 +260,393 @@
       </div>
     </header>
 
-    <main id="main-content" tabindex="-1">
-      <section class="hero section-shell" id="home">
-        <div class="hero-content reveal" data-reveal="up">
-          <div class="availability-pill">
-            <span class="availability-dot"></span>
-            Open to UK cyber security opportunities
-          </div>
-          <h1 class="hero-title">Sarmad Saeed</h1>
-          <p class="hero-role">MSc Cyber Security Graduate</p>
-          <p class="hero-institution">University of Chester · 2025&ndash;2026 · <span class="status-secure">Graduated</span></p>
-          <p class="hero-tagline"><span class="hero-accent">Defend systems. Analyse signals. Build resilience.</span></p>
-          <p class="hero-lead">I combine security research, defensive analysis and practical technical work across threat detection, digital forensics, penetration testing and industrial control systems security.</p>
+    <main id="main" tabindex="-1">
+      <!-- ============================ Hero ============================ -->
+      <section class="hero" id="home" data-ambient>
+        <div class="shell">
+          <div class="hero-grid">
+            <!-- Identity -->
+            <div class="hero-identity reveal" data-reveal="left">
+              <p class="hero-availability">
+                <i aria-hidden="true"></i>
+                Open to cyber security opportunities worldwide
+              </p>
 
-          <div class="hero-actions">
-            <a class="button button-primary magnetic" href="#projects">
-              <span>Explore case studies</span>
-              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-down"></use></svg>
-            </a>
-            <a class="button button-secondary" href="Sarmad_Saeed_CV.pdf" download>
-              <svg class="icon" aria-hidden="true"><use href="#icon-file"></use></svg>
-              <span>Download CV</span>
-            </a>
+              <p class="hero-greeting">Hi, I'm</p>
+              <h1 class="hero-title">Sarmad <span class="surname">Saeed</span></h1>
+
+              <p class="hero-role">MSc Cyber Security <span class="is-secure-text">Graduate</span></p>
+              <p class="hero-institution">
+                <span>University of Chester (2025 &ndash; 2026)</span>
+                <span class="badge badge-secure badge-dot">Graduated</span>
+              </p>
+
+              <p class="hero-lede">Building secure systems and defending the digital world through research, analysis and practical security work — identifying exposure, detecting anomalies and investigating what happened.</p>
+
+              <ul class="hero-tags" aria-label="Focus areas">
+                <li>Cyber Security</li>
+                <li>Threat Detection</li>
+                <li>Incident Response</li>
+                <li>Penetration Testing</li>
+                <li>Digital Forensics</li>
+                <li>ICS / OT Security</li>
+              </ul>
+
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#projects">
+                  <span>Explore Portfolio</span>
+                  <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+                </a>
+                <a class="btn btn-secondary" href="Sarmad_Saeed_CV.pdf" download>
+                  <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+                  <span>Download CV</span>
+                </a>
+              </div>
+
+              <a class="hero-scroll" href="#about">
+                <svg class="icon" aria-hidden="true"><use href="#icon-mouse"></use></svg>
+                <span>Scroll</span>
+              </a>
+            </div>
+
+            <!-- Globe -->
+            <div class="hero-globe reveal" data-reveal="scale" data-delay="100">
+              <div class="globe-frame" id="globe">
+                <canvas aria-hidden="true"></canvas>
+                <svg class="globe-static" viewBox="0 0 240 240" role="img" aria-labelledby="globeTitle globeDesc">
+                  <title id="globeTitle">Global availability network</title>
+                  <desc id="globeDesc">A wireframe globe with a marked base node in the United Kingdom and routes reaching nodes across every populated region, representing worldwide opportunity availability.</desc>
+                  <g fill="none" stroke="var(--border-strong)">
+                    <circle cx="120" cy="120" r="108" stroke-opacity=".85"/>
+                    <ellipse cx="120" cy="120" rx="72" ry="108" stroke-opacity=".6"/>
+                    <ellipse cx="120" cy="120" rx="36" ry="108" stroke-opacity=".6"/>
+                    <line x1="120" y1="12" x2="120" y2="228" stroke-opacity=".6"/>
+                    <path d="M39.5 48 Q120 64 200.5 48" stroke-opacity=".6"/>
+                    <path d="M18.2 84 Q120 102 221.8 84" stroke-opacity=".6"/>
+                    <path d="M12 120 Q120 138 228 120" stroke-opacity=".7"/>
+                    <path d="M18.2 156 Q120 174 221.8 156" stroke-opacity=".6"/>
+                    <path d="M39.5 192 Q120 208 200.5 192" stroke-opacity=".6"/>
+                  </g>
+                  <g fill="none" stroke="currentColor" stroke-opacity=".45">
+                    <path class="packet-route" d="M108 74 Q64 96 52 128"/>
+                    <path class="packet-route is-slow" d="M108 74 Q150 92 176 132"/>
+                    <path class="packet-route" d="M108 74 Q118 122 96 168"/>
+                    <path class="packet-route is-slow" d="M108 74 Q168 108 158 176"/>
+                  </g>
+                  <g fill="currentColor">
+                    <circle cx="52" cy="128" r="2.6" opacity=".7"/>
+                    <circle cx="176" cy="132" r="2.6" opacity=".7"/>
+                    <circle cx="96" cy="168" r="2.6" opacity=".7"/>
+                    <circle cx="158" cy="176" r="2.6" opacity=".7"/>
+                    <circle cx="72" cy="96" r="2.2" opacity=".55"/>
+                    <circle cx="188" cy="96" r="2.2" opacity=".55"/>
+                    <circle cx="132" cy="196" r="2.2" opacity=".55"/>
+                    <circle class="node-pulse" cx="108" cy="74" r="8" opacity=".3"/>
+                    <circle cx="108" cy="74" r="4.5"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Side panels -->
+            <div class="hero-panels reveal" data-reveal="right" data-delay="160">
+              <article class="panel-card">
+                <header class="panel-card-head">
+                  <h2>Profile status</h2>
+                  <span class="badge badge-secure">Verified</span>
+                </header>
+                <dl class="status-list">
+                  <div>
+                    <dt><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg> Degree status</dt>
+                    <dd class="is-secure-text">Graduated</dd>
+                  </div>
+                  <div>
+                    <dt><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg> Current base</dt>
+                    <dd>United Kingdom</dd>
+                  </div>
+                  <div>
+                    <dt><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg> Availability</dt>
+                    <dd class="is-secure-text">Worldwide</dd>
+                  </div>
+                  <div>
+                    <dt><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"></use></svg> Work modes</dt>
+                    <dd>Remote · Hybrid · On-site</dd>
+                  </div>
+                </dl>
+
+                <h3 class="panel-card-sub">Lifecycle coverage</h3>
+                <p class="panel-card-note">The security functions this portfolio documents work in.</p>
+                <ul class="lifecycle-mini" aria-label="NIST Cybersecurity Framework functions covered by the documented case studies">
+                  <li><span>Identify</span><b>1</b></li>
+                  <li><span>Protect</span><b>1</b></li>
+                  <li><span>Detect</span><b>1</b></li>
+                  <li><span>Respond</span><b>1</b></li>
+                  <li class="is-empty"><span>Recover</span><b>—</b></li>
+                </ul>
+              </article>
+
+              <article class="panel-card">
+                <header class="panel-card-head">
+                  <h2>Location</h2>
+                </header>
+                <p class="location-name">United Kingdom</p>
+                <p class="location-time">
+                  <span class="mono">Local time</span>
+                  <strong id="localTime" hidden><time id="localTimeValue"></time></strong>
+                  <span class="mono" id="localTimeNote"></span>
+                </p>
+                <div class="location-map">
+                  <svg viewBox="0 0 300 150" role="img" aria-label="An abstract world map with the base marked in the United Kingdom and routes reaching every populated region.">
+                    <defs>
+                    <pattern id="mapDots" width="4" height="4" patternUnits="userSpaceOnUse">
+                      <circle cx="1.6" cy="1.6" r="0.9" fill="var(--secure)" fill-opacity="0.55"/>
+                    </pattern>
+                  </defs>
+                    <g fill="url(#mapDots)" stroke="var(--border-strong)" stroke-width="0.6" stroke-opacity="0.5">
+                      <path d="M32 44 q16 -13 38 -6 q14 5 11 17 q-4 13 -22 15 q-22 2 -28 -8 q-4 -12 1 -18Z"/>
+                      <path d="M59 79 q14 -6 18 8 q6 20 -7 36 q-11 12 -16 -3 q-5 -27 5 -41Z"/>
+                      <path d="M127 32 q22 -10 40 -2 q11 5 4 14 q-8 10 -23 10 q-17 0 -22 -8 q-5 -8 1 -14Z"/>
+                      <path d="M135 62 q16 -6 21 9 q7 24 -4 46 q-10 18 -17 1 q-9 -34 0 -56Z"/>
+                      <path d="M177 46 q32 -15 70 -3 q22 7 16 20 q-6 15 -38 17 q-38 2 -49 -12 q-8 -12 1 -22Z"/>
+                      <path d="M239 95 q16 -8 26 3 q9 11 -4 18 q-17 8 -26 -5 q-6 -9 4 -16Z"/>
+                    </g>
+                    <g fill="none" stroke="var(--secure)" stroke-width="0.9" opacity=".85">
+                      <path class="packet-route" d="M64 38 Q48 12 32 36"/>
+                      <path class="packet-route is-slow" d="M64 38 Q98 6 140 34"/>
+                      <path class="packet-route" d="M64 38 Q64 78 68 106"/>
+                      <path class="packet-route is-slow" d="M64 38 Q142 -6 214 44"/>
+                      <path class="packet-route" d="M64 38 Q160 72 252 106"/>
+                    </g>
+                    <g fill="var(--secure)">
+                      <circle cx="32" cy="36" r="2.2"/><circle cx="140" cy="34" r="2.2"/>
+                      <circle cx="68" cy="106" r="2.2"/><circle cx="214" cy="44" r="2.2"/>
+                      <circle cx="252" cy="106" r="2.2"/>
+                      <circle class="node-pulse" cx="64" cy="38" r="6" opacity=".3"/>
+                      <circle cx="64" cy="38" r="3.4"/>
+                    </g>
+                  </svg>
+                </div>
+                <p class="location-modes">
+                  <span class="badge badge-secure">Remote</span>
+                  <span class="badge badge-secure">Hybrid</span>
+                  <span class="badge badge-secure">On-site</span>
+                  <span class="badge badge-secure">Relocation</span>
+                </p>
+              </article>
+            </div>
           </div>
 
-          <dl class="hero-metrics" aria-label="Portfolio summary">
-            <div><dt data-counter="2">2</dt><dd>Cyber security degrees</dd></div>
-            <div><dt data-counter="5">5</dt><dd>Featured case studies</dd></div>
-            <div><dt data-counter="3">3</dt><dd>Verified course credentials</dd></div>
-            <div><dt data-counter="6">6</dt><dd>Core security domains</dd></div>
+          <!-- Operator terminal -->
+          <div class="hero-terminal reveal" data-reveal="up">
+            <div class="hero-terminal-bar">
+              <span class="win-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span>operator · status</span>
+            </div>
+            <p class="hero-terminal-body">
+              <span class="prompt" aria-hidden="true">&gt;</span>
+              <output id="terminalLine" aria-live="polite">Open to cyber security opportunities worldwide.</output>
+              <span class="caret" aria-hidden="true"></span>
+            </p>
+          </div>
+
+          <!-- Stat bar -->
+          <dl class="stat-bar stagger">
+            <div class="stat-item">
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
+              <div>
+                <dt>Education</dt>
+                <dd>MSc Cyber Security</dd>
+                <small>University of Chester</small>
+              </div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-briefcase"></use></svg></span>
+              <div>
+                <dt>Experience</dt>
+                <dd>ICS internship &amp; operations</dd>
+                <small>Phi-Tech · Trezlon Ltd</small>
+              </div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-code"></use></svg></span>
+              <div>
+                <dt>Projects</dt>
+                <dd>5 documented case studies</dd>
+                <small>Academic &amp; research</small>
+              </div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-shield"></use></svg></span>
+              <div>
+                <dt>Focus</dt>
+                <dd>Cyber defence</dd>
+                <small>SOC · DFIR · ICS/OT</small>
+              </div>
+            </div>
           </dl>
         </div>
+      </section>
 
-        <div class="hero-console reveal" data-reveal="tilt-right" data-delay="120">
-          <div class="console-frame spotlight-card tilt-card">
-            <div class="console-topbar">
-              <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-              <span>Security profile</span>
-              <span class="console-live"><i></i> Summary</span>
+      <!-- ============================ About ============================ -->
+      <section class="section" id="about" aria-labelledby="aboutTitle">
+        <div class="shell">
+          <div class="about-grid">
+            <div class="reveal" data-reveal="left">
+              <p class="eyebrow">About me</p>
+              <h2 id="aboutTitle">Building <span class="is-secure-text">secure systems</span> and defending the digital world.</h2>
+              <p class="about-copy">I am an MSc Cyber Security Graduate from the University of Chester with a strong academic background and practical experience in cyber security, digital forensics, incident response, penetration testing, network security and industrial control systems security.</p>
+              <p class="about-copy">I enjoy solving complex security challenges and building solutions that make systems safer and more resilient. Alongside that, an operations role at Trezlon Ltd has taught me the unglamorous half of the job: accuracy, process ownership and doing the same thing correctly every time.</p>
+
+              <p class="about-signature" aria-hidden="true">Sarmad Saeed</p>
+
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#experience">
+                  <span>Read more about me</span>
+                  <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+                </a>
+              </div>
             </div>
 
-            <div class="console-body">
-              <div class="radar-panel" aria-hidden="true">
-                <div class="radar-grid">
-                  <span class="radar-ring ring-one"></span>
-                  <span class="radar-ring ring-two"></span>
-                  <span class="radar-ring ring-three"></span>
-                  <span class="radar-axis axis-x"></span>
-                  <span class="radar-axis axis-y"></span>
-                  <span class="radar-sweep"></span>
-                  <span class="radar-point point-one"></span>
-                  <span class="radar-point point-two"></span>
-                  <span class="radar-point point-three"></span>
-                  <div class="radar-centre">SS</div>
+            <div class="about-visual reveal" data-reveal="right" data-delay="80">
+              <div class="about-orbit">
+                <svg viewBox="0 0 320 320" role="img" aria-labelledby="orbitTitle orbitDesc">
+                  <title id="orbitTitle">Capability relationship map</title>
+                  <desc id="orbitDesc">A central security-practice node orbited by research, detection, forensics, authorised assessment and development.</desc>
+                  <g fill="none" stroke="var(--border-strong)" stroke-opacity=".6">
+                    <circle cx="160" cy="160" r="150"/>
+                    <circle cx="160" cy="160" r="110"/>
+                    <circle cx="160" cy="160" r="70"/>
+                  </g>
+                  <g fill="none" stroke="var(--secure)" stroke-width="1.2" stroke-opacity=".7">
+                    <path class="packet-route" d="M160 160 L160 50"/>
+                    <path class="packet-route is-slow" d="M160 160 L265 205"/>
+                    <path class="packet-route" d="M160 160 L60 118"/>
+                  </g>
+                  <g stroke="var(--border-strong)" fill="none" stroke-opacity=".7">
+                    <path d="M160 160 L265 205"/><path d="M160 160 L60 118"/>
+                    <path d="M160 160 L96 253"/><path d="M160 160 L246 92"/>
+                  </g>
+                  <circle cx="160" cy="160" r="46" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.6"/>
+                  <text x="160" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text-1)">Security</text>
+                  <text x="160" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text-1)">practice</text>
+                  <g font-size="11" text-anchor="middle" fill="var(--text-2)">
+                    <circle cx="160" cy="50" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <text x="160" y="54">Research</text>
+                    <circle cx="246" cy="92" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <text x="246" y="96">Detect</text>
+                    <circle cx="265" cy="205" r="26" fill="var(--surface-3)" stroke="var(--incident-line)"/>
+                    <text x="265" y="209" fill="var(--incident)">Assess</text>
+                    <circle cx="96" cy="253" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <text x="96" y="257">Build</text>
+                    <circle cx="60" cy="118" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <text x="60" y="122">DFIR</text>
+                  </g>
+                </svg>
+              </div>
+
+              <dl class="about-stats stagger">
+                <div>
+                  <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
+                  <dt>Degrees</dt>
+                  <dd>2 in cyber security</dd>
                 </div>
-                <div class="radar-caption"><span>Focus areas</span><strong>6 security domains</strong></div>
+                <div>
+                  <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-code"></use></svg></span>
+                  <dt>Case studies</dt>
+                  <dd>5 documented</dd>
+                </div>
+                <div>
+                  <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"></use></svg></span>
+                  <dt>Location</dt>
+                  <dd>United Kingdom</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ Education ============================ -->
+      <section class="section" id="education" aria-labelledby="educationTitle">
+        <div class="shell">
+          <div class="section-head is-centred reveal">
+            <p class="eyebrow">Academic foundation</p>
+            <h2 id="educationTitle">Education</h2>
+            <p>Two cyber security degrees covering technical defence, offensive testing, forensics, secure development and research.</p>
+          </div>
+
+          <div class="edu-grid stagger">
+            <article class="edu-card">
+              <div class="edu-card-head">
+                <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
+                <div>
+                  <h3>MSc Cyber Security</h3>
+                  <p class="edu-place">University of Chester · United Kingdom</p>
+                </div>
+                <span class="badge badge-secure badge-dot">Graduated</span>
               </div>
-
-              <div class="profile-diagnostics">
-                <div class="diagnostic-row"><span>Threat detection</span><i aria-hidden="true"></i><strong>Core</strong></div>
-                <div class="diagnostic-row"><span>Digital forensics</span><i aria-hidden="true"></i><strong>Applied</strong></div>
-                <div class="diagnostic-row"><span>ICS / OT security</span><i aria-hidden="true"></i><strong>Project</strong></div>
-                <div class="diagnostic-row"><span>Security research</span><i aria-hidden="true"></i><strong>MSc</strong></div>
-              </div>
-
-              <div class="console-terminal" aria-label="Current focus">
-                <p><span class="terminal-prompt">Current focus</span></p>
-                <p class="terminal-output" id="terminalOutput" aria-live="polite"></p>
-                <span class="terminal-caret" aria-hidden="true"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <a class="hero-scroll" href="#about" aria-label="Scroll to About section">
-          <span>Scroll to explore</span>
-          <i aria-hidden="true"></i>
-        </a>
-      </section>
-
-      <section class="proof-rail" aria-label="Technical areas">
-        <div class="proof-track">
-          <span>Threat Detection</span><i></i><span>Incident Response</span><i></i><span>Digital Forensics</span><i></i><span>Penetration Testing</span><i></i><span>ICS / OT Security</span><i></i><span>Network Security</span><i></i><span>Security Research</span><i></i>
-          <span aria-hidden="true">Threat Detection</span><i aria-hidden="true"></i><span aria-hidden="true">Incident Response</span><i aria-hidden="true"></i><span aria-hidden="true">Digital Forensics</span><i aria-hidden="true"></i><span aria-hidden="true">Penetration Testing</span><i aria-hidden="true"></i><span aria-hidden="true">ICS / OT Security</span><i aria-hidden="true"></i><span aria-hidden="true">Network Security</span><i aria-hidden="true"></i><span aria-hidden="true">Security Research</span><i aria-hidden="true"></i>
-        </div>
-      </section>
-
-      <section class="credential-strip section-shell" aria-labelledby="credentialStripTitle">
-        <div class="credential-strip-head reveal" data-reveal="up">
-          <h2 id="credentialStripTitle">Verified credentials <span class="count-badge">3</span></h2>
-          <p>Course completions with a public verification link. These are course completions, not industry certifications.</p>
-        </div>
-        <ul class="credential-chips stagger reveal" data-reveal="up">
-          <li>
-            <a href="https://coursera.org/verify/M5XKN4EQEFHG" target="_blank" rel="noopener noreferrer">
-              <span class="credential-issuer">Google</span>
-              <strong>Foundations of Cybersecurity</strong>
-              <span class="credential-date">Jul 2023 · Verify</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://coursera.org/verify/75KLRQTGMFWF" target="_blank" rel="noopener noreferrer">
-              <span class="credential-issuer">Google</span>
-              <strong>Tools of the Trade: Linux and SQL</strong>
-              <span class="credential-date">Aug 2024 · Verify</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://coursera.org/verify/GJP79NMV2MYR" target="_blank" rel="noopener noreferrer">
-              <span class="credential-issuer">IBM</span>
-              <strong>Introduction to Cybersecurity Tools &amp; Cyber Attacks</strong>
-              <span class="credential-date">Jul 2023 · Verify</span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="credential-strip-head credential-strip-secondary reveal" data-reveal="up">
-          <h3>Additional course completions <span class="count-badge count-badge-muted">2</span></h3>
-          <p>Completed, but no verification link was supplied for these two. Listed separately rather than counted as verified.</p>
-        </div>
-        <ul class="credential-chips credential-chips-muted stagger reveal" data-reveal="up">
-          <li>
-            <span>
-              <span class="credential-issuer">Google</span>
-              <strong>Connect and Protect: Networks and Network Security</strong>
-              <span class="credential-date">Unverified</span>
-            </span>
-          </li>
-          <li>
-            <span>
-              <span class="credential-issuer">Google</span>
-              <strong>Assets, Threats, and Vulnerabilities</strong>
-              <span class="credential-date">Unverified</span>
-            </span>
-          </li>
-        </ul>
-      </section>
-
-      <section class="content-section section-shell" id="about">
-        <div class="section-heading reveal" data-reveal="left">
-          <div>
-            <p class="section-index">01 / Profile</p>
-            <h2>A security mindset backed by technical depth.</h2>
-          </div>
-          <p>I approach cyber security through structured investigation, practical experimentation and clear communication—connecting technical findings to real operational risk.</p>
-        </div>
-
-        <div class="about-bento">
-          <article class="bento-card bento-intro spotlight-card reveal" data-reveal="tilt-left">
-            <div class="card-icon"><svg class="icon" aria-hidden="true"><use href="#icon-user-shield"></use></svg></div>
-            <p class="card-kicker">Professional profile</p>
-            <h3>Cyber security graduate focused on evidence, resilience and responsible defence.</h3>
-            <p>I hold an MSc in Cyber Security from the University of Chester and a Bachelor of Cyber Security from Air University. My work spans security research, ICS-focused intrusion detection, forensic analysis and controlled penetration-testing labs.</p>
-            <a class="text-link" href="#experience">View experience <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></a>
-          </article>
-
-          <article class="bento-card bento-snapshot spotlight-card reveal" data-reveal="right" data-delay="80">
-            <p class="card-kicker">Profile snapshot</p>
-            <dl class="snapshot-list">
-              <div><dt>Current base</dt><dd>United Kingdom</dd></div>
-              <div><dt>Postgraduate degree</dt><dd>MSc Cyber Security</dd></div>
-              <div><dt>Academic status</dt><dd><span class="status-inline">Graduated</span></dd></div>
-              <div><dt>Current role</dt><dd>Trezlon Ltd</dd></div>
-              <div><dt>Career focus</dt><dd>SOC · DFIR · ICS/OT</dd></div>
-            </dl>
-          </article>
-
-          <article class="bento-card bento-principles spotlight-card reveal" data-reveal="left" data-delay="140">
-            <p class="card-kicker">How I work</p>
-            <ul class="principle-list">
-              <li><span>01</span><div><strong>Evidence first</strong><small>Test assumptions and document what the data supports.</small></div></li>
-              <li><span>02</span><div><strong>Think in systems</strong><small>Understand people, processes and technology together.</small></div></li>
-              <li><span>03</span><div><strong>Communicate clearly</strong><small>Turn technical findings into useful decisions.</small></div></li>
-            </ul>
-          </article>
-
-          <article class="bento-card bento-quote spotlight-card reveal" data-reveal="back" data-delay="200">
-            <svg class="quote-mark" aria-hidden="true"><use href="#icon-quote"></use></svg>
-            <blockquote>Security is strongest when detection, investigation and response are designed as one connected discipline.</blockquote>
-            <p>— Working philosophy</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="content-section section-shell" id="expertise">
-        <div class="section-heading reveal" data-reveal="left">
-          <div>
-            <p class="section-index">02 / Expertise</p>
-            <h2>Capabilities across the security lifecycle.</h2>
-          </div>
-          <p>From identifying exposure to investigating incidents, each capability is grounded in academic work, labs, research or professional practice.</p>
-        </div>
-
-        <div class="expertise-grid">
-          <article class="expertise-card spotlight-card reveal" data-reveal="left">
-            <div class="expertise-top"><span class="expertise-number">01</span><svg class="icon" aria-hidden="true"><use href="#icon-radar"></use></svg></div>
-            <h3>Threat Detection & SOC</h3>
-            <p>Alert triage concepts, security monitoring, network visibility and evidence-led escalation.</p>
-            <div class="expertise-tags"><span>SIEM concepts</span><span>Wireshark</span><span>IDS</span></div>
-          </article>
-
-          <article class="expertise-card spotlight-card reveal" data-reveal="back" data-delay="60">
-            <div class="expertise-top"><span class="expertise-number">02</span><svg class="icon" aria-hidden="true"><use href="#icon-crosshair"></use></svg></div>
-            <h3>Penetration Testing</h3>
-            <p>Controlled reconnaissance, vulnerability assessment and validation within authorised lab environments.</p>
-            <div class="expertise-tags"><span>Nmap</span><span>Burp Suite</span><span>Metasploit</span></div>
-          </article>
-
-          <article class="expertise-card spotlight-card reveal" data-reveal="right" data-delay="120">
-            <div class="expertise-top"><span class="expertise-number">03</span><svg class="icon" aria-hidden="true"><use href="#icon-fingerprint"></use></svg></div>
-            <h3>Digital Forensics & IR</h3>
-            <p>Evidence acquisition, artefact review, forensic workflow and structured incident-response reasoning.</p>
-            <div class="expertise-tags"><span>Autopsy</span><span>FTK Imager</span><span>OS Forensics</span></div>
-          </article>
-
-          <article class="expertise-card spotlight-card reveal" data-reveal="left">
-            <div class="expertise-top"><span class="expertise-number">04</span><svg class="icon" aria-hidden="true"><use href="#icon-factory"></use></svg></div>
-            <h3>ICS / OT Security</h3>
-            <p>Industrial threat awareness, anomaly detection concepts and defensive thinking for cyber-physical systems.</p>
-            <div class="expertise-tags"><span>ICS risk</span><span>Anomaly detection</span><span>Network defence</span></div>
-          </article>
-
-          <article class="expertise-card spotlight-card reveal" data-reveal="back" data-delay="60">
-            <div class="expertise-top"><span class="expertise-number">05</span><svg class="icon" aria-hidden="true"><use href="#icon-flask"></use></svg></div>
-            <h3>Security Research</h3>
-            <p>Research design, statistical testing and technical evaluation of randomness and cryptographic reliability.</p>
-            <div class="expertise-tags"><span>PRNG / TRNG</span><span>Entropy</span><span>Python</span></div>
-          </article>
-
-          <article class="expertise-card spotlight-card reveal" data-reveal="right" data-delay="120">
-            <div class="expertise-top"><span class="expertise-number">06</span><svg class="icon" aria-hidden="true"><use href="#icon-code"></use></svg></div>
-            <h3>Systems & Development</h3>
-            <p>Programming, database design and practical system analysis across Windows and Linux environments.</p>
-            <div class="expertise-tags"><span>Python</span><span>SQL</span><span>Linux</span></div>
-          </article>
-        </div>
-
-        <div class="tool-marquee reveal" data-reveal="up" aria-label="Tools and technologies">
-          <div class="tool-track">
-            <span>Nmap</span><span>Wireshark</span><span>Burp Suite</span><span>Metasploit</span><span>Autopsy</span><span>FTK Imager</span><span>OpenVAS</span><span>Nessus</span><span>Python</span><span>SQL</span><span>Kali Linux</span><span>Ubuntu</span>
-            <span aria-hidden="true">Nmap</span><span aria-hidden="true">Wireshark</span><span aria-hidden="true">Burp Suite</span><span aria-hidden="true">Metasploit</span><span aria-hidden="true">Autopsy</span><span aria-hidden="true">FTK Imager</span><span aria-hidden="true">OpenVAS</span><span aria-hidden="true">Nessus</span><span aria-hidden="true">Python</span><span aria-hidden="true">SQL</span><span aria-hidden="true">Kali Linux</span><span aria-hidden="true">Ubuntu</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="robotic-banner" aria-label="Systems and tooling">
-        <div class="robotic-banner-caption reveal" data-reveal="up">
-          <p class="section-index">Systems</p>
-          <p>Security work is modular: instrument the system, watch the signal, act on the evidence.</p>
-        </div>
-        <div class="robotic-banner-inner lego-scene" aria-hidden="true">
-          <div class="lego-brick"><span></span><i></i></div>
-          <div class="lego-node"></div>
-          <div class="lego-arm"><i></i><i></i><i></i><b></b></div>
-          <div class="lego-hex"></div>
-          <div class="lego-brick"><span></span><i></i></div>
-        </div>
-      </section>
-
-      <section class="content-section section-shell" id="projects">
-        <div class="section-heading project-heading reveal" data-reveal="up">
-          <div>
-            <p class="section-index">03 / Selected work</p>
-            <h2>Case studies with technical purpose.</h2>
-          </div>
-          <p>Each project is presented as a concise case study: the problem, the approach, the tools and the practical learning.</p>
-        </div>
-
-        <p class="filter-legend">Filter by discipline, or by the NIST Cybersecurity Framework function each piece of work serves.</p>
-        <div class="project-filters reveal" data-reveal="down" role="group" aria-label="Filter projects">
-          <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All work <span>5</span></button>
-          <button class="filter-button" type="button" data-filter="research" aria-pressed="false">Research <span>1</span></button>
-          <button class="filter-button" type="button" data-filter="defence" aria-pressed="false">Defence <span>2</span></button>
-          <button class="filter-button" type="button" data-filter="offensive" aria-pressed="false">Offensive <span>1</span></button>
-          <button class="filter-button" type="button" data-filter="development" aria-pressed="false">Development <span>2</span></button>
-          <span class="filter-divider" aria-hidden="true"></span>
-          <button class="filter-button filter-nist" type="button" data-filter="nist-identify" aria-pressed="false">Identify <span>1</span></button>
-          <button class="filter-button filter-nist" type="button" data-filter="nist-protect" aria-pressed="false">Protect <span>1</span></button>
-          <button class="filter-button filter-nist" type="button" data-filter="nist-detect" aria-pressed="false">Detect <span>1</span></button>
-          <button class="filter-button filter-nist" type="button" data-filter="nist-respond" aria-pressed="false">Respond <span>1</span></button>
-        </div>
-
-        <div class="projects-grid" id="projectsGrid">
-          <article class="project-card project-featured spotlight-card reveal" data-reveal="back" data-categories="research development nist-protect" data-project="randomness">
-            <div class="project-visual visual-randomness" aria-hidden="true">
-              <div class="signal-lines"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-              <div class="visual-terminal"><span>Entropy analysis</span><strong>Statistical testing</strong><i></i></div>
-              <span class="visual-code">01</span>
-            </div>
-            <div class="project-copy">
-              <div class="project-meta"><span>Research · MSc Dissertation</span><time>2025–2026</time></div>
-              <p class="nist-badge" data-fn="protect"><span>NIST CSF</span>Protect</p>
-              <h3>Integrated Randomness Testing Suite</h3>
-              <p>A research-led suite for assessing PRNG/TRNG behaviour, statistical quality, entropy concerns and cryptographic reliability.</p>
-              <div class="project-stack"><span>Python</span><span>Statistical testing</span><span>Cryptography</span></div>
-              <button class="project-link" type="button" data-open-project="randomness">Open case study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></button>
-            </div>
-          </article>
-
-          <article class="project-card spotlight-card reveal" data-reveal="left" data-delay="70" data-categories="defence nist-detect" data-project="ics-ids">
-            <div class="project-visual visual-ics" aria-hidden="true">
-              <div class="factory-map"><span></span><span></span><span></span><span></span></div>
-              <div class="alert-wave"></div>
-              <span class="visual-code">02</span>
-            </div>
-            <div class="project-copy">
-              <div class="project-meta"><span>ICS Defence · Final Year Project</span><time>2023–2024</time></div>
-              <p class="nist-badge" data-fn="detect"><span>NIST CSF</span>Detect</p>
-              <h3>Intrusion Detection for Industrial Control Systems</h3>
-              <p>An IDS concept designed around anomaly awareness, suspicious activity monitoring and alerts in industrial environments.</p>
-              <div class="project-stack"><span>ICS / OT</span><span>IDS</span><span>Anomaly detection</span></div>
-              <button class="project-link" type="button" data-open-project="ics-ids">Open case study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></button>
-            </div>
-          </article>
-
-          <article class="project-card spotlight-card reveal" data-reveal="right" data-delay="140" data-categories="defence nist-respond" data-project="dfir">
-            <div class="project-visual visual-dfir" aria-hidden="true">
-              <div class="fingerprint-lines"></div>
-              <div class="evidence-tag">Evidence handling</div>
-              <span class="visual-code">03</span>
-            </div>
-            <div class="project-copy">
-              <div class="project-meta"><span>DFIR · Academic Labs</span><time>2025–2026</time></div>
-              <p class="nist-badge" data-fn="respond"><span>NIST CSF</span>Respond</p>
-              <h3>Digital Forensics & Incident Response Labs</h3>
-              <p>Structured exercises covering evidence acquisition, artefact review, forensic reasoning and incident handling workflow.</p>
-              <div class="project-stack"><span>Autopsy</span><span>FTK Imager</span><span>Investigation</span></div>
-              <button class="project-link" type="button" data-open-project="dfir">Open case study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></button>
-            </div>
-          </article>
-
-          <article class="project-card spotlight-card reveal" data-reveal="left" data-categories="offensive nist-identify" data-project="assessment">
-            <div class="project-visual visual-offensive" aria-hidden="true">
-              <div class="target-rings"><span></span><span></span><span></span><i></i></div>
-              <div class="scan-label">Authorised lab</div>
-              <span class="visual-code">04</span>
-            </div>
-            <div class="project-copy">
-              <div class="project-meta"><span>Offensive Security · Academic Work</span><time>2025–2026</time></div>
-              <p class="nist-badge" data-fn="identify"><span>NIST CSF</span>Identify</p>
-              <h3>Security Assessment & Active Defence Labs</h3>
-              <p>Authorised lab work involving reconnaissance, vulnerability discovery, controlled validation and defensive recommendations.</p>
-              <div class="project-stack"><span>Nmap</span><span>Burp Suite</span><span>Nessus</span></div>
-              <button class="project-link" type="button" data-open-project="assessment">Open case study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></button>
-            </div>
-          </article>
-
-          <article class="project-card spotlight-card reveal" data-reveal="right" data-delay="70" data-categories="development" data-project="blood-bank">
-            <div class="project-visual visual-database" aria-hidden="true">
-              <div class="database-stack"><span></span><span></span><span></span></div>
-              <div class="data-flow"><i></i><i></i><i></i></div>
-              <span class="visual-code">05</span>
-            </div>
-            <div class="project-copy">
-              <div class="project-meta"><span>Database Development · Semester Project</span><time>2022</time></div>
-              <h3>Blood Bank Database System</h3>
-              <p>A relational database model for donor records, blood inventory and distribution information in a structured workflow.</p>
-              <div class="project-stack"><span>SQL</span><span>Data modelling</span><span>System analysis</span></div>
-              <button class="project-link" type="button" data-open-project="blood-bank">Open case study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></button>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="content-section section-shell" id="education">
-        <div class="section-heading reveal" data-reveal="left">
-          <div>
-            <p class="section-index">04 / Education</p>
-            <h2>Academic foundations and applied research.</h2>
-          </div>
-          <p>Two cyber security degrees covering technical defence, offensive testing, forensics, secure development and research.</p>
-        </div>
-
-        <div class="timeline">
-          <article class="timeline-entry reveal" data-reveal="left">
-            <div class="timeline-marker"><span></span></div>
-            <div class="timeline-period"><time>2025–2026</time><span class="status-badge">Graduated</span></div>
-            <div class="timeline-card spotlight-card">
-              <div class="timeline-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></div>
-              <p class="card-kicker">Postgraduate degree</p>
-              <h3>MSc Cyber Security</h3>
-              <p class="timeline-place">University of Chester · United Kingdom</p>
+              <p class="edu-years mono">2025 &ndash; 2026</p>
               <p>Postgraduate study across digital forensics and incident response, penetration testing and active defence, web systems, software development and security research.</p>
-              <div class="module-cloud"><span>DFIR</span><span>Penetration Testing</span><span>Active Defence</span><span>Web Systems</span><span>Research Dissertation</span><span>Software Development</span></div>
-            </div>
-          </article>
+              <div class="tool-chips">
+                <span>DFIR</span><span>Penetration Testing</span><span>Active Defence</span>
+                <span>Web Systems</span><span>Research Dissertation</span><span>Software Development</span>
+              </div>
+            </article>
 
-          <article class="timeline-entry reveal" data-reveal="right" data-delay="100">
-            <div class="timeline-marker"><span></span></div>
-            <div class="timeline-period"><time>2020–2024</time></div>
-            <div class="timeline-card spotlight-card">
-              <div class="timeline-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></div>
-              <p class="card-kicker">Undergraduate degree</p>
-              <h3>Bachelor of Cyber Security</h3>
-              <p class="timeline-place">Air University · Islamabad, Pakistan</p>
+            <article class="edu-card">
+              <div class="edu-card-head">
+                <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
+                <div>
+                  <h3>BSc Cyber Security</h3>
+                  <p class="edu-place">Air University · Islamabad, Pakistan</p>
+                </div>
+                <span class="badge">Completed</span>
+              </div>
+              <p class="edu-years mono">2020 &ndash; 2024</p>
               <p>A broad technical foundation in network security, penetration testing, digital forensics, vulnerability assessment, reverse engineering, cryptography, programming and databases.</p>
-              <div class="module-cloud"><span>Network Security</span><span>Digital Forensics</span><span>Cryptography</span><span>Reverse Engineering</span><span>Vulnerability Assessment</span><span>Programming</span></div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="robotic-banner" aria-label="Defensive modules">
-        <div class="robotic-banner-caption reveal" data-reveal="up">
-          <p class="section-index">Modules</p>
-          <p>Detection, forensics and controlled testing assemble into one connected discipline.</p>
-        </div>
-        <div class="robotic-banner-inner lego-scene" aria-hidden="true">
-          <div class="lego-hex"></div>
-          <div class="lego-node"></div>
-          <div class="lego-brick"><span></span><i></i></div>
-          <div class="lego-node"></div>
-          <div class="lego-hex"></div>
-        </div>
-      </section>
-
-      <section class="content-section section-shell" id="experience">
-        <div class="section-heading reveal" data-reveal="left">
-          <div>
-            <p class="section-index">05 / Experience</p>
-            <h2>Professional discipline beyond the classroom.</h2>
+              <div class="tool-chips">
+                <span>Network Security</span><span>Digital Forensics</span><span>Cryptography</span>
+                <span>Reverse Engineering</span><span>Vulnerability Assessment</span><span>Programming</span>
+              </div>
+            </article>
           </div>
-          <p>Current marketplace operations experience adds commercial awareness, accuracy and process ownership to my technical background.</p>
         </div>
+      </section>
 
-        <div class="experience-layout">
-          <div class="experience-list">
-            <article class="experience-card spotlight-card reveal" data-reveal="right">
-              <div class="experience-date"><time>Apr 2025 — Present</time><span>Current role</span></div>
-              <div class="experience-body">
-                <div class="experience-heading"><div><p>Trezlon Ltd</p><h3>E-commerce Operations / eBay Account Management</h3></div><span class="company-index">01</span></div>
+      <!-- ============================ Experience ============================ -->
+      <section class="section" id="experience" aria-labelledby="experienceTitle">
+        <div class="shell">
+          <div class="section-head is-centred reveal">
+            <p class="eyebrow">Professional track</p>
+            <h2 id="experienceTitle">Experience</h2>
+            <p>An ICS security internship and a current operations role, recorded in sequence.</p>
+          </div>
+
+          <div class="route">
+            <article class="route-entry reveal" data-reveal="left">
+              <div class="route-meta">
+                <time datetime="2025-04">Apr 2025 — Present</time>
+                <span class="badge badge-secure badge-dot">Current role</span>
+              </div>
+              <div class="route-card">
+                <h3>E-commerce Operations / eBay Account Management</h3>
+                <p class="route-place">Trezlon Ltd · United Kingdom</p>
                 <ul>
                   <li>Manage day-to-day eBay account operations, product listings and structured marketplace content.</li>
-                  <li>Run campaign activity to support product visibility, customer reach and sales performance.</li>
+                  <li>Run campaign activity supporting product visibility, customer reach and sales performance.</li>
                   <li>Maintain accurate titles, descriptions, pricing details and listing updates across the account.</li>
                 </ul>
               </div>
             </article>
 
-            <article class="experience-card spotlight-card reveal" data-reveal="left" data-delay="90">
-              <div class="experience-date"><time>Jun 2023 — Aug 2023</time><span>Internship</span></div>
-              <div class="experience-body">
-                <div class="experience-heading"><div><p>Phi-Tech</p><h3>Cyber Security Intern</h3></div><span class="company-index">02</span></div>
+            <article class="route-entry reveal" data-reveal="left" data-delay="90">
+              <div class="route-meta">
+                <time datetime="2023-06">Jun 2023 — Aug 2023</time>
+                <span class="badge">Internship</span>
+              </div>
+              <div class="route-card">
+                <h3>Cyber Security Intern</h3>
+                <p class="route-place">Phi-Tech · Pakistan</p>
                 <ul>
                   <li>Built practical awareness of Industrial Control Systems security and industrial cyber risk.</li>
                   <li>Supported analysis of vulnerabilities, defensive controls and threat exposure in operational environments.</li>
@@ -660,81 +655,714 @@
               </div>
             </article>
           </div>
-
-          <aside class="credentials-panel reveal" data-reveal="tilt-right">
-            <article class="credential-card spotlight-card">
-              <div class="credential-icon"><svg class="icon" aria-hidden="true"><use href="#icon-certificate"></use></svg></div>
-              <p class="card-kicker">Professional learning</p>
-              <h3>Course completions</h3>
-              <ul>
-                <li><strong>Google</strong><span>Connect and Protect: Networks and Network Security</span></li>
-                <li><strong>Google</strong><span>Assets, Threats, and Vulnerabilities</span></li>
-                <li><strong>IBM</strong><span>Introduction to Cyber Security Tools & Cyber Attacks</span></li>
-              </ul>
-            </article>
-
-            <article class="credential-card spotlight-card">
-              <div class="credential-icon"><svg class="icon" aria-hidden="true"><use href="#icon-award"></use></svg></div>
-              <p class="card-kicker">Recognition</p>
-              <h3>Entrepreneur Gala — 2nd Position</h3>
-              <p>Recognised at Air University for presenting the IDS for Industrial Control Systems project concept.</p>
-            </article>
-
-            <article class="credential-card spotlight-card">
-              <div class="credential-icon"><svg class="icon" aria-hidden="true"><use href="#icon-community"></use></svg></div>
-              <p class="card-kicker">Community</p>
-              <h3>IEEE Cyber Warfare & Security</h3>
-              <p>Conference attendee in 2021 and organising committee member in 2022.</p>
-            </article>
-          </aside>
         </div>
       </section>
 
-      <section class="contact-section section-shell" id="contact">
-        <div class="contact-panel spotlight-card cosmic-frame reveal" data-reveal="back">
-          <div class="contact-copy">
-            <p class="section-index">06 / Contact</p>
-            <h2>Let’s build stronger security.</h2>
-            <p>I am open to graduate and entry-level opportunities across cyber security analysis, SOC operations, DFIR, vulnerability assessment and ICS/OT security in the United Kingdom.</p>
-            <div class="contact-actions">
-              <a class="button button-primary magnetic" href="mailto:sarmadsaeed2002@gmail.com">
-                <svg class="icon" aria-hidden="true"><use href="#icon-mail"></use></svg>
-                <span>Start a conversation</span>
+      <!-- ============================ Projects ============================ -->
+      <section class="section" id="projects" aria-labelledby="projectsTitle">
+        <div class="shell">
+          <div class="section-head is-centred reveal">
+            <p class="eyebrow">My work</p>
+            <h2 id="projectsTitle">Projects &amp; <span class="is-secure-text">Case Studies</span></h2>
+            <p>A collection of academic, research and practical projects showing my skills and approach to cyber security. Each one opens as a full case-study report.</p>
+          </div>
+
+          <div class="filters reveal">
+            <div class="filter-row is-centred" role="group" aria-label="Filter projects">
+              <button class="filter-btn" type="button" data-filter="all" data-label="all work" aria-pressed="true">All <b>5</b></button>
+              <button class="filter-btn" type="button" data-filter="research" data-label="research" aria-pressed="false">Research <b>1</b></button>
+              <button class="filter-btn" type="button" data-filter="defence" data-label="defence" aria-pressed="false">Defense <b>2</b></button>
+              <button class="filter-btn" type="button" data-class="offensive" data-filter="offensive" data-label="offensive security" aria-pressed="false">Offensive Security <b>1</b></button>
+              <button class="filter-btn" type="button" data-filter="development" data-label="development" aria-pressed="false">Development <b>1</b></button>
+            </div>
+            <div class="filter-row is-centred" role="group" aria-label="Filter projects by NIST function">
+              <span class="filter-label">NIST CSF</span>
+              <button class="filter-btn" type="button" data-filter="nist-identify" data-label="Identify" aria-pressed="false">Identify <b>1</b></button>
+              <button class="filter-btn" type="button" data-filter="nist-protect" data-label="Protect" aria-pressed="false">Protect <b>1</b></button>
+              <button class="filter-btn" type="button" data-filter="nist-detect" data-label="Detect" aria-pressed="false">Detect <b>1</b></button>
+              <button class="filter-btn" type="button" data-filter="nist-respond" data-label="Respond" aria-pressed="false">Respond <b>1</b></button>
+            </div>
+            <p class="filter-status" id="filterStatus" role="status" aria-live="polite">Showing all 5 projects.</p>
+          </div>
+
+          <div class="missions" id="missions">
+            <!-- 01 Randomness -->
+            <article class="mission" data-class="research" data-categories="research nist-protect">
+              <div class="mission-art">
+                <svg viewBox="0 0 320 180" role="img" aria-label="Entropy cells, a statistical distribution curve, a bitstream and a cryptographic shield.">
+                  <rect width="320" height="180" fill="var(--surface-2)"/>
+                  <g fill="var(--secure)" opacity=".5">
+                    <rect x="16" y="20" width="12" height="12" rx="2"/><rect x="32" y="20" width="12" height="12" rx="2" opacity=".4"/>
+                    <rect x="48" y="20" width="12" height="12" rx="2" opacity=".8"/><rect x="64" y="20" width="12" height="12" rx="2" opacity=".25"/>
+                    <rect x="16" y="36" width="12" height="12" rx="2" opacity=".3"/><rect x="32" y="36" width="12" height="12" rx="2" opacity=".9"/>
+                    <rect x="48" y="36" width="12" height="12" rx="2" opacity=".2"/><rect x="64" y="36" width="12" height="12" rx="2" opacity=".6"/>
+                    <rect x="16" y="52" width="12" height="12" rx="2" opacity=".7"/><rect x="32" y="52" width="12" height="12" rx="2" opacity=".2"/>
+                    <rect x="48" y="52" width="12" height="12" rx="2" opacity=".55"/><rect x="64" y="52" width="12" height="12" rx="2" opacity=".35"/>
+                  </g>
+                  <path d="M16 148 C 52 148, 62 96, 96 96 S 140 148, 176 148" fill="none" stroke="var(--secure)" stroke-width="2"/>
+                  <path d="M16 148 H176" stroke="var(--border-strong)"/>
+                  <g font-family="var(--font-mono)" font-size="9" fill="var(--text-3)">
+                    <text x="16" y="112">01001101 10110</text>
+                    <text x="16" y="126">11010010 01101</text>
+                  </g>
+                  <path d="M240 34 288 50v30c0 25-16 45-42 56-26-11-42-31-42-56V50l42-16Z" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="2"/>
+                  <path d="m226 88 12 12 26-27" fill="none" stroke="var(--secure)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--secure)" opacity="0"/>
+                </svg>
+              </div>
+              <div class="mission-body">
+                <div class="mission-title-row">
+                  <h3>Integrated Randomness Testing Suite</h3>
+                  <span class="badge badge-secure">Research</span>
+                </div>
+                <p>A comprehensive suite for evaluating PRNG and TRNG randomness quality, entropy behaviour and cryptographic reliability.</p>
+                <p class="mission-meta"><span>MSc Dissertation</span><span>2025–2026</span><span>NIST · Protect</span></p>
+                <button class="mission-open" type="button" data-open-mission="randomness">View Case Study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+              </div>
+            </article>
+
+            <!-- 02 ICS IDS -->
+            <article class="mission" data-class="defence" data-categories="defence nist-detect">
+              <div class="mission-art">
+                <svg viewBox="0 0 320 180" role="img" aria-label="An industrial plant silhouette with a segmented OT network, sensor nodes, an anomaly route and a protective shield.">
+                  <rect width="320" height="180" fill="var(--surface-2)"/>
+                  <g fill="var(--surface-4)" stroke="var(--border-strong)">
+                    <rect x="16" y="104" width="46" height="60"/>
+                    <rect x="70" y="86" width="34" height="78"/>
+                    <rect x="112" y="120" width="28" height="44"/>
+                    <rect x="80" y="58" width="12" height="28"/>
+                  </g>
+                  <path d="M16 164 H304" stroke="var(--border-strong)"/>
+                  <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".85">
+                    <path d="M170 40 H286"/><path d="M170 76 H286"/><path d="M170 112 H286"/>
+                    <path d="M170 40 V112"/>
+                    <path class="packet-route" d="M170 76 H286"/>
+                  </g>
+                  <g fill="var(--secure)">
+                    <circle cx="170" cy="40" r="4"/><circle cx="228" cy="40" r="4"/><circle cx="286" cy="40" r="4"/>
+                    <circle cx="170" cy="76" r="4"/><circle cx="286" cy="76" r="4"/>
+                    <circle cx="170" cy="112" r="4"/><circle cx="228" cy="112" r="4"/><circle cx="286" cy="112" r="4"/>
+                  </g>
+                  <path d="M228 76 L266 132" stroke="var(--incident)" stroke-width="1.6" stroke-dasharray="4 4" fill="none"/>
+                  <circle cx="228" cy="76" r="6" fill="var(--incident)"/>
+                  <text x="252" y="150" font-family="var(--font-mono)" font-size="9" fill="var(--incident)">anomaly</text>
+                  <path d="M118 22 146 32v18c0 15-10 27-28 34-18-7-28-19-28-34V32l28-10Z" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.6"/>
+                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--secure)" opacity="0"/>
+                </svg>
+              </div>
+              <div class="mission-body">
+                <div class="mission-title-row">
+                  <h3>Intrusion Detection for ICS</h3>
+                  <span class="badge badge-secure">Defense</span>
+                </div>
+                <p>An IDS concept designed for Industrial Control Systems to detect anomalies and protect critical infrastructure.</p>
+                <p class="mission-meta"><span>Final Year Project</span><span>2023–2024</span><span>NIST · Detect</span></p>
+                <button class="mission-open" type="button" data-open-mission="ics-ids">View Case Study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+              </div>
+            </article>
+
+            <!-- 03 DFIR -->
+            <article class="mission" data-class="defence" data-categories="defence nist-respond">
+              <div class="mission-art">
+                <svg viewBox="0 0 320 180" role="img" aria-label="A disk evidence icon, an artefact timeline, a fingerprint and a chain-of-custody path.">
+                  <rect width="320" height="180" fill="var(--surface-2)"/>
+                  <g stroke="var(--border-strong)" fill="var(--surface-4)">
+                    <ellipse cx="70" cy="52" rx="40" ry="14"/>
+                    <path d="M30 52v40c0 8 18 14 40 14s40-6 40-14V52"/>
+                  </g>
+                  <ellipse cx="70" cy="52" rx="16" ry="6" fill="none" stroke="var(--evidence)"/>
+                  <g fill="none" stroke="var(--secure)" stroke-width="1.6">
+                    <path d="M150 132 H300"/>
+                    <path class="packet-route" d="M150 132 H300"/>
+                  </g>
+                  <g fill="var(--secure)">
+                    <rect x="148" y="128" width="8" height="8" rx="1"/>
+                    <rect x="196" y="128" width="8" height="8" rx="1"/>
+                    <rect x="244" y="128" width="8" height="8" rx="1"/>
+                    <rect x="292" y="128" width="8" height="8" rx="1"/>
+                  </g>
+                  <g font-family="var(--font-mono)" font-size="8" fill="var(--text-3)">
+                    <text x="146" y="150">acquire</text><text x="192" y="150">examine</text>
+                    <text x="240" y="150">analyse</text><text x="284" y="150">report</text>
+                  </g>
+                  <g fill="none" stroke="var(--evidence)" stroke-width="1.6" stroke-linecap="round">
+                    <path d="M186 40a34 34 0 0 1 68 0"/>
+                    <path d="M196 62v10c0 14-4 22-9 28"/>
+                    <path d="M206 42a14 14 0 0 1 28 0v20c0 14 5 24 9 30"/>
+                    <path d="M244 58v14c0 10 3 17 8 24"/>
+                    <path d="M206 68c0 12-3 22-8 30"/>
+                  </g>
+                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--evidence)" opacity="0"/>
+                </svg>
+              </div>
+              <div class="mission-body">
+                <div class="mission-title-row">
+                  <h3>Digital Forensics &amp; IR Labs</h3>
+                  <span class="badge badge-secure">Defense</span>
+                </div>
+                <p>Hands-on digital forensics labs and incident response workflows using industry standard tools.</p>
+                <p class="mission-meta"><span>Academic Labs</span><span>2025–2026</span><span>NIST · Respond</span></p>
+                <button class="mission-open" type="button" data-open-mission="dfir">View Case Study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+              </div>
+            </article>
+
+            <!-- 04 Assessment -->
+            <article class="mission" data-class="offensive" data-categories="offensive nist-identify">
+              <div class="mission-art">
+                <svg viewBox="0 0 320 180" role="img" aria-label="An authorised attack graph in red crossing defensive controls drawn in green and navy.">
+                  <rect width="320" height="180" fill="var(--surface-2)"/>
+                  <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".75">
+                    <path d="M40 140 H280"/>
+                    <path d="M40 100 H280"/>
+                  </g>
+                  <g fill="var(--secure-soft)" stroke="var(--secure)">
+                    <rect x="60" y="90" width="44" height="20" rx="4"/>
+                    <rect x="140" y="90" width="44" height="20" rx="4"/>
+                    <rect x="220" y="90" width="44" height="20" rx="4"/>
+                  </g>
+                  <g fill="none" stroke="var(--incident)" stroke-width="1.8">
+                    <path class="packet-route" d="M40 40 L110 62 L180 40 L250 66"/>
+                  </g>
+                  <g fill="var(--incident)">
+                    <circle cx="40" cy="40" r="5"/><circle cx="110" cy="62" r="5"/>
+                    <circle cx="180" cy="40" r="5"/><circle cx="250" cy="66" r="5"/>
+                  </g>
+                  <path d="M250 66 L250 90" stroke="var(--incident)" stroke-dasharray="3 3"/>
+                  <g font-family="var(--font-mono)" font-size="8">
+                    <text x="34" y="30" fill="var(--incident)">recon</text>
+                    <text x="168" y="30" fill="var(--incident)">validate</text>
+                    <text x="60" y="158" fill="var(--secure)">controls hold the line</text>
+                  </g>
+                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--incident)" opacity="0"/>
+                </svg>
+              </div>
+              <div class="mission-body">
+                <div class="mission-title-row">
+                  <h3>Security Assessment &amp; Active Defence</h3>
+                  <span class="badge badge-incident">Offensive Security</span>
+                </div>
+                <p>Vulnerability assessment, penetration testing and active defence labs in isolated, authorised environments.</p>
+                <p class="mission-meta"><span>Authorised Labs</span><span>2025–2026</span><span>NIST · Identify</span></p>
+                <button class="mission-open" type="button" data-open-mission="assessment">View Case Study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+              </div>
+            </article>
+
+            <!-- 05 Blood bank -->
+            <article class="mission" data-class="development" data-categories="development">
+              <div class="mission-art">
+                <svg viewBox="0 0 320 180" role="img" aria-label="A secure data vault with relational record nodes, inventory rows and a privacy shield.">
+                  <rect width="320" height="180" fill="var(--surface-2)"/>
+                  <g stroke="var(--border-strong)" fill="var(--surface-4)">
+                    <ellipse cx="76" cy="46" rx="42" ry="13"/>
+                    <path d="M34 46v58c0 7 19 13 42 13s42-6 42-13V46"/>
+                    <path d="M34 75c0 7 19 13 42 13s42-6 42-13"/>
+                  </g>
+                  <g stroke="var(--secure)" fill="none" stroke-width="1.4">
+                    <path d="M118 60 H176"/><path d="M118 100 H176"/>
+                    <path class="packet-route" d="M118 80 H176"/>
+                  </g>
+                  <g fill="var(--secure)">
+                    <circle cx="180" cy="60" r="5"/><circle cx="180" cy="80" r="5"/><circle cx="180" cy="100" r="5"/>
+                  </g>
+                  <g fill="var(--surface-1)" stroke="var(--border-strong)">
+                    <rect x="200" y="48" width="96" height="16" rx="3"/>
+                    <rect x="200" y="70" width="96" height="16" rx="3"/>
+                    <rect x="200" y="92" width="96" height="16" rx="3"/>
+                  </g>
+                  <g font-family="var(--font-mono)" font-size="8" fill="var(--text-3)">
+                    <text x="206" y="60">donor record</text>
+                    <text x="206" y="82">inventory unit</text>
+                    <text x="206" y="104">distribution</text>
+                  </g>
+                  <path d="M76 118 108 130v16c0 14-13 25-32 31-19-6-32-17-32-31v-16l32-12Z" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.6"/>
+                  <rect class="art-scan" x="0" y="0" width="320" height="6" fill="var(--secure)" opacity="0"/>
+                </svg>
+              </div>
+              <div class="mission-body">
+                <div class="mission-title-row">
+                  <h3>Blood Bank Database System</h3>
+                  <span class="badge">Development</span>
+                </div>
+                <p>A secure database system for managing blood donors, inventory and donor records with integrity rules in the schema.</p>
+                <p class="mission-meta"><span>Semester Project</span><span>2022</span></p>
+                <button class="mission-open" type="button" data-open-mission="blood-bank">View Case Study <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></button>
+              </div>
+            </article>
+
+            <!-- Placeholder -->
+            <article class="mission mission-placeholder" data-placeholder>
+              <div class="mission-body">
+                <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg></span>
+                <h3>More projects</h3>
+                <p>Additional academic and personal projects are documented as they are completed.</p>
+                <a class="mission-open" href="https://github.com/GhauriBoy295" target="_blank" rel="noopener noreferrer">View GitHub <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
+              </div>
+            </article>
+          </div>
+
+          <p class="missions-empty" id="missionsEmpty" hidden>No project matches that filter.</p>
+        </div>
+      </section>
+
+      <!-- ============================ Skills ============================ -->
+      <section class="section" id="skills" aria-labelledby="skillsTitle">
+        <div class="shell">
+          <div class="section-head is-centred reveal">
+            <p class="eyebrow">Capabilities</p>
+            <h2 id="skillsTitle">Skills &amp; <span class="is-secure-text">Technologies</span></h2>
+            <p>Placed on the NIST Cybersecurity Framework lifecycle, with the academic work, labs or research that grounds each one.</p>
+          </div>
+
+          <div class="skills-grid">
+            <article class="skills-panel reveal" data-reveal="left">
+              <header class="panel-card-head">
+                <h3>Core skills</h3>
+              </header>
+              <p class="skills-legend">
+                Each bar shows how many documented pieces of work back that capability — out of the three sources listed beneath it.
+                These are evidence counts, not self-assessed proficiency scores.
+              </p>
+
+              <ul class="skill-list">
+                <li>
+                  <div class="skill-row">
+                    <span class="skill-name">Threat detection &amp; monitoring</span>
+                    <span class="skill-count mono">3 / 3 sources</span>
+                  </div>
+                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
+                    <span style="--fill:100%"></span>
+                  </div>
+                  <p class="skill-sources">ICS intrusion-detection project · Phi-Tech ICS internship · network security coursework</p>
+                </li>
+                <li>
+                  <div class="skill-row">
+                    <span class="skill-name">Digital forensics &amp; incident response</span>
+                    <span class="skill-count mono">3 / 3 sources</span>
+                  </div>
+                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
+                    <span style="--fill:100%"></span>
+                  </div>
+                  <p class="skill-sources">DFIR labs · MSc DFIR module · undergraduate forensics coursework</p>
+                </li>
+                <li>
+                  <div class="skill-row">
+                    <span class="skill-name">Penetration testing &amp; assessment</span>
+                    <span class="skill-count mono">3 / 3 sources</span>
+                  </div>
+                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
+                    <span style="--fill:100%"></span>
+                  </div>
+                  <p class="skill-sources">Authorised assessment labs · MSc active defence module · undergraduate vulnerability assessment</p>
+                </li>
+                <li>
+                  <div class="skill-row">
+                    <span class="skill-name">ICS / OT security</span>
+                    <span class="skill-count mono">2 / 3 sources</span>
+                  </div>
+                  <div class="skill-track" role="img" aria-label="Backed by 2 of 3 documented sources">
+                    <span style="--fill:66.6%"></span>
+                  </div>
+                  <p class="skill-sources">ICS intrusion-detection final year project · Phi-Tech internship</p>
+                </li>
+                <li>
+                  <div class="skill-row">
+                    <span class="skill-name">Cryptography &amp; security research</span>
+                    <span class="skill-count mono">2 / 3 sources</span>
+                  </div>
+                  <div class="skill-track" role="img" aria-label="Backed by 2 of 3 documented sources">
+                    <span style="--fill:66.6%"></span>
+                  </div>
+                  <p class="skill-sources">MSc randomness-testing dissertation · undergraduate cryptography modules</p>
+                </li>
+                <li>
+                  <div class="skill-row">
+                    <span class="skill-name">Programming &amp; databases</span>
+                    <span class="skill-count mono">3 / 3 sources</span>
+                  </div>
+                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
+                    <span style="--fill:100%"></span>
+                  </div>
+                  <p class="skill-sources">Randomness suite (Python) · Blood Bank database (SQL) · MSc software development module</p>
+                </li>
+              </ul>
+            </article>
+
+            <article class="skills-panel reveal" data-reveal="right" data-delay="80">
+              <header class="panel-card-head">
+                <h3>Tools &amp; technologies</h3>
+              </header>
+              <p class="skills-legend">Tools used in academic labs, the ICS project and the MSc dissertation. Marks below are original monograms, not vendor logos.</p>
+
+              <ul class="tool-grid stagger">
+                <li><span class="tool-mark" aria-hidden="true">Nm</span><strong>Nmap</strong><small>Discovery</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Ws</span><strong>Wireshark</strong><small>Traffic analysis</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Bp</span><strong>Burp Suite</strong><small>Web testing</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Ms</span><strong>Metasploit</strong><small>Validation</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Ns</span><strong>Nessus</strong><small>Vulnerability scan</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Ov</span><strong>OpenVAS</strong><small>Vulnerability scan</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Au</span><strong>Autopsy</strong><small>Forensics</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Ftk</span><strong>FTK Imager</strong><small>Acquisition</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Py</span><strong>Python</strong><small>Analysis</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Sql</span><strong>SQL</strong><small>Data modelling</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Kl</span><strong>Kali Linux</strong><small>Lab platform</small></li>
+                <li><span class="tool-mark" aria-hidden="true">Ub</span><strong>Ubuntu</strong><small>Lab platform</small></li>
+              </ul>
+            </article>
+          </div>
+
+          <!-- Red Cell / Blue Team -->
+          <div class="redblue reveal" id="redblue" data-side="both" data-ambient>
+            <header class="redblue-head">
+              <div>
+                <p class="eyebrow">Red Cell · Blue Team</p>
+                <h3>Two perspectives on the same system</h3>
+              </div>
+              <div class="redblue-switch" id="redblueSwitch" role="group" aria-label="Emphasise a perspective">
+                <button type="button" data-side="both" aria-pressed="true">Both</button>
+                <button type="button" data-side="red" aria-pressed="false">Red Cell</button>
+                <button type="button" data-side="blue" aria-pressed="false">Blue Team</button>
+              </div>
+            </header>
+
+            <div class="redblue-diagram">
+              <svg viewBox="0 0 640 220" role="img" aria-labelledby="rbTitle rbDesc">
+                <title id="rbTitle">Attack path against defensive controls</title>
+                <desc id="rbDesc">An authorised attack path moves left to right through reconnaissance, exposed service, validation and documented risk. Below it, defensive controls — asset inventory, hardening, detection and response — intercept each stage.</desc>
+
+                <g font-family="var(--font-mono)" font-size="9" letter-spacing="1">
+                  <text x="0" y="14" fill="var(--incident)">RED CELL · AUTHORISED ATTACK PATH</text>
+                  <text x="0" y="140" fill="var(--secure)">BLUE TEAM · DEFENSIVE CONTROLS</text>
+                </g>
+
+                <!-- Connectors run between the boxes, never through them. -->
+                <g stroke="var(--incident)" stroke-width="1.5" fill="none">
+                  <path class="packet-route" d="M145 47 H175"/>
+                  <path class="packet-route" d="M305 47 H335"/>
+                  <path class="packet-route" d="M465 47 H495"/>
+                </g>
+                <g font-size="10" text-anchor="middle">
+                  <rect x="15" y="30" width="130" height="34" rx="6" fill="var(--incident-soft)" stroke="var(--incident-line)"/>
+                  <text x="80" y="51" fill="var(--incident)">Reconnaissance</text>
+                  <rect x="175" y="30" width="130" height="34" rx="6" fill="var(--incident-soft)" stroke="var(--incident-line)"/>
+                  <text x="240" y="51" fill="var(--incident)">Exposed service</text>
+                  <rect x="335" y="30" width="130" height="34" rx="6" fill="var(--incident-soft)" stroke="var(--incident-line)"/>
+                  <text x="400" y="51" fill="var(--incident)">Validation</text>
+                  <rect x="495" y="30" width="130" height="34" rx="6" fill="var(--incident-soft)" stroke="var(--incident-line)"/>
+                  <text x="560" y="51" fill="var(--incident)">Documented risk</text>
+                </g>
+
+                <g stroke="var(--secure)" stroke-width="1.2" stroke-dasharray="3 4" fill="none" opacity=".8">
+                  <path d="M80 64 V150"/><path d="M240 64 V150"/><path d="M400 64 V96"/><path d="M400 118 V150"/><path d="M560 64 V150"/>
+                </g>
+
+                <g font-size="10" text-anchor="middle">
+                  <rect x="15" y="150" width="130" height="34" rx="6" fill="var(--secure-soft)" stroke="var(--secure-line)"/>
+                  <text x="80" y="171" fill="var(--secure)">Asset inventory</text>
+                  <rect x="175" y="150" width="130" height="34" rx="6" fill="var(--secure-soft)" stroke="var(--secure-line)"/>
+                  <text x="240" y="171" fill="var(--secure)">Hardening</text>
+                  <rect x="335" y="150" width="130" height="34" rx="6" fill="var(--secure-soft)" stroke="var(--secure-line)"/>
+                  <text x="400" y="171" fill="var(--secure)">Detection</text>
+                  <rect x="495" y="150" width="130" height="34" rx="6" fill="var(--secure-soft)" stroke="var(--secure-line)"/>
+                  <text x="560" y="171" fill="var(--secure)">Response</text>
+                </g>
+
+                <g fill="var(--secure)"><circle class="node-pulse" cx="400" cy="107" r="4"/></g>
+                <text x="412" y="111" font-size="9" fill="var(--text-3)" font-family="var(--font-mono)">detection point</text>
+              </svg>
+            </div>
+            <p class="redblue-note">All offensive work described in this portfolio was carried out in isolated, authorised academic lab environments. No live or third-party system was tested.</p>
+
+            <div class="redblue-body">
+              <article class="redblue-column" data-side="red">
+                <h4><svg class="icon" aria-hidden="true"><use href="#icon-crosshair"></use></svg> Red Cell</h4>
+                <p>What an authorised assessment looks for, and how far it is allowed to go.</p>
+                <ul class="redblue-list">
+                  <li><b>01</b><span>Scope and written authorisation before any activity</span></li>
+                  <li><b>02</b><span>Service discovery and surface enumeration</span></li>
+                  <li><b>03</b><span>Vulnerability identification and prioritisation</span></li>
+                  <li><b>04</b><span>Controlled validation — confirm, do not damage</span></li>
+                  <li><b>05</b><span>Findings written as risk, not as a tool dump</span></li>
+                </ul>
+              </article>
+
+              <article class="redblue-column" data-side="blue">
+                <h4><svg class="icon" aria-hidden="true"><use href="#icon-shield"></use></svg> Blue Team</h4>
+                <p>The defensive side, which is where most of my academic work sits.</p>
+                <ul class="redblue-list">
+                  <li><b>01</b><span>Know the estate: inventory and exposure baseline</span></li>
+                  <li><b>02</b><span>Harden and assure — including the primitives underneath</span></li>
+                  <li><b>03</b><span>Detect anomalies without disturbing the process</span></li>
+                  <li><b>04</b><span>Investigate with preserved, documented evidence</span></li>
+                  <li><b>05</b><span>Feed every finding back into the controls</span></li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ Certifications ============================ -->
+      <section class="section" id="certifications" aria-labelledby="certificationsTitle">
+        <div class="shell">
+          <div class="section-head is-centred reveal">
+            <p class="eyebrow">Evidence register</p>
+            <h2 id="certificationsTitle">Certifications &amp; <span class="is-secure-text">Course Completions</span></h2>
+            <p>Recorded the way evidence should be, with verification status stated plainly. These are course completions, not vendor or industry certifications.</p>
+          </div>
+
+          <div class="register-group reveal">
+            <h3>Verified credentials <span class="count-pill">3</span></h3>
+            <p class="register-note-text">Each entry below has a public verification link.</p>
+            <div class="cert-grid stagger">
+              <a class="cert-card" href="https://coursera.org/verify/M5XKN4EQEFHG" target="_blank" rel="noopener noreferrer">
+                <span class="tool-mark" aria-hidden="true">G</span>
+                <div>
+                  <strong>Foundations of Cybersecurity</strong>
+                  <span class="cert-issuer">Google · Coursera</span>
+                </div>
+                <span class="cert-meta"><span class="mono">Jul 2023</span><span class="badge badge-secure badge-dot">Verify</span></span>
               </a>
-              <button class="button button-secondary" id="copyEmail" type="button" data-copy="sarmadsaeed2002@gmail.com">
-                <svg class="icon" aria-hidden="true"><use href="#icon-copy"></use></svg>
-                <span>Copy email</span>
-              </button>
+              <a class="cert-card" href="https://coursera.org/verify/75KLRQTGMFWF" target="_blank" rel="noopener noreferrer">
+                <span class="tool-mark" aria-hidden="true">G</span>
+                <div>
+                  <strong>Tools of the Trade: Linux and SQL</strong>
+                  <span class="cert-issuer">Google · Coursera</span>
+                </div>
+                <span class="cert-meta"><span class="mono">Aug 2024</span><span class="badge badge-secure badge-dot">Verify</span></span>
+              </a>
+              <a class="cert-card" href="https://coursera.org/verify/GJP79NMV2MYR" target="_blank" rel="noopener noreferrer">
+                <span class="tool-mark" aria-hidden="true">IBM</span>
+                <div>
+                  <strong>Introduction to Cybersecurity Tools &amp; Cyber Attacks</strong>
+                  <span class="cert-issuer">IBM · Coursera</span>
+                </div>
+                <span class="cert-meta"><span class="mono">Jul 2023</span><span class="badge badge-secure badge-dot">Verify</span></span>
+              </a>
             </div>
           </div>
 
-          <div class="contact-directory">
-            <div class="local-time" id="localTime" hidden>
-              <span>Local time in the UK</span>
-              <strong><time id="localTimeValue"></time></strong>
-              <span class="local-time-note" id="localTimeNote"></span>
+          <div class="register-group reveal">
+            <h3>Additional course completions <span class="count-pill is-muted">2</span></h3>
+            <p class="register-note-text">Completed, but no verification link was supplied. Listed separately rather than counted as verified.</p>
+            <div class="cert-grid">
+              <div class="cert-card is-muted">
+                <span class="tool-mark" aria-hidden="true">G</span>
+                <div>
+                  <strong>Connect and Protect: Networks and Network Security</strong>
+                  <span class="cert-issuer">Google · Coursera</span>
+                </div>
+                <span class="cert-meta"><span class="badge">Unverified</span></span>
+              </div>
+              <div class="cert-card is-muted">
+                <span class="tool-mark" aria-hidden="true">G</span>
+                <div>
+                  <strong>Assets, Threats, and Vulnerabilities</strong>
+                  <span class="cert-issuer">Google · Coursera</span>
+                </div>
+                <span class="cert-meta"><span class="badge">Unverified</span></span>
+              </div>
             </div>
-            <a href="mailto:sarmadsaeed2002@gmail.com"><span>Email</span><strong>sarmadsaeed2002@gmail.com</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
-            <a href="https://www.linkedin.com/in/sarmad-saeed-cyber" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><strong>sarmad-saeed-cyber</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
-            <a href="https://github.com/GhauriBoy295" target="_blank" rel="noopener noreferrer"><span>GitHub</span><strong>GhauriBoy295</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
-            <a href="https://github.com/GhauriBoy295/GhauriBoy295.github.io" target="_blank" rel="noopener noreferrer"><span>Source</span><strong>This portfolio on GitHub</strong><svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg></a>
-            <a href="Sarmad_Saeed_CV.pdf" download><span>Curriculum vitae</span><strong>Download PDF</strong><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg></a>
-            <a href="Sarmad_Saeed_CV.docx" download><span>Editable document</span><strong>Download DOCX</strong><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg></a>
           </div>
+
+          <div class="recognition stagger reveal">
+            <article>
+              <p class="mono" style="color:var(--text-3)">Recognition</p>
+              <h4>Entrepreneur Gala — 2nd position</h4>
+              <p>Recognised at Air University for presenting the Intrusion Detection for Industrial Control Systems project concept.</p>
+            </article>
+            <article>
+              <p class="mono" style="color:var(--text-3)">Community</p>
+              <h4>IEEE Cyber Warfare &amp; Security</h4>
+              <p>Conference attendee in 2021 and organising committee member in 2022.</p>
+            </article>
+            <article>
+              <p class="mono" style="color:var(--text-3)">Note on scope</p>
+              <h4>No industry certifications claimed</h4>
+              <p>This register lists exactly what has been completed. Nothing here is presented as a vendor or industry certification.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ Contact ============================ -->
+      <section class="section" id="contact" aria-labelledby="contactTitle" data-ambient>
+        <div class="shell">
+          <div class="section-head is-centred reveal">
+            <p class="eyebrow">Get in touch</p>
+            <h2 id="contactTitle">Based in the UK. <span class="is-secure-text">Open worldwide.</span></h2>
+            <p>Open to graduate and entry-level cyber security opportunities worldwide — remote, hybrid, on-site and relocation — across SOC operations, cyber security analysis, DFIR, vulnerability assessment and ICS/OT security.</p>
+          </div>
+
+          <div class="contact-grid reveal">
+            <div>
+              <div class="reach-modes">
+                <span class="badge badge-secure">Remote</span>
+                <span class="badge badge-secure">Hybrid</span>
+                <span class="badge badge-secure">On-site</span>
+                <span class="badge badge-secure">Relocation</span>
+              </div>
+
+              <div class="reach-map">
+                <svg viewBox="0 0 560 240" role="img" aria-labelledby="reachTitle reachDesc">
+                  <title id="reachTitle">Worldwide availability</title>
+                  <desc id="reachDesc">An abstract world layout with the base marked in the United Kingdom and routes reaching Europe, the Americas, Africa, the Middle East, Asia and Oceania.</desc>
+                  <defs>
+                    <pattern id="reachDots" width="6" height="6" patternUnits="userSpaceOnUse">
+                      <circle cx="2.4" cy="2.4" r="1.3" fill="var(--secure)" fill-opacity="0.5"/>
+                    </pattern>
+                  </defs>
+                  <g fill="url(#reachDots)" stroke="var(--border-strong)" stroke-width="0.8" stroke-opacity="0.5">
+                    <path d="M60 70 q30 -22 70 -10 q26 8 20 30 q-6 22 -40 26 q-40 4 -52 -14 q-8 -20 2 -32Z"/>
+                    <path d="M110 132 q26 -10 34 14 q10 34 -14 60 q-20 20 -30 -6 q-8 -46 10 -68Z"/>
+                    <path d="M236 54 q40 -18 74 -4 q20 8 8 24 q-14 18 -42 18 q-32 0 -42 -14 q-8 -14 2 -24Z"/>
+                    <path d="M252 104 q30 -10 40 16 q12 40 -8 78 q-18 30 -32 2 q-16 -58 0 -96Z"/>
+                    <path d="M330 78 q60 -26 130 -6 q40 12 30 34 q-12 26 -70 30 q-70 4 -92 -20 q-14 -20 2 -38Z"/>
+                    <path d="M446 160 q30 -14 48 6 q16 18 -8 30 q-32 14 -48 -8 q-10 -16 8 -28Z"/>
+                  </g>
+                  <g fill="none" stroke="var(--secure)" stroke-width="1.4" opacity=".8">
+                    <path class="packet-route" d="M120 62 Q90 20 60 60"/>
+                    <path class="packet-route is-slow" d="M120 62 Q180 10 260 56"/>
+                    <path class="packet-route" d="M120 62 Q120 130 128 176"/>
+                    <path class="packet-route is-slow" d="M120 62 Q260 -10 400 74"/>
+                    <path class="packet-route" d="M120 62 Q300 120 470 178"/>
+                    <path class="packet-route is-slow" d="M120 62 Q220 120 272 168"/>
+                  </g>
+                  <g fill="var(--secure)">
+                    <circle cx="60" cy="60" r="3.5"/><circle cx="260" cy="56" r="3.5"/>
+                    <circle cx="128" cy="176" r="3.5"/><circle cx="400" cy="74" r="3.5"/>
+                    <circle cx="470" cy="178" r="3.5"/><circle cx="272" cy="168" r="3.5"/>
+                    <circle class="node-pulse" cx="120" cy="62" r="10" opacity=".3"/>
+                    <circle cx="120" cy="62" r="5.5"/>
+                  </g>
+                  <text x="134" y="52" font-family="var(--font-mono)" font-size="10" fill="var(--secure)">BASE · UNITED KINGDOM</text>
+                </svg>
+              </div>
+
+              <div class="contact-actions">
+                <a class="btn btn-primary" href="mailto:sarmadsaeed2002@gmail.com">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-mail"></use></svg>
+                  <span>Start a conversation</span>
+                </a>
+                <button class="btn btn-secondary" type="button" data-copy="sarmadsaeed2002@gmail.com" data-copy-message="Email copied to clipboard">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-copy"></use></svg>
+                  <span>Copy email</span>
+                </button>
+                <button class="btn btn-ghost" type="button" id="printPage">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-print"></use></svg>
+                  <span>Print profile</span>
+                </button>
+                <button class="btn btn-ghost" type="button" id="installApp" hidden>
+                  <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+                  <span>Install app</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="contact-directory">
+              <a href="mailto:sarmadsaeed2002@gmail.com">
+                <div><span>Email</span><strong>sarmadsaeed2002@gmail.com</strong></div>
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/sarmad-saeed-845a7b267" target="_blank" rel="noopener noreferrer">
+                <div><span>LinkedIn</span><strong>in/sarmad-saeed-845a7b267</strong></div>
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg>
+              </a>
+              <a href="https://github.com/GhauriBoy295" target="_blank" rel="noopener noreferrer">
+                <div><span>GitHub</span><strong>GhauriBoy295</strong></div>
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg>
+              </a>
+              <a href="https://github.com/GhauriBoy295/GhauriBoy295.github.io" target="_blank" rel="noopener noreferrer">
+                <div><span>Source</span><strong>This portfolio on GitHub</strong></div>
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg>
+              </a>
+              <a href="Sarmad_Saeed_CV.pdf" download>
+                <div><span>Curriculum vitae</span><strong>Download PDF</strong></div>
+                <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+              </a>
+              <a href="Sarmad_Saeed_CV.docx" download>
+                <div><span>Editable document</span><strong>Download DOCX</strong></div>
+                <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ Feature strip ============================ -->
+      <section class="feature-strip" aria-label="How this site is built">
+        <div class="shell">
+          <ul class="feature-grid stagger">
+            <li>
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-shield"></use></svg></span>
+              <div><strong>Cyber security focused</strong><small>Security is built into everything I do</small></div>
+            </li>
+            <li>
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bolt"></use></svg></span>
+              <div><strong>Performance optimised</strong><small>No framework, no build step, 16 requests</small></div>
+            </li>
+            <li>
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"></use></svg></span>
+              <div><strong>Fully responsive</strong><small>Tested from 320px to 1920px</small></div>
+            </li>
+            <li>
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-activity"></use></svg></span>
+              <div><strong>Interactive experience</strong><small>Command palette, filters, case-study reports</small></div>
+            </li>
+            <li>
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-accessibility"></use></svg></span>
+              <div><strong>Accessible design</strong><small>WCAG AA contrast and keyboard access</small></div>
+            </li>
+            <li>
+              <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-code"></use></svg></span>
+              <div><strong>Clean &amp; modern code</strong><small>Semantic HTML, modular CSS and JavaScript</small></div>
+            </li>
+          </ul>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer section-shell">
-      <div>
-        <a class="footer-brand" href="#home"><span>SS</span><strong>Sarmad Saeed</strong></a>
-        <p>Cyber security portfolio · Built for clarity, performance and accessibility.</p>
+    <!-- ============================ Footer ============================ -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          <a class="footer-brand" href="#home">
+            <span class="brand-mark" aria-hidden="true">SS</span>
+            <strong>Sarmad Saeed</strong>
+          </a>
+          <p style="margin-top:var(--space-3);color:var(--text-3);font-size:0.88rem;max-width:42ch">AEGIS NEXUS — a cyber security portfolio built for clarity, performance and accessibility.</p>
+        </div>
+
+        <div>
+          <h3>Navigate</h3>
+          <div class="footer-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#certifications">Certifications</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>System</h3>
+          <div class="footer-links">
+            <button type="button" data-replay-boot>Replay secure welcome</button>
+            <button type="button" data-copy="page-url" data-copy-message="Portfolio link copied">Copy link to this page</button>
+            <a href="https://github.com/GhauriBoy295/GhauriBoy295.github.io" target="_blank" rel="noopener noreferrer">View source</a>
+            <a href="#home">Back to top</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-actions">
-        <button id="replayIntro" type="button">Replay welcome</button>
-        <a href="#home">Back to top</a>
+
+      <div class="footer-legal">
+        <p class="footer-status">
+          <span>Release 16.0.0</span>
+          <span>Status <span id="connectionState" class="is-online">Online</span></span>
+          <span>Base United Kingdom</span>
+          <span>Availability Worldwide</span>
+        </p>
+        <p style="margin-top:var(--space-3)">© <span id="currentYear">2026</span> Sarmad Saeed. All rights reserved.</p>
       </div>
-      <p class="footer-copy">© <span id="currentYear">2026</span> Sarmad Saeed. All rights reserved.</p>
     </footer>
   </div>
 
@@ -742,111 +1370,168 @@
     <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
   </button>
 
-  <dialog class="project-dialog" id="projectDialog" aria-labelledby="projectDialogTitle">
-    <div class="dialog-shell">
-      <div class="dialog-topbar">
-        <span id="projectDialogKicker">Project case study</span>
-        <button class="dialog-close" id="projectDialogClose" type="button" aria-label="Close project case study">
-          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
-        </button>
+  <!-- ============================ Case-study report ============================ -->
+  <dialog class="report dialog-reset" id="report" aria-labelledby="reportTitle">
+    <div class="report-shell">
+      <div class="report-bar">
+        <div>
+          <p class="mono" id="reportKicker">Case study</p>
+          <h2 id="reportTitle">Case study</h2>
+          <p class="mono" id="reportMeta"></p>
+        </div>
+        <button class="report-close" id="reportClose" type="button" aria-label="Close case study"></button>
       </div>
-      <div class="dialog-content">
-        <div class="dialog-intro">
-          <p class="section-index" id="projectDialogMeta"></p>
-          <h2 id="projectDialogTitle"></h2>
-          <p id="projectDialogSummary"></p>
-          <div class="dialog-framework" id="projectDialogFramework" hidden></div>
-          <div class="dialog-stack" id="projectDialogStack"></div>
-        </div>
-        <div class="case-study-grid" id="projectDialogDetails"></div>
 
-        <div class="dialog-actions">
-          <button class="button button-secondary" id="projectCopyLink" type="button">
-            <svg class="icon" aria-hidden="true"><use href="#icon-link"></use></svg>
-            <span>Copy link to this case study</span>
-          </button>
-          <button class="button button-ghost" id="projectPrint" type="button">
-            <svg class="icon" aria-hidden="true"><use href="#icon-print"></use></svg>
-            <span>Print</span>
-          </button>
-        </div>
+      <div class="report-body">
+        <div class="report-rail" id="reportRail" role="tablist" aria-label="Case study sections"></div>
+        <div class="report-main" id="reportMain"></div>
+        <aside class="report-aside">
+          <div>
+            <h4>Classification</h4>
+            <div id="reportClass" style="margin-top:var(--space-2)"></div>
+          </div>
+          <div id="reportFrameworkBlock" hidden>
+            <h4>Framework alignment</h4>
+            <div class="report-framework" id="reportFramework" style="margin-top:var(--space-2)"></div>
+          </div>
+          <div>
+            <h4>Technology</h4>
+            <div class="mission-stack" id="reportStack" style="margin-top:var(--space-2)"></div>
+          </div>
+          <div class="artefact-block">
+            <h4>Working material</h4>
+            <ul class="artefact-list" id="reportArtefacts"></ul>
+          </div>
+          <div class="report-tail">
+          <div class="report-actions">
+            <button class="btn btn-secondary" id="reportCopy" type="button" aria-label="Copy a link to this case study">
+              <svg class="icon" aria-hidden="true"><use href="#icon-link"></use></svg>
+              <span>Copy</span>
+            </button>
+            <button class="btn btn-ghost" id="reportShare" type="button" aria-label="Share this case study" hidden>
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg>
+              <span>Share</span>
+            </button>
+            <button class="btn btn-ghost" id="reportPrint" type="button" aria-label="Print this case study as a report">
+              <svg class="icon" aria-hidden="true"><use href="#icon-print"></use></svg>
+              <span>Print</span>
+            </button>
+          </div>
+          <div class="report-nav">
+            <button id="reportPrev" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"></use></svg>
+              <span>Previous</span>
+            </button>
+            <button id="reportNext" type="button">
+              <span>Next</span>
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+          </div>
+        </aside>
       </div>
     </div>
   </dialog>
 
-  <dialog class="shortcuts-dialog" id="shortcutsDialog" aria-labelledby="shortcutsTitle">
-    <div class="dialog-shell">
-      <div class="dialog-topbar">
-        <span>Keyboard</span>
-        <button class="dialog-close" id="shortcutsClose" type="button" aria-label="Close keyboard shortcuts">
+  <!-- ============================ Command palette ============================ -->
+  <dialog class="command dialog-reset" id="command" aria-labelledby="commandLabel">
+    <div class="command-shell">
+      <div class="command-search">
+        <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+        <label class="sr-only" for="commandInput" id="commandLabel">Search portfolio commands</label>
+        <input id="commandInput" type="search" autocomplete="off" placeholder="Navigate, open a case study or run an action…">
+        <kbd>Esc</kbd>
+      </div>
+      <div class="command-results" id="commandResults" role="listbox" aria-label="Available commands"></div>
+      <div class="command-footer">
+        <span><kbd>↑</kbd> <kbd>↓</kbd> select</span>
+        <span><kbd>Enter</kbd> run</span>
+        <span><kbd>?</kbd> shortcuts</span>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ============================ Shortcuts ============================ -->
+  <dialog class="sheet dialog-reset" id="shortcuts" aria-labelledby="shortcutsTitle">
+    <div class="sheet-shell">
+      <div class="sheet-bar">
+        <h2 id="shortcutsTitle" style="font-size:1.1rem">Keyboard shortcuts</h2>
+        <button class="report-close" id="shortcutsClose" type="button" aria-label="Close keyboard shortcuts">
           <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
         </button>
       </div>
-      <div class="dialog-content">
-        <h2 id="shortcutsTitle">Keyboard shortcuts</h2>
+      <div class="sheet-body">
         <dl class="shortcuts-list">
-          <div><dt><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>K</kbd></dt><dd>Open the command menu</dd></div>
+          <div><dt><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>K</kbd></dt><dd>Open the command palette</dd></div>
           <div><dt><kbd>?</kbd></dt><dd>Open this shortcuts list</dd></div>
-          <div><dt><kbd>Enter</kbd></dt><dd>Continue from the welcome panel</dd></div>
-          <div><dt><kbd>Esc</kbd></dt><dd>Close a dialog or the mobile menu</dd></div>
+          <div><dt><kbd>Enter</kbd></dt><dd>Continue from the secure welcome</dd></div>
+          <div><dt><kbd>Esc</kbd></dt><dd>Close a dialog, menu or the welcome</dd></div>
           <div><dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>Move through command results</dd></div>
           <div><dt><kbd>Tab</kbd></dt><dd>Move between controls</dd></div>
           <div><dt><kbd>T</kbd></dt><dd>Switch between dark and light</dd></div>
+          <div><dt><kbd>M</kbd></dt><dd>Cycle motion: full, calm, off</dd></div>
           <div><dt><kbd>G</kbd> then <kbd>P</kbd></dt><dd>Go to projects</dd></div>
+          <div><dt><kbd>G</kbd> then <kbd>S</kbd></dt><dd>Go to skills</dd></div>
+          <div><dt><kbd>G</kbd> then <kbd>C</kbd></dt><dd>Go to contact</dd></div>
         </dl>
       </div>
     </div>
   </dialog>
 
-  <dialog class="command-dialog" id="commandDialog" aria-labelledby="commandTitle">
-    <div class="command-shell">
-      <div class="command-search">
-        <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
-        <label class="sr-only" for="commandInput" id="commandTitle">Search portfolio commands</label>
-        <input id="commandInput" type="search" autocomplete="off" placeholder="Navigate or run an action…">
-        <kbd>Esc</kbd>
-      </div>
-      <div class="command-results" id="commandResults" role="listbox" aria-label="Available commands"></div>
-      <div class="command-footer"><span><kbd>↑</kbd><kbd>↓</kbd> select</span><span><kbd>Enter</kbd> run</span></div>
-    </div>
-  </dialog>
-
   <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
+  <!-- ============================ Icons ============================ -->
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
     <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
     <symbol id="icon-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
     <symbol id="icon-arrow-down" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></symbol>
     <symbol id="icon-arrow-up" viewBox="0 0 24 24"><path d="M12 20V4M6 10l6-6 6 6"/></symbol>
     <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
     <symbol id="icon-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v5h5M9 13h6M9 17h5"/></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
     <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
     <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></symbol>
     <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M21 15.5A9 9 0 1 1 8.5 3 7 7 0 0 0 21 15.5Z"/></symbol>
+    <symbol id="icon-monitor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+    <symbol id="icon-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="icon-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="icon-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+    <symbol id="icon-accessibility" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor" stroke="none"/><path d="M8 10.5h8M12 10.5V15M12 15l-2.5 3.5M12 15l2.5 3.5"/></symbol>
+    <symbol id="icon-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5L16 9.5"/></symbol>
+    <symbol id="icon-mouse" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="5"/><path d="M12 7v3"/></symbol>
+    <symbol id="icon-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18"/></symbol>
     <symbol id="icon-user-shield" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2.5 21c.8-4.5 3-7 6.5-7 2 0 3.6.8 4.7 2.2M17 11l4 1.5v3c0 2.5-1.5 4.5-4 5.5-2.5-1-4-3-4-5.5v-3z"/></symbol>
-    <symbol id="icon-quote" viewBox="0 0 24 24"><path d="M5 7h6v6H7c0 2 1 3.3 3 4l-1 2c-4-1.2-6-3.8-6-7V9c0-1.1.9-2 2-2Zm10 0h6v6h-4c0 2 1 3.3 3 4l-1 2c-4-1.2-6-3.8-6-7V9c0-1.1.9-2 2-2Z"/></symbol>
     <symbol id="icon-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/><path d="M12 12 18.5 5.5"/></symbol>
     <symbol id="icon-crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></symbol>
-    <symbol id="icon-fingerprint" viewBox="0 0 24 24"><path d="M5 10a7 7 0 0 1 14 0M7 12v2c0 3-1 5-2 6M10 10a2 2 0 0 1 4 0v4c0 3 1 5 2 6M17 12v3c0 2 .5 3.5 1.5 5M10 15c0 2-.5 4-1.5 6"/></symbol>
-    <symbol id="icon-factory" viewBox="0 0 24 24"><path d="M3 21V9l6 3V9l6 3V5h5v16zM7 17h2M12 17h2M17 17h2"/></symbol>
-    <symbol id="icon-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M8 15h8"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.5 2.5L16 9.5"/></symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></symbol>
     <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 3l-4 18"/></symbol>
+    <symbol id="icon-command" viewBox="0 0 24 24"><path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z"/></symbol>
     <symbol id="icon-graduation" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5zM6 11v5c3 3 9 3 12 0v-5M22 9v7"/></symbol>
     <symbol id="icon-certificate" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="m8 14-2 7 6-3 6 3-2-7M9 9l2 2 4-4"/></symbol>
     <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3A5 5 0 0 0 13 3l-1.5 1.5M14 11a5 5 0 0 0-7.07 0l-3 3A5 5 0 0 0 11 21l1.5-1.5"/></symbol>
     <symbol id="icon-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-6h16v6h-2M8 14h8v7H8z"/></symbol>
-    <symbol id="icon-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="m8 12-2 9 6-3 6 3-2-9"/></symbol>
-    <symbol id="icon-community" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c.5-4 2.5-6 6-6s5.5 2 6 6M14 15c4-.5 6.5 1.3 7 5"/></symbol>
     <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
     <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
-    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
     <symbol id="icon-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
   </svg>
 
   <noscript>
     <style>
-      .access-screen{display:none!important}.site-shell{opacity:1!important;visibility:visible!important}.reveal{opacity:1!important;transform:none!important}
+      /* Without script the welcome scene never resolves, so it is removed
+         outright and the shell is restored to a normal document. */
+      .boot { display: none !important; }
+      body.boot-active { overflow: auto !important; }
+      body.boot-active .site-shell { filter: none !important; }
+      .reveal, .stagger > * { opacity: 1 !important; transform: none !important; }
+      .header-command, .pref, .menu-toggle, .back-to-top, #installApp, #printPage { display: none !important; }
+      .primary-nav { position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important; }
     </style>
+    <p style="max-width:70ch;margin:1rem auto;padding:1rem;border:1px solid var(--border);border-radius:12px;color:var(--text-2)">
+      JavaScript is disabled, so the command palette, filters and case-study reports are unavailable. All portfolio content remains readable below, and the CV downloads work normally.
+    </p>
   </noscript>
 </body>
 </html>

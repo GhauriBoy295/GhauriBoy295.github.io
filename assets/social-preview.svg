@@ -1,97 +1,103 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- AEGIS NEXUS social preview, 1200x630. BlackICE Night palette: navy and
+       black structure, solid green as the signal colour, no red (nothing here
+       is an incident state). Original artwork; no external assets. -->
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#06111f"/>
-      <stop offset="0.5" stop-color="#020405"/>
-      <stop offset="1" stop-color="#06111f"/>
-    </linearGradient>
-    <radialGradient id="glowA" cx="0.1" cy="0.05" r="0.6">
-      <stop offset="0" stop-color="#00e676" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="#00e676" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glowB" cx="0.95" cy="0.9" r="0.6">
-      <stop offset="0" stop-color="#72ffb0" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#72ffb0" stop-opacity="0"/>
-    </radialGradient>
     <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-      <path d="M48 0H0V48" fill="none" stroke="#00e676" stroke-opacity="0.06" stroke-width="1"/>
+      <path d="M48 0H0V48" fill="none" stroke="#1B405A" stroke-opacity="0.55" stroke-width="1"/>
     </pattern>
-    <linearGradient id="shield" x1="120" y1="190" x2="272" y2="410" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#00e676"/>
-      <stop offset="1" stop-color="#72ffb0"/>
-    </linearGradient>
+    <radialGradient id="gridFade" cx="0.5" cy="0.1" r="0.9">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="gridMask">
+      <rect width="1200" height="630" fill="url(#gridFade)"/>
+    </mask>
   </defs>
 
-  <rect width="1200" height="630" fill="#020405"/>
-  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="#020507"/>
+  <rect width="1200" height="630" fill="url(#grid)" mask="url(#gridMask)"/>
 
-  <!-- Card -->
-  <rect x="44" y="40" width="1112" height="550" rx="26"
-        fill="#0b1f33" stroke="#00e676" stroke-opacity="0.28" stroke-width="1.5"/>
+  <!-- Panel -->
+  <rect x="40" y="36" width="1120" height="558" rx="24" fill="#06111D" stroke="#1B405A" stroke-width="1.5"/>
 
   <!-- Window bar -->
-  <path d="M44 108 H1156" stroke="#00e676" stroke-opacity="0.18" stroke-width="1.5"/>
-  <circle cx="78" cy="74" r="6.5" fill="#ff5f57"/>
-  <circle cx="100" cy="74" r="6.5" fill="#ff5a6b"/>
-  <circle cx="122" cy="74" r="6.5" fill="#00e676"/>
-  <text x="600" y="80" text-anchor="middle" fill="#93a4b8"
-        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="15" letter-spacing="2.6">PORTFOLIO ACCESS</text>
-  <circle cx="1028" cy="74" r="5" fill="#00e676"/>
-  <text x="1044" y="80" fill="#dbe4ec"
-        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="15" letter-spacing="2.2">READY</text>
+  <path d="M40 96 H1160" stroke="#102B3F" stroke-width="1.5"/>
+  <circle cx="72" cy="66" r="5.5" fill="#24567A"/>
+  <circle cx="90" cy="66" r="5.5" fill="#24567A"/>
+  <circle cx="108" cy="66" r="5.5" fill="#22E58B"/>
+  <text x="132" y="71" fill="#91A6B7" font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="2.4">AEGIS NEXUS · SECURE PROFILE</text>
+  <circle cx="1046" cy="66" r="4.5" fill="#22E58B"/>
+  <text x="1060" y="71" fill="#22E58B" font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="2.2">READY</text>
 
-  <!-- Left identity mark -->
-  <circle cx="196" cy="300" r="118" fill="none" stroke="#72ffb0" stroke-opacity="0.35" stroke-width="1.5"/>
-  <circle cx="196" cy="300" r="97" fill="none" stroke="#00e676" stroke-opacity="0.22" stroke-width="1.5"/>
-  <circle cx="196" cy="182" r="5" fill="#00e676"/>
-  <circle cx="93" cy="352" r="4.5" fill="#72ffb0"/>
-  <circle cx="299" cy="348" r="4.5" fill="#00e676"/>
-  <path d="M196 208 L268 236 v50c0 42-28 76-72 94-44-18-72-52-72-94v-50z"
-        fill="none" stroke="url(#shield)" stroke-width="4" stroke-linejoin="round"/>
-  <text x="196" y="304" text-anchor="middle" fill="#f4f7fa"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="1">SS</text>
-  <text x="196" y="336" text-anchor="middle" fill="#72ffb0"
-        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="11" letter-spacing="1.4">CYBER SECURITY</text>
+  <!-- Availability pill -->
+  <rect x="80" y="136" width="470" height="38" rx="19" fill="#0C2B22" stroke="#22E58B" stroke-opacity="0.45" stroke-width="1.4"/>
+  <circle cx="104" cy="155" r="6" fill="#22E58B"/>
+  <text x="120" y="161" fill="#22E58B" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="600">Open to cyber security opportunities worldwide</text>
 
-  <!-- Right content -->
-  <text x="370" y="182" fill="#00e676"
-        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="17" letter-spacing="2.4">PROFESSIONAL CYBER SECURITY PORTFOLIO</text>
+  <!-- Name -->
+  <text x="78" y="262" fill="#F5F8FA" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="-3">SARMAD <tspan fill="#22E58B">SAEED</tspan></text>
 
-  <text x="370" y="266" fill="#ffffff"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="68" font-weight="800" letter-spacing="-2">Sarmad Saeed</text>
+  <text x="80" y="312" fill="#F5F8FA" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="29" font-weight="650">MSc Cyber Security Graduate</text>
+  <text x="80" y="350" fill="#91A6B7" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">University of Chester · 2025–2026 · Graduated</text>
 
-  <text x="370" y="326" fill="#f4f7fa"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" font-weight="700">MSc Cyber Security Graduate</text>
+  <!-- Status cards -->
+  <g font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="12" letter-spacing="1.6">
+    <rect x="80" y="392" width="228" height="88" rx="12" fill="#081827" stroke="#102B3F"/>
+    <rect x="80" y="392" width="2.5" height="88" fill="#22E58B"/>
+    <text x="102" y="424" fill="#91A6B7">CURRENT BASE</text>
+    <text x="102" y="456" fill="#F5F8FA" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="21" font-weight="650" letter-spacing="0">United Kingdom</text>
 
-  <text x="370" y="368" fill="#93a4b8"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="25">University of Chester · 2025–2026</text>
+    <rect x="324" y="392" width="228" height="88" rx="12" fill="#081827" stroke="#102B3F"/>
+    <rect x="324" y="392" width="2.5" height="88" fill="#22E58B"/>
+    <text x="346" y="424" fill="#91A6B7">AVAILABILITY</text>
+    <text x="346" y="456" fill="#22E58B" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="21" font-weight="650" letter-spacing="0">Worldwide</text>
+  </g>
 
-  <text x="370" y="422" fill="#dbe4ec"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">Security research, threat detection, DFIR,</text>
-  <text x="370" y="454" fill="#dbe4ec"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22">penetration testing and ICS/OT defence.</text>
+  <!-- Focus tags -->
+  <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="600">
+    <rect x="80" y="504" width="132" height="34" rx="8" fill="#081827" stroke="#1B405A"/>
+    <text x="146" y="526" text-anchor="middle" fill="#C6D2DC">SOC OPERATIONS</text>
+    <rect x="222" y="504" width="78" height="34" rx="8" fill="#081827" stroke="#1B405A"/>
+    <text x="261" y="526" text-anchor="middle" fill="#C6D2DC">DFIR</text>
+    <rect x="310" y="504" width="112" height="34" rx="8" fill="#081827" stroke="#1B405A"/>
+    <text x="366" y="526" text-anchor="middle" fill="#C6D2DC">ICS / OT</text>
+    <rect x="432" y="504" width="176" height="34" rx="8" fill="#081827" stroke="#1B405A"/>
+    <text x="520" y="526" text-anchor="middle" fill="#C6D2DC">SECURITY RESEARCH</text>
+  </g>
 
-  <!-- Tag pills -->
-  <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="1">
-    <rect x="370" y="496" width="176" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="458" y="522" text-anchor="middle" fill="#72ffb0">THREAT DETECTION</text>
+  <!-- Globe -->
+  <g transform="translate(880 330)" stroke="#22E58B" fill="none">
+    <circle r="168" stroke="#1B405A" stroke-width="1.5"/>
+    <ellipse rx="112" ry="168" stroke="#1B405A" stroke-opacity="0.7"/>
+    <ellipse rx="56" ry="168" stroke="#1B405A" stroke-opacity="0.7"/>
+    <line x1="0" y1="-168" x2="0" y2="168" stroke="#1B405A" stroke-opacity="0.7"/>
+    <path d="M-125 -112 Q0 -88 125 -112" stroke="#1B405A" stroke-opacity="0.7"/>
+    <path d="M-158 -56 Q0 -28 158 -56" stroke="#1B405A" stroke-opacity="0.7"/>
+    <path d="M-168 0 Q0 28 168 0" stroke="#1B405A" stroke-opacity="0.8"/>
+    <path d="M-158 56 Q0 84 158 56" stroke="#1B405A" stroke-opacity="0.7"/>
+    <path d="M-125 112 Q0 136 125 112" stroke="#1B405A" stroke-opacity="0.7"/>
 
-    <rect x="558" y="496" width="186" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="651" y="522" text-anchor="middle" fill="#72ffb0">DIGITAL FORENSICS</text>
-
-    <rect x="756" y="496" width="104" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="808" y="522" text-anchor="middle" fill="#72ffb0">ICS / OT</text>
-
-    <rect x="872" y="496" width="188" height="40" rx="12" fill="#00e676" fill-opacity="0.10" stroke="#00e676" stroke-opacity="0.42" stroke-width="1.4"/>
-    <text x="966" y="522" text-anchor="middle" fill="#72ffb0">SECURITY RESEARCH</text>
+    <g stroke-opacity="0.5" stroke-width="1.4">
+      <path d="M-22 -72 Q-90 -34 -110 24"/>
+      <path d="M-22 -72 Q56 -30 92 26"/>
+      <path d="M-22 -72 Q-4 12 -44 92"/>
+      <path d="M-22 -72 Q84 -6 66 104"/>
+    </g>
+    <g fill="#91A6B7" stroke="none">
+      <circle cx="-110" cy="24" r="4"/>
+      <circle cx="92" cy="26" r="4"/>
+      <circle cx="-44" cy="92" r="4"/>
+      <circle cx="66" cy="104" r="4"/>
+      <circle cx="-62" cy="-40" r="3.4"/>
+      <circle cx="48" cy="-88" r="3.4"/>
+      <circle cx="6" cy="132" r="3.4"/>
+    </g>
+    <circle cx="-22" cy="-72" r="14" fill="#22E58B" fill-opacity="0.2" stroke="none"/>
+    <circle cx="-22" cy="-72" r="7" fill="#22E58B" stroke="none"/>
   </g>
 
   <!-- Footer -->
-  <text x="72" y="566" fill="#93a4b8"
-        font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.2">Ghauri_Boy  /  United Kingdom</text>
-
-  <rect x="956" y="544" width="152" height="42" rx="13" fill="#00e676"/>
-  <circle cx="984" cy="565" r="5" fill="#071426"/>
-  <text x="1000" y="571" fill="#071426"
-        font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="1">GRADUATED</text>
+  <text x="80" y="572" fill="#91A6B7" font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.4">ghauriboy295.github.io</text>
+  <text x="1120" y="572" text-anchor="end" fill="#91A6B7" font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.4">REMOTE · HYBRID · ON-SITE · RELOCATION</text>
 </svg>

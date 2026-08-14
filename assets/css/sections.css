@@ -1,0 +1,610 @@
+/* AEGIS NEXUS — about, education, experience, skills, Red Cell / Blue Team,
+   certifications, contact and the closing feature strip. */
+
+.section-head.is-centred {
+  margin-inline: auto;
+  text-align: center;
+  justify-items: center;
+}
+
+.section-head.is-centred p { margin-inline: auto; }
+.section-head.is-centred .eyebrow::before { display: none; }
+
+/* ================= About ================= */
+.about-grid {
+  display: grid;
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .about-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.about-grid h2 { margin-top: var(--space-3); }
+.about-copy { margin-top: var(--space-4); color: var(--text-2); }
+
+/* A wordmark, not a scan of a real signature — nothing here is presented as
+   a genuine handwritten mark. */
+.about-signature {
+  margin-top: var(--space-5);
+  font-family: "Segoe Script", "Brush Script MT", cursive;
+  font-size: 1.6rem;
+  color: var(--secure);
+  opacity: 0.85;
+}
+
+.about-visual { display: grid; gap: var(--space-4); }
+
+.about-orbit {
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+}
+
+.about-orbit svg { width: 100%; height: auto; }
+
+.about-stats {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.about-stats > div {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: center;
+  padding: var(--space-4) var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  text-align: center;
+}
+
+.about-stats dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.about-stats dd { margin: 0; font-weight: 650; color: var(--text-1); font-size: 0.92rem; }
+
+/* ================= Education ================= */
+.edu-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
+.edu-card {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  transition: border-color var(--duration-control) var(--ease-standard);
+}
+
+.edu-card:hover { border-color: var(--border-strong); }
+
+.edu-card-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.edu-card-head h3 { font-size: 1.15rem; }
+.edu-place { font-size: 0.85rem; color: var(--text-3); margin-top: 2px; }
+.edu-years { color: var(--secure); }
+.edu-card > p { color: var(--text-2); font-size: 0.92rem; }
+
+.tool-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tool-chips span {
+  padding: 0.28rem 0.62rem;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-2);
+}
+
+/* ================= Experience route ================= */
+.route { display: grid; gap: var(--space-5); }
+
+.route-entry {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  padding-left: var(--space-6);
+}
+
+@media (min-width: 800px) {
+  .route-entry { grid-template-columns: minmax(0, 220px) minmax(0, 1fr); align-items: start; }
+}
+
+.route-entry::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 10px;
+  bottom: calc(-1 * var(--space-5));
+  width: 1px;
+  background: linear-gradient(var(--border-strong), var(--border-soft));
+}
+
+.route-entry:last-child::before { bottom: auto; height: 0; }
+
+.route-entry::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--secure);
+  border-radius: 50%;
+  background: var(--canvas);
+}
+
+.route-meta { display: grid; gap: var(--space-2); justify-items: start; }
+
+.route-meta time {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+}
+
+.route-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+}
+
+.route-card h3 { font-size: 1.15rem; }
+.route-card .route-place { color: var(--text-3); font-size: 0.88rem; }
+.route-card ul { display: grid; gap: var(--space-2); }
+.route-card ul li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  font-size: 0.92rem;
+  color: var(--text-2);
+}
+.route-card ul li::before { content: "▸"; color: var(--secure); }
+
+/* ================= Skills ================= */
+.skills-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1000px) {
+  .skills-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: start; }
+}
+
+.skills-panel {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+}
+
+/* The legend is load-bearing, not decoration: it states exactly what the bar
+   measures, so nothing here reads as a self-assessed proficiency score. */
+.skills-legend {
+  padding: var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-left: 2px solid var(--secure);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
+.skill-list { display: grid; gap: var(--space-5); }
+
+.skill-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.skill-name { font-size: 0.92rem; font-weight: 600; color: var(--text-1); }
+.skill-count { color: var(--secure); }
+
+.skill-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.skill-track span {
+  display: block;
+  width: var(--fill, 0%);
+  height: 100%;
+  border-radius: 999px;
+  background: var(--secure);
+}
+
+.skill-sources {
+  margin-top: var(--space-2);
+  font-size: 0.78rem;
+  color: var(--text-3);
+}
+
+/* Tools */
+.tool-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
+}
+
+.tool-grid li {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  padding: var(--space-4) var(--space-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  text-align: center;
+  transition: border-color var(--duration-control) var(--ease-standard);
+}
+
+.tool-grid li:hover { border-color: var(--secure-line); }
+
+.tool-mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-2);
+  border: 1px solid var(--secure-line);
+  border-radius: var(--radius-md);
+  background: var(--secure-soft);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--secure);
+  flex: none;
+}
+
+.tool-grid strong { font-size: 0.85rem; color: var(--text-1); }
+.tool-grid small { font-size: 0.72rem; color: var(--text-3); }
+
+/* ================= Red Cell / Blue Team ================= */
+.redblue > * { min-width: 0; }
+
+.redblue {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+}
+
+.redblue-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.redblue-head h3 { font-size: 1.3rem; margin-top: var(--space-2); }
+
+.redblue-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+.redblue-switch button {
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-3);
+  transition: background var(--duration-control) var(--ease-standard),
+              color var(--duration-control) var(--ease-standard);
+}
+
+.redblue-switch button[aria-pressed="true"] { background: var(--surface-4); color: var(--text-1); }
+.redblue-switch button[data-side="red"][aria-pressed="true"] { background: var(--incident-soft); color: var(--incident); }
+.redblue-switch button[data-side="blue"][aria-pressed="true"] { background: var(--secure-soft); color: var(--secure); }
+
+.redblue-diagram {
+  min-width: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+
+.redblue-diagram svg { width: 100%; min-width: 480px; height: auto; }
+.redblue-note { font-size: 0.82rem; color: var(--text-3); }
+
+.redblue-body { display: grid; gap: var(--space-4); }
+
+@media (min-width: 900px) {
+  .redblue-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+.redblue-column {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-5);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  transition: opacity var(--duration-layout) var(--ease-standard);
+}
+
+.redblue[data-side="red"] .redblue-column[data-side="blue"],
+.redblue[data-side="blue"] .redblue-column[data-side="red"] { opacity: 0.4; }
+
+.redblue-column[data-side="red"] { border-top: 2px solid var(--incident); }
+.redblue-column[data-side="blue"] { border-top: 2px solid var(--secure); }
+
+.redblue-column h4 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.redblue-column[data-side="red"] h4 { color: var(--incident); }
+.redblue-column[data-side="blue"] h4 { color: var(--secure); }
+.redblue-column p { color: var(--text-3); font-size: 0.9rem; }
+
+.redblue-list { display: grid; gap: var(--space-2); }
+
+.redblue-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+  padding: var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  font-size: 0.88rem;
+}
+
+.redblue-list b {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+}
+
+.redblue-column[data-side="red"] .redblue-list b { color: var(--incident); }
+.redblue-column[data-side="blue"] .redblue-list b { color: var(--secure); }
+
+/* ================= Certifications ================= */
+.register-group + .register-group { margin-top: var(--space-7); }
+
+.register-group h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 1.15rem;
+}
+
+.register-note-text { margin: var(--space-2) 0 var(--space-4); color: var(--text-3); font-size: 0.88rem; }
+
+.count-pill {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 6px;
+  border: 1px solid var(--secure-line);
+  border-radius: 999px;
+  background: var(--secure-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--secure);
+}
+
+.count-pill.is-muted { border-color: var(--border); background: var(--surface-2); color: var(--text-3); }
+
+.cert-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+.cert-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  transition: border-color var(--duration-control) var(--ease-standard);
+}
+
+a.cert-card:hover { border-color: var(--secure); }
+
+.cert-card strong { display: block; color: var(--text-1); font-size: 0.95rem; line-height: 1.35; }
+.cert-issuer { display: block; margin-top: 2px; font-size: 0.8rem; color: var(--text-3); }
+
+.cert-meta {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--text-3);
+}
+
+.cert-card.is-muted { background: var(--surface-2); }
+.cert-card.is-muted .tool-mark {
+  border-color: var(--border);
+  background: var(--surface-3);
+  color: var(--text-3);
+}
+
+.recognition {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  margin-top: var(--space-7);
+}
+
+.recognition article {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+}
+
+.recognition h4 { color: var(--text-1); font-size: 1rem; margin: 0; }
+.recognition p { font-size: 0.86rem; color: var(--text-3); }
+
+/* ================= Contact ================= */
+.contact-grid > * { min-width: 0; }
+
+.contact-grid {
+  display: grid;
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-1);
+}
+
+@media (min-width: 940px) {
+  .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); align-items: start; }
+}
+
+.reach-modes { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+/* A grid item defaults to min-width:auto, so the map's own min-width would set
+   the column's minimum and push the whole page sideways at 320px. */
+.reach-map {
+  min-width: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+  overflow-x: auto;
+}
+
+.reach-map svg { width: 100%; min-width: 420px; height: auto; }
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.contact-directory { display: grid; gap: var(--space-2); }
+
+.contact-directory a,
+.contact-directory button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  text-align: left;
+  transition: border-color var(--duration-control) var(--ease-standard),
+              background var(--duration-control) var(--ease-standard);
+}
+
+.contact-directory a:hover,
+.contact-directory button:hover { border-color: var(--secure); background: var(--surface-3); }
+
+.contact-directory span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.contact-directory strong {
+  display: block;
+  color: var(--text-1);
+  font-weight: 600;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+/* ================= Feature strip ================= */
+.feature-strip {
+  border-top: 1px solid var(--border-soft);
+  background: var(--obsidian);
+  padding-block: var(--space-6);
+}
+
+.feature-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+
+.feature-grid li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+}
+
+.feature-grid strong { display: block; font-size: 0.92rem; color: var(--text-1); }
+.feature-grid small { display: block; font-size: 0.78rem; color: var(--text-3); }

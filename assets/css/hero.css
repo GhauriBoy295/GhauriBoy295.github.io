@@ -1,0 +1,429 @@
+/* AEGIS NEXUS — BlackICE command-centre hero: identity, cyber globe,
+   profile-status and location panels, and the stat bar. */
+
+.hero {
+  position: relative;
+  padding-block: clamp(2rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+}
+
+/* The only ambient glow on the page, and it has to reach full transparency
+   well inside its own box — an inset box whose gradient is still tinted at
+   the edge draws a visible rectangular seam across the hero. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 52% 58% at 14% 34%,
+    color-mix(in srgb, var(--secure) 9%, transparent), transparent 66%);
+  pointer-events: none;
+}
+
+:root[data-theme="light"] .hero::before { display: none; }
+
+.hero-grid {
+  display: grid;
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
+  align-items: center;
+}
+
+/* Two columns first (identity + globe, panels underneath), then the full
+   three-column command-centre layout once there is room for it. */
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .hero-panels { grid-column: 1 / -1; grid-auto-flow: column; }
+}
+
+@media (min-width: 1280px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 300px;
+    align-items: start;
+  }
+  .hero-panels { grid-column: auto; grid-auto-flow: row; }
+  .hero-identity { padding-top: var(--space-5); }
+}
+
+/* ---------- Identity ---------- */
+.hero-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--secure-line);
+  border-radius: 999px;
+  background: var(--secure-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--secure);
+}
+
+.hero-availability i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--secure);
+  flex: none;
+}
+
+.hero-greeting {
+  margin-top: var(--space-5);
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.hero-title {
+  margin-block: var(--space-1) var(--space-3);
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+}
+
+.hero-title .surname { color: var(--secure); }
+
+.hero-role {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 650;
+  color: var(--text-1);
+}
+
+.hero-institution {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--text-3);
+}
+
+.hero-lede {
+  max-width: 52ch;
+  margin-top: var(--space-4);
+  color: var(--text-2);
+}
+
+/* Dot-prefixed pills, matching the operator read of the reference. */
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.hero-tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.34rem 0.7rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 0.76rem;
+  font-weight: 550;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.hero-tags li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--secure);
+  flex: none;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.hero-scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 28px;
+  margin-top: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.hero-scroll:hover { color: var(--secure); }
+.hero-scroll .icon { width: 15px; height: 15px; }
+
+/* ---------- Globe ---------- */
+.hero-globe { display: grid; place-items: center; }
+
+.globe-frame {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, 520px);
+  border-radius: 50%;
+  isolation: isolate;
+}
+
+.globe-frame canvas,
+.globe-frame .globe-static {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The static SVG is the honest fallback: it renders the same topology with no
+   script and no animation, and is what remains visible with motion off. */
+.globe-static { color: var(--secure); }
+.globe-frame.has-canvas .globe-static { opacity: 0.32; }
+
+/* ---------- Side panels ---------- */
+.hero-panels {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.panel-card {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+}
+
+.panel-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.panel-card-head h2,
+.panel-card-head h3 {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.panel-card-sub {
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.panel-card-note { font-size: 0.78rem; color: var(--text-3); }
+
+.status-list { display: grid; gap: var(--space-2); }
+
+.status-list > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.status-list > div:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.status-list dt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.82rem;
+  color: var(--text-3);
+}
+
+.status-list dt .icon { width: 15px; height: 15px; color: var(--secure); }
+.status-list dd { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--text-1); }
+
+.lifecycle-mini {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.lifecycle-mini li {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2) 4px;
+  border: 1px solid var(--secure-line);
+  border-radius: var(--radius-sm);
+  background: var(--secure-soft);
+  text-align: center;
+}
+
+.lifecycle-mini span {
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.lifecycle-mini b {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--secure);
+}
+
+.lifecycle-mini .is-empty {
+  border-color: var(--border-soft);
+  background: var(--surface-2);
+}
+
+.lifecycle-mini .is-empty b { color: var(--text-3); }
+
+.location-name {
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: var(--text-1);
+}
+
+.location-time {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  color: var(--text-3);
+}
+
+.location-time strong {
+  font-size: 1.1rem;
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.location-map {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  padding: var(--space-2);
+}
+
+.location-map svg { width: 100%; height: auto; }
+
+.location-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ---------- Operator terminal ---------- */
+.hero-terminal {
+  margin-top: clamp(var(--space-5), 4vw, var(--space-6));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+.hero-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.hero-terminal-body {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-height: 2.6rem;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.hero-terminal-body .prompt { color: var(--secure); flex: none; }
+.hero-terminal-body output { display: inline; }
+
+.caret {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: var(--secure);
+  translate: 0 0.12em;
+}
+
+/* ---------- Stat bar ---------- */
+.stat-bar {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  margin-top: clamp(var(--space-6), 5vw, var(--space-8));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--border-soft);
+  overflow: hidden;
+}
+
+.stat-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4);
+  background: var(--surface-1);
+}
+
+.stat-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--secure-line);
+  border-radius: var(--radius-md);
+  background: var(--secure-soft);
+  color: var(--secure);
+  flex: none;
+}
+
+.stat-icon .icon { width: 19px; height: 19px; }
+
+.stat-item dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.stat-item dd {
+  margin: 2px 0 0;
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+
+.stat-item small { display: block; font-size: 0.78rem; color: var(--text-3); }

@@ -1,0 +1,516 @@
+/* AEGIS NEXUS — Neo-Forensics case-study report, command palette,
+   shortcuts sheet and toast region. */
+
+dialog::backdrop {
+  background: var(--scrim);
+  backdrop-filter: blur(3px);
+}
+
+body.dialog-open { overflow: hidden; }
+
+.dialog-reset {
+  padding: 0;
+  border: 0;
+  background: none;
+  max-width: none;
+  max-height: none;
+}
+
+/* ================= Case-study report ================= */
+.report {
+  width: min(1180px, 100vw);
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+}
+
+@media (min-width: 900px) {
+  .report { height: min(92dvh, 900px); margin: auto; border-radius: var(--radius-xl); overflow: hidden; }
+}
+
+.report-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+}
+
+@media (min-width: 900px) {
+  .report-shell { border-radius: var(--radius-xl); }
+}
+
+.report-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  padding-top: max(var(--space-4), env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-2);
+}
+
+.report-bar .mono { color: var(--text-3); }
+.report-bar h2 { font-size: clamp(1.05rem, 2.4vw, 1.5rem); margin-top: 2px; }
+
+.report-close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  color: var(--text-1);
+}
+
+.report-close:hover { border-color: var(--incident); color: var(--incident); }
+
+/* Below 900px the report is a full-screen sheet and reads as one document:
+   a single scroller, not three nested ones. From 900px it becomes the
+   three-column desktop report and each region scrolls independently. */
+.report-body {
+  display: grid;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 900px) {
+  .report-body {
+    grid-template-columns: 210px minmax(0, 1fr) 300px;
+    overflow: hidden;
+  }
+}
+
+/* Evidence navigation rail */
+.report-rail {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+@media (min-width: 900px) {
+  .report-rail {
+    flex-direction: column;
+    border-bottom: 0;
+    border-right: 1px solid var(--border-soft);
+    padding: var(--space-4);
+    overflow-x: visible;
+    overflow-y: auto;
+  }
+}
+
+.report-rail button {
+  flex: none;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 0.84rem;
+  font-weight: 550;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--text-3);
+}
+
+@media (min-width: 900px) { .report-rail button { white-space: normal; } }
+
+.report-rail button:hover { color: var(--text-1); }
+
+.report-rail button[aria-selected="true"] {
+  border-color: var(--secure-line);
+  background: var(--secure-soft);
+  color: var(--secure);
+}
+
+.report-main {
+  min-width: 0;
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+}
+
+@media (min-width: 900px) {
+  .report-main { overflow-y: auto; overscroll-behavior: contain; }
+}
+
+.report-panel[hidden] { display: none; }
+.report-panel { display: grid; gap: var(--space-4); }
+.report-panel h3 { font-size: 1.2rem; }
+.report-panel p { color: var(--text-2); }
+
+.report-panel ul { display: grid; gap: var(--space-2); }
+.report-panel ul li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  font-size: 0.92rem;
+  color: var(--text-2);
+}
+.report-panel ul li::before { content: "▸"; color: var(--secure); }
+
+.report-summary {
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-left: 2px solid var(--secure);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.report-framework {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+.report-framework strong { color: var(--text-1); }
+.report-framework p { font-size: 0.86rem; color: var(--text-3); }
+
+/* Evidence timeline */
+.evidence-timeline { display: grid; gap: var(--space-4); }
+
+.evidence-timeline li {
+  position: relative;
+  display: grid;
+  gap: var(--space-1);
+  padding-left: var(--space-6);
+}
+
+.evidence-timeline li::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  bottom: calc(-1 * var(--space-4));
+  width: 1px;
+  background: var(--border);
+}
+
+.evidence-timeline li:last-child::before { display: none; }
+
+.evidence-timeline li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--secure);
+  border-radius: 2px;
+  background: var(--surface-1);
+}
+
+.evidence-timeline b {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--secure);
+}
+
+.evidence-timeline strong { color: var(--text-1); }
+.evidence-timeline p { font-size: 0.88rem; color: var(--text-3); }
+
+/* Right artefact panel */
+.report-aside {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  padding: clamp(var(--space-4), 3vw, var(--space-5));
+  border-top: 1px solid var(--border-soft);
+  background: var(--surface-2);
+}
+
+@media (min-width: 900px) {
+  .report-aside {
+    border-top: 0;
+    border-left: 1px solid var(--border-soft);
+    overflow-y: auto;
+  }
+}
+
+.report-aside h4 {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 0;
+}
+
+.artefact-list { display: grid; gap: var(--space-2); }
+
+.artefact-list li {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+}
+
+.artefact-list b {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--evidence);
+}
+
+.artefact-list span { font-size: 0.84rem; color: var(--text-2); }
+
+/* Copy, share, print and previous/next are the reason the panel exists, so
+   they must be reachable without scrolling. A sticky footer would float over
+   the artefact list instead; capping the list is what actually frees the
+   space, and the list keeps its own scrollbar. */
+.report-tail { display: grid; gap: var(--space-2); }
+.artefact-block { display: grid; gap: var(--space-2); align-content: start; }
+
+/* On desktop the aside is a fixed-height column: the artefact list absorbs
+   whatever space is left and scrolls inside itself, so the action block is
+   always on screen without ever floating over the list.
+
+   Flex rather than explicit grid rows, because one block (framework
+   alignment) is absent for missions with no NIST mapping and fixed row
+   templates would then hand the growing row to the wrong child. */
+@media (min-width: 900px) {
+  .report-aside {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .artefact-block {
+    flex: 1 1 auto;
+    min-height: 96px;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .report-tail { flex: 0 0 auto; }
+
+  .artefact-list {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 2px;
+  }
+}
+
+/* One compact row: three stacked full-width buttons cost the aside more
+   vertical space than the artefact list they were competing with. */
+.report-actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--space-2);
+}
+
+.report-actions .btn {
+  min-height: 40px;
+  padding-inline: var(--space-3);
+  font-size: 0.8rem;
+}
+
+.report-nav {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-soft);
+}
+
+.report-nav button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+
+.report-nav button:hover { border-color: var(--border-strong); color: var(--text-1); }
+.report-nav button[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+/* ================= Command palette ================= */
+.command {
+  width: min(620px, calc(100vw - 2rem));
+  margin-top: clamp(1rem, 9vh, 6rem);
+  margin-inline: auto;
+}
+
+.command-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: min(70dvh, 560px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.command-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-3);
+}
+
+.command-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font-size: 0.98rem;
+  color: var(--text-1);
+  outline: none;
+}
+
+.command-search input::placeholder { color: var(--text-3); }
+
+.command-results {
+  padding: var(--space-2);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.command-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  text-align: left;
+}
+
+.command-item.is-selected {
+  border-color: var(--secure-line);
+  background: var(--secure-soft);
+}
+
+.command-item-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--secure);
+}
+
+.command-item strong { display: block; font-size: 0.9rem; color: var(--text-1); font-weight: 600; }
+.command-item small { display: block; font-size: 0.78rem; color: var(--text-3); }
+
+.command-hint {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.command-empty { padding: var(--space-6); text-align: center; color: var(--text-3); }
+
+.command-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  font-size: var(--text-micro);
+  color: var(--text-3);
+}
+
+/* ================= Shortcuts sheet ================= */
+.sheet {
+  width: min(560px, calc(100vw - 2rem));
+  margin: auto;
+}
+
+.sheet-shell {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-2);
+  max-height: min(84dvh, 700px);
+  overflow-y: auto;
+}
+
+.sheet-bar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-2);
+}
+
+.sheet-body { padding: var(--space-5); }
+
+.shortcuts-list { display: grid; gap: var(--space-3); }
+
+.shortcuts-list > div {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.shortcuts-list dd { margin: 0; font-size: 0.9rem; color: var(--text-2); }
+
+/* ================= Toast ================= */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: max(var(--space-5), env(safe-area-inset-bottom));
+  z-index: var(--z-toast);
+  max-width: calc(100vw - 2rem);
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-2);
+  font-size: 0.86rem;
+  color: var(--text-1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 12px);
+  transition: opacity var(--duration-control) var(--ease-standard),
+              transform var(--duration-control) var(--ease-standard),
+              visibility 0s linear var(--duration-control);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}

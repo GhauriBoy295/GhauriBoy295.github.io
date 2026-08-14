@@ -6,7 +6,7 @@ This portfolio is a static website. It does not require npm, a framework or a bu
 
 1. Extract the final ZIP file.
 2. Open the extracted folder.
-3. Confirm that `index.html`, `styles.css` and `script.js` are directly inside the folder.
+3. Confirm that `index.html`, `service-worker.js` and the `assets/` folder are directly inside the folder.
 4. Do not upload only the ZIP file to the repository.
 5. Do not place the website inside another unnecessary folder unless your hosting configuration points to that folder.
 
@@ -14,11 +14,16 @@ The correct repository root should begin like this:
 
 ```text
 index.html
-styles.css
-script.js
+service-worker.js
+site.webmanifest
+404.html
 favicon.svg
+.nojekyll
 assets/
+  css/
+  js/
 Sarmad_Saeed_CV.pdf
+Sarmad_Saeed_CV.docx
 ...
 ```
 

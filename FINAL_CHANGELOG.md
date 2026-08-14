@@ -1,633 +1,400 @@
-# Final Changelog
+# FINAL CHANGELOG — AEGIS NEXUS
 
-## 14.0.0 — module split + design presence pass
+**Release 16.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 15.0.0
 
-### Modules
+Release 15.0.0 built the AEGIS design system. Release 16.0.0 re-lays the page on
+the supplied visual reference so the composition, section order and component
+shapes match it, while keeping every engineering guarantee 15.0.0 earned.
 
-`styles.css` (2,859 lines) is now nine files under `assets/css/`, and
-`script.js` is two ES modules under `assets/js/`.
+---
 
-The CSS split was done by a script with a hard safety contract: concatenating
-the outputs in load order must be **byte-identical** to the input, or nothing
-is written. The first run failed that check — grouping blocks by module had
-reordered them, which would have silently broken the cascade. Rewritten to
-keep contiguous source order; second run verified identical.
+## 1. Composition re-laid on the reference
 
-For JavaScript, the interaction code genuinely shares one closure (DOM refs,
-`state`, `showToast`, `motionReduced`). Threading that through imports buys
-nothing, so what came out is what was actually separable: the 71-line
-`projectData` object is now `project-data.js`, imported by `app.js`. The IIFE
-became module scope.
-
-`tools/verify_portfolio.py` was updated to match the new layout and now
-syntax-checks all three JS files rather than one.
-
-### Design
-
-The palette was right but the page read as basic. Causes, from a 1440px
-capture: enormous hero gaps, every surface on one plane, no scale contrast
-under the H1, the accent on a single button, and a hero visual too dim to be
-a focal point.
-
-- H1 to `clamp(3.2rem, 9vw, 7rem)` at weight 800 with -.045em tracking and
-  optical margin correction.
-- Metrics became a bordered readout — large monospace numerals in the secure
-  colour instead of small grey text.
-- Depth: one fine noise layer, a lit top edge and a real shadow per card.
-- Accent used where it means something: section markers, tagline rule, focus
-  ring, selection, availability state, active nav.
-- Radar sweep and rings brightened; one soft field behind the console.
-
-### Regression caught and fixed
-
-The 24px desktop target rule from 13.0.0 was unscoped. Sitting after the 44px
-mobile block with equal specificity, it won everywhere — quietly dropping
-every affected control to 24px on phones. Found at 320px, where `.text-link`
-measured 41px. Now scoped to `(min-width: 961px) and (pointer: fine)` so the
-two rules cannot compete. Re-verified: 0 undersized at 320px and at 1440px.
-
-
-## 13.0.0 — "Sentinel Executive"
-
-Palette rebuilt around black, deep navy, secure green and incident red, with
-colour used semantically rather than decoratively: green means secure /
-confirmed / active, red means risk / incident. Neither is alternated for
-variety.
-
-### Correctness fixes
-
-- **The H1 is now the person.** It was the slogan "Defend systems. Analyse
-  signals. Build resilience."; the candidate's name was not a heading at all.
-  Name -> role -> institution -> tagline -> lead is now the hierarchy.
-- **Hero metrics carry real values in the HTML.** They were hard-coded `0`
-  with the true value in a data attribute, so screen-reader users, no-JS
-  users and crawlers all saw zero. JavaScript now animates presentation only.
-- **The credential count no longer contradicts itself.** The hero said three
-  course completions while the credentials strip listed five. Now split into
-  "Verified credentials (3)" — those with a public verification link — and
-  "Additional course completions (2)", labelled *Unverified*.
-- **`Ghauri_Boy` removed from the welcome-screen identity block**, where it
-  sat beside degree status. It remains only as `alternateName` in structured
-  data, which is what a handle is for.
-- **Service-worker precache actually works.** It precached `styles.css` and
-  `script.js` while the document requested `styles.css?v=...`, so the two
-  largest assets never came from the precache. Both now derive from a single
-  `ASSET_REV` constant.
-- **Version drift resolved.** HTML assets, service-worker cache, changelog
-  and test report were on four different versions — the shipped test report
-  documented `6.0.3` against a `12.0.1` build. All now `13.0.0`.
-
-### Accessibility
-
-Target sizes audited at 320px and 1024px and fixed in two passes:
-
-- Coarse pointer / narrow: hero CTAs (36.6px), footer brand (32px), text
-  links (25.2px) and footer links (16.5px) were under the 44px minimum.
-- Fine pointer: `.hero-scroll` (9px tall), `.text-link` (21px), "Replay
-  welcome" (17px) and "Back to top" (17px) were under the WCAG 2.2 AA 24x24
-  floor. None qualify for the inline-link exception.
-
-Contrast measured in-browser across both themes: **zero failures**. Two
-supplied palette values had to change to get there — `--line-500` is 1.3:1 on
-navy and is now hairlines only; `--red-500` is 4.3:1 and text-bearing red
-uses `--red-400` at 5.2:1.
-
-### Added
-
-Canonical URL, `sitemap.xml`, updated `robots.txt`, PWA icons at 192/512 plus
-an Apple touch icon and a maskable entry, GitHub profile and source-repository
-links in contact and structured data.
-
-### Not done
-
-The brief asked for `styles.css` and `script.js` to be split into modules.
-Deferred deliberately — reasoning in `AUDIT_BASELINE.md`. Lighthouse is
-reported as *Not measured* because no Lighthouse binary is available here.
-
-
-## 12.0.1 — "Premium Sleek" redesign
-
-A hybrid of the dark developer aesthetic and the corporate/GRC register, plus
-two structural additions that answer the "certification matrix" and "framework
-alignment" brief.
-
-### Palette
-
-Retuned from the flat monochrome scheme to deep matte charcoal with electric
-indigo as the primary signal and cyber teal as the secondary. The token
-architecture meant this was a single block change, not a rewrite.
-
-Two contrast corrections were needed and are worth recording, because both
-would have shipped as accessibility failures:
-
-- The brief specified `#6366F1` as the accent. On this charcoal it measures
-  **4.10:1** — below the 4.5:1 AA threshold for body text. The accent used for
-  text is `#818CF8` (6.27:1); `#6366F1` survives only as a solid fill, where
-  the label sits on it in near-black.
-- In the light theme the secondary accent was `#0284C7` (sky-600), measuring
-  **4.10:1** on white. Corrected to `#0369A1` (sky-700) at **5.93:1**.
-
-Every text/background pair now clears AA in both themes. Measured in-browser,
-not estimated.
-
-### Glassmorphism, bounded
-
-Frosted-glass panels replace the flat fills. This site previously shipped a
-performance fix that removed exactly this feature, so the treatment is capped:
-
-- A single 14px radius on every panel and on the sticky header. The base rules
-  declare a 16–24px mix; those are all overridden.
-- Disabled entirely on coarse pointers and under
-  `prefers-reduced-transparency`, where the cost is highest and the effect is
-  least visible.
-- Structure still comes from a hairline border, not from the blur.
-
-### Verified credentials strip
-
-Five real course completions. The three with a Coursera verification code link
-out to it; the two with no supplied certificate file are shown unlinked and
-labelled "Course completion", so a reader can tell the difference at a glance.
-
-No industry certifications are claimed. The brief suggested displaying
-Security+, CEH and CISSP — none of which Sarmad holds — and that was not done.
-
-### NIST CSF mapping
-
-Each project carries a badge for the one CSF function it genuinely serves, and
-the case-study dialog expands this into a short justification:
-
-| Project | Function |
+| Reference element | Implemented as |
 |---|---|
-| Integrated Randomness Testing Suite | Protect |
-| Intrusion Detection for ICS | Detect |
-| DFIR Labs | Respond |
-| Security Assessment & Active Defence Labs | Identify |
-| Blood Bank Database System | *(unmapped)* |
+| Nav: Home · About · Education · Experience · Projects · Skills · Certifications · Contact | Same eight items, plus a persistent **Download CV** action in the header |
+| "Hi, I'm SARMAD SAEED" | `.hero-greeting` + the single `<h1>`, surname in the secure green |
+| Green dot-matrix globe | `globe.js` rewritten from a wireframe to a **dot-matrix sphere** — even angular grid, longitude spacing divided by cos(latitude), depth-faded dots, light graticule underneath, routed links and regional nodes on top |
+| Right-hand status panel | **Profile status** card (see §2) |
+| Location card with world map | **Location** card with UK local time and a dotted world map |
+| Four-item stat bar | Education · Experience · Projects · Focus, single bordered strip |
+| About Me with portrait | Same layout; the portrait slot holds an **original orbit diagram**, not a photo — as requested, no picture is used |
+| Core Skills bars | Same bar component, driven by evidence counts (see §2) |
+| Tools & Technologies tiles | 12 tiles with **original monogram marks** — no vendor logos are reproduced |
+| Project cards with imagery | Five cards with original per-subject inline SVG artwork, title row with classification badge, "View Case Study" |
+| Filter pills | Discipline row + NIST row, pill-shaped, filled when active |
+| "More Projects" placeholder | Kept as an honest empty slot linking to GitHub |
+| Case-study modal with left tab rail | The existing Neo-Forensics report — rail, panels, evidence timeline, artefacts |
+| Certifications cards | Verified (3, with links) and Additional (2, unverified) kept visibly separate |
+| Bottom feature strip | Six tiles describing how the site itself is built |
 
-The database project is deliberately unmapped. It is a data-modelling
-exercise, not a security control, and forcing it into a function would be
-dishonest. The dialog renders nothing for it.
+## 2. Where the reference was not copied, and why
 
-Four new filters were added alongside the discipline filters. All four were
-tested and return the correct single project each.
+The reference screens carry figures that are not backed by anything real. The
+repository's own `CLAUDE.md` forbids inventing skill percentages, SOC metrics,
+years of experience and certifications, so the **components were rebuilt and the
+data replaced with facts**. Nothing was dropped; nothing false was added.
 
-### Also fixed
-
-`404.html` was still carrying the neon-green palette from three themes ago.
-It, `favicon.svg` and `site.webmanifest` now match the current scheme, as does
-the regenerated social preview image.
-
-### Not done, and why
-
-The source brief recommended rebuilding on Astro, Next.js or Hugo. This site
-is a working, tested, deployed static build with a no-build constraint in
-`CLAUDE.md`; switching stacks would discard that for no user-visible gain.
-
-
-## 6.0.3 — 30 July 2026
-
-Performance fix, black and neon green theme, matrix code-rain background, and directional scroll
-entrances. Previous state at `backup/pre-neon-green-5.3.1/`.
-
-### Why it was lagging
-
-Measured rather than guessed. The page was running, simultaneously and permanently:
-
-| Cost | Before | After |
-|---|---|---|
-| Full-screen canvases with their own rAF loops | 2 | **1** |
-| CSS blur layers | 14 | **1** |
-| Infinite animations running on screen | 32 | **8** |
-
-The single worst offender was the animated gradient mesh: a **2133 × 1348 px layer with
-`blur(46px)` animating its transform forever** — roughly 2.9 megapixels of blurred surface
-recomposited every frame. Behind it sat two more `blur(105px)` aurora layers, also animating, plus
-a full-viewport CRT sweep and a second particle canvas.
-
-Removed outright: the gradient mesh, both auroras, the CRT sweep, and the network-particle canvas.
-The scanline texture stayed but lost its infinite `background-position` animation, which was
-repainting the whole viewport for a static-looking effect.
-
-**Off-screen sections now pause.** An observer marks any section outside the viewport
-`.section-idle`, which sets `animation-play-state: paused` on everything inside it. Radars, signal
-bars, marquees and pulses stop the moment they scroll away. At rest only 8 infinite animations run,
-and only in the section you are actually looking at.
-
-### Theme
-
-Black base with neon green. All 12 contrast measurements pass WCAG AA, most of them comfortably:
-
-| Pair | Dark | Light |
-|---|---|---|
-| Accent on background | 15.12:1 | 6.25:1 |
-| Body text | 17.96:1 | 16.01:1 |
-| Muted text | 8.40:1 | 6.11:1 |
-| Label on accent fill | 14.47:1 | 6.70:1 |
-
-Base `#050806`, accent `#00FF9C`, secondary lime `#B4FF39`. `404.html`, `favicon.svg` and the web
-manifest were retuned in the same pass.
-
-### Matrix code-rain background
-
-The one remaining full-screen animation, and now the page's actual backdrop. Budgeted throughout:
-a single canvas and rAF loop, a fixed ~14 fps step rather than every frame, device pixel ratio
-clamped to 1.5, column count capped at 110, suspended entirely when the tab is hidden, and never
-started at all on touch devices, screens under 900 px, or under reduced motion.
-
-### Directional entrances
-
-Sections and cards now arrive from different edges instead of every block sliding up: `left`,
-`right`, `up`, `down`, `back` (recedes in depth and scales in), and `tilt-left` / `tilt-right`
-(enters on a slight Y-axis rotation). Assigned so adjacent cards alternate. All are transform and
-opacity only, so they stay on the compositor and add nothing to the main thread.
-
-### Two bugs I introduced and fixed
-
-Both were mine, from doing the CSS removals with regex:
-
-1. **Four orphan braces** left behind by the keyframe deletions. CSS parsing broke at the first one,
-   which silently killed every rule after it — including `.rain-canvas`. The canvas lost
-   `position: fixed`, became an in-flow block, and pushed the hero **985 px down the page** with no
-   content visible. Repaired, and brace balance is now verified programmatically (802 open, 802
-   close, never dipping below zero).
-2. **Sections pre-marked idle.** The first version added `.section-idle` to every section up front
-   and relied on the observer to clear it. If that first callback were ever delayed or dropped, the
-   whole page would sit frozen. Now the observer sets idle only for sections it has actually seen
-   leave the viewport.
-
-### Verification
-
-12/12 contrast pass · overflow 0 · single `h1` · no console errors · verifier 8/8 · `node --check`
-clean · canvas confirmed `position: fixed` at `z-index: -4` with the hero back at its correct
-offset · 6 of 9 sections idle at rest · all 7 reveal directions present in the markup.
-
-
-## 5.3.0 — 30 July 2026
-
-Dark red "ethical hacker" scheme, and the social preview regenerated to match. Previous state
-preserved at `backup/pre-red-cyber-5.2.0/`.
-
-### Theme
-
-This is what the token architecture was built for: the retheme is a **20-value edit to one
-block**, not another find-and-replace sweep across the stylesheet. No component rule changed.
-
-| Token | Dark | Light |
-|---|---|---|
-| Background | `#080506` | `#F8F5F5` |
-| Surface | `#140C0E` | `#FFFFFF` |
-| Primary accent | `#FF4D5A` | `#BA1220` |
-| Secondary accent | `#FF9A3C` | `#9E4A0A` |
-| Text | `#F5EEEF` | `#1E1618` |
-
-A near-black base carrying a faint red cast, signal red as primary, amber as the informational
-secondary. Every ambient effect — scanlines, sweep, code rain, glitch, gradient mesh, radar —
-recoloured automatically, because they all read from the tokens rather than from literals.
-
-Contrast measured across both themes, six pairs each: **12 measurements, zero failures.** Lowest
-is 5.63:1 against a 4.5:1 requirement.
-
-### Also synced
-
-A sweep for literals from earlier revisions found five assets that would have shipped mismatched.
-Four of them predate the token refactor, so no amount of retheming the stylesheet would have
-caught them:
-
-- `favicon.svg` — backdrop was still the indigo-era `#0B0E1A`.
-- `site.webmanifest` — `background_color` was still the **emerald-era** `#050b13` and
-  `theme_color` the 4.x red `#0a0406`. Both now `#080506`.
-- `404.html` — a standalone page with its own inlined styles, still **entirely emerald**:
-  background, grid, accent, button and body text. Retuned to the dark red scheme, with a comment
-  noting it must be kept in step manually.
-- `script.js` network canvas — the particle field's connection lines were hardcoded
-  `rgba(103,245,195,.13)` emerald with an emerald fallback for the node colour. Both now read
-  from `--accent-rgb`, so the field retints with the theme like the code rain already did.
-- `assets/social-preview.png` — regenerated from `social-preview.svg` at 1200 × 630 (102 KB),
-  retuned to the exact new token values.
-
-A DOM sweep for green- or blue-dominant computed colours across `backgroundImage`,
-`backgroundColor`, `boxShadow`, `borderColor` and `color` on every element now returns **zero**
-matches, and a source grep for every emerald- and indigo-era literal returns nothing.
-
-### Verification
-
-12/12 contrast pass · overflow 0 at 320 and 1440 · 0 controls under 44 × 44 · single `h1` ·
-0 controls without accessible names · counters resolve to 2/5/3/6 · deep-link, shortcuts overlay,
-local time, code rain and gradient mesh all working · no console errors · verifier 8/8 ·
-`node --check` clean on both scripts · PNG verified as valid 1200 × 630 matching the declared
-`og:image` dimensions.
-
-
-## 5.2.0 — 29 July 2026
-
-One deep dark theme, and five new features. The four-palette switcher added in 5.1.1 is removed.
-Previous state preserved at `backup/pre-single-dark-5.1.1/`.
-
-### Theme
-
-The token architecture is kept — it is what makes the scheme retunable from one block — but it
-now declares a single dark theme plus the light variant the accessibility spec requires. The base
-is deeper than before: `#06070A`, with surfaces stepping up in measured increments
-(bg → surface → raised → overlay) so depth reads as structure rather than as arbitrary panels.
-
-Measured contrast, dark theme:
-
-| Pair | Ratio |
+| Reference showed | This build shows |
 |---|---|
-| Accent on background | 8.10:1 |
-| Body text on background | 17.65:1 |
-| Muted text on background | 7.31:1 |
-| Secondary on background | 11.50:1 |
-| Button label on accent fill | 8.04:1 |
+| SYSTEM STATUS: Network Security 98%, Endpoint Protection 97%, Threat Detection 96%, Incident Response 94% | **Profile status**: Degree status *Graduated*, Current base *United Kingdom*, Availability *Worldwide*, Work modes *Remote · Hybrid · On-site* — same panel, same tick marks, real values |
+| MONITORING line chart | **Lifecycle coverage**: the five NIST CSF functions with the number of documented case studies in each (1/1/1/1/—). Recover is shown empty rather than filled in |
+| "Experience — 2+ Years" | **Experience — ICS internship & operations**, Phi-Tech · Trezlon Ltd |
+| "Projects — 10+ Completed" | **Projects — 5 documented case studies** |
+| Core skills at 90% / 85% / 80% / 75% | Same bars, filled by **evidence count out of the three sources listed underneath**, with an on-page legend stating exactly that. No proficiency score is implied |
+| Cisco Cybersecurity Essentials, TryHackMe SOC Level 1, "Google Cybersecurity Professional Certificate" | The **three verified Coursera completions** with public verification links, and the **two unverified completions**, labelled as such |
+| Portrait photograph | Original orbit diagram (no photo, as requested) |
+| Vendor logos in the tools grid | Original monogram tiles |
+| "Watch Introduction" / "View Live Demo" | Removed — neither exists |
 
-Removed with the switcher: the palette button, its swatch styles, the four command-palette
-entries, the `portfolio:palettechange` event and the three extra palette blocks. Zero references
-to `palette` remain in either the stylesheet or the markup.
+## 3. Local preview port
 
-### New features
+The preview port moved from **8080 to 8123** throughout, because 8080 is in use by
+another project: `.claude/launch.json` (both), `START_LOCAL_PREVIEW.bat`/`.sh`,
+`WORKSPACE_MANIFEST.json`, the workspace and repository READMEs,
+`DEPLOYMENT_STEPS.md`, `CONTENT_UPDATE_GUIDE.md` and every test script.
 
-All five are drawn from the "optional if cleanly implemented" list in the project's own design
-spec, rather than invented.
+## 4. Engineering changes
 
-1. **Deep-linkable case studies.** The open case study is mirrored into the URL as `#case-<id>`.
-   Arriving on such a link skips the welcome panel and opens that case study directly. History is
-   replaced rather than pushed, so Back never walks through every dialog the visitor opened, and
-   the hash is cleared on close.
-2. **Copy link to case study.** A clipboard action inside the dialog, with a toast on success and
-   an honest fallback message on failure.
-3. **Print a single case study.** A print action that collapses the page to just the open dialog.
-   This also fixed two real bugs in the existing print stylesheet: `dialog { display:none }` meant
-   printing a case study produced a blank page, and `--accent: var(--accent)` was a
-   self-referencing declaration left behind by an earlier find-and-replace, which made the token
-   invalid at computed-value time.
-4. **UK local time.** Clearly labelled, computed in the browser from the `Europe/London` zone via
-   `Intl.DateTimeFormat`, refreshed every 30 s, with an "usually available / outside usual hours"
-   note. Nothing about the visitor's own location or clock is read or transmitted. If the runtime
-   has no zone support the block stays hidden rather than showing a guess.
-5. **Keyboard shortcuts overlay.** `?` opens an accessible dialog listing all eight controls, also
-   reachable from the command palette. Adds `T` to toggle theme and `G` then a letter to jump to a
-   section. All single-key shortcuts are suppressed while typing, while a dialog is open, and
-   during the welcome panel.
-6. **Offline shell.** `service-worker.js` precaches the static shell. Navigations are
-   network-first with the cached shell as the offline fallback, so deployed updates stay visible
-   instead of being masked by cache; assets are stale-while-revalidate. The cache is versioned and
-   old caches are deleted on activate. Registration is skipped on `file://`, and failure is
-   silent because offline support is an enhancement.
+- Asset revision **16.0.0** across all nine CSS links, the module script tag, every
+  JS import specifier, `ASSET_REV`, `CACHE_VERSION = 'v16-0-0'` and the footer.
+- `hero.css`, `sections.css` and `missions.css` rewritten for the new components;
+  `tokens.css`, `base.css`, `shell.css`, `overlays.css`, `motion.css` and
+  `print.css` carried forward.
+- Header navigation breakpoint moved 1119px → **1279px** (eight items plus the CV
+  action need the extra room); the CV action hides below that, the command label
+  below 1440px. Both remain reachable from the palette.
+- The capability-lifecycle tablist was replaced by the skills panel, so its
+  controller was **removed from `app.js`** rather than left as dead code.
+- Command palette, keyboard jumps and the shortcuts sheet retargeted to the new
+  section IDs (`G` then `A`/`D`/`E`/`P`/`S`/`V`/`C`).
+- Filters now exclude the placeholder card from counts and hide it under any
+  active filter.
+- `print.css` updated for the new component names; the stale `.quickview-panel`,
+  `.lifecycle-detail` and `.register-row` rules were removed.
 
-### Verification
+### Bugs fixed during this release
 
-Dark-theme contrast 5/5 pass · overflow 0 at 320 and 1440 · 0 controls under 44 × 44 · single
-`h1` · 0 controls without accessible names · deep-link opens the correct case study and clears on
-close · `?` opens the shortcuts dialog with 8 rows · `T` toggles theme · local time renders ·
-service worker registers and takes control · no console errors · verifier 8/8 · `node --check`
-clean on both scripts.
+1. **`.is-secure-text` was never defined.** Every green inline highlight — "MSc
+   Cyber Security *Graduate*", "Building *secure systems*", "*Case Studies*",
+   "Open *worldwide*" — was rendering in plain body colour. Added as a real
+   utility in the base layer.
+2. **Red/Blue connectors ran through the box labels.** The attack-path segments
+   were drawn from box centre to box edge, striking a line through
+   "Reconnaissance" and "Validation". The boxes were re-spaced evenly and the
+   connectors now run in the gaps between them.
+3. **The scroll cue was below the minimum target size** at 19px tall; now 28px.
 
+---
 
-## 5.1.1 — 29 July 2026
+## Release 15.0.0 — the fused AEGIS system
 
-Rebuilt the colour layer as a real design system and added an art-directed motion layer. The red
-theme is gone. Requested as "all of them, in a proper way", which is delivered as **one token
-architecture with four selectable dark palettes** rather than four looks competing on one screen.
+**Release 15.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 14.0.1
 
-The previous state is preserved at `backup/pre-palette-system-4.0.3/`.
+This release replaces the visual architecture of the portfolio rather than
+recolouring it. Every feature the previous release earned is preserved or
+improved; the composition, the token system, the motion architecture and the
+case-study presentation are new.
 
-### Colour architecture
+---
 
-Colour was previously scattered across ~136 distinct hardcoded literals, which is why each
-retheme leaked stragglers. It is now a token system:
+## 1. What this release is
 
-- Palettes define **channel triplets only** (`--accent-rgb: 109 124 255`), space separated so any
-  rule can compose its own alpha with `rgb(var(--accent-rgb) / .3)`.
-- Every other token is derived once from those triplets.
-- Switching palette is a single `data-palette` attribute change; nothing else moves.
-- Legacy aliases (`--blue`, `--blue-soft`) are retained so existing rules keep resolving.
+Four approved systems were fused into one product, with deliberate,
+non-overlapping responsibilities so they cannot fight each other:
 
-After the refactor the only colour literals left in the stylesheet are the two semantic tokens
-(`--warning`, `--danger`) and the three macOS-style window dots, all deliberate.
-
-### The four palettes
-
-| Palette | Base | Primary | Secondary |
-|---|---|---|---|
-| **Indigo** (default) | `#0B0E1A` | indigo `#6D7CFF` | cyan `#38E0F0` |
-| **Monochrome** | `#0A0A0B` | electric blue `#4F7DFF` | neutral steel |
-| **Emerald** | `#070D12` | emerald `#4FE3B0` | blue `#5AB9FF` |
-| **Aurora** | `#0C0A12` | violet `#A78BFA` | magenta `#EC4899` |
-
-Each has a light variant. **All 8 palette/theme combinations were contrast-measured across five
-pairs each — 40 measurements, zero failures against WCAG AA.** One did fail on the first pass
-(indigo light secondary at 4.01:1) and was darkened to 5.24:1.
-
-### Palette switcher
-
-- Header control cycling the four palettes, with a live two-tone swatch and an `aria-label` that
-  announces the current palette.
-- Four explicit entries in the ⌘K command palette for direct selection.
-- Persisted to `localStorage` and resolved before first paint alongside the theme, so there is no
-  flash of the wrong palette.
-- `theme-color` browser-bar colour tracks the active palette and theme.
-
-### Designed motion layer
-
-Added on top of the existing effects, which were kept as requested:
-
-- **Animated gradient mesh** — three counter-drifting accent fields on a 26 s cycle.
-- **Stagger choreography** — grids resolve child-by-child on a 40 ms cascade instead of as one
-  block. Applied to 6 groups.
-- **Scroll-linked parallax** — writes a custom property only, so the compositor sees a plain
-  transform. Fine-pointer devices only.
-- **Spring hover physics** on 16 cards, plus wipe-in accent underlines on 10 links.
-- **Self-drawing SVG strokes** — path lengths measured at runtime and drawn on scroll-in.
-- **Page-load sequence** — header, hero copy and hero panel settle in on a staged cascade.
-- **Section index rules** — an accent rule grows out from each section number.
-
-All seven have `prefers-reduced-motion` overrides, verified present in the live CSSOM rather than
-just in source.
-
-### Verification
-
-40/40 contrast measurements pass · overflow 0 at 320 and 1440 · all touch targets ≥ 44 × 44
-including the new palette button · single `h1` · 0 controls without accessible names · palette
-cycles and persists correctly · dialog opens and returns focus · command palette at 15 entries ·
-no console errors · verifier 8/8 · `node --check` clean.
-
-
-## 4.0.3 — 29 July 2026
-
-Red terminal restyle, requested directly by the site owner. This reverses the restraint pass in
-3.1.0 and moves the accent from emerald to red. Recorded plainly: the approved design spec calls
-for an emerald accent and reserves red for risk semantics, and asks that the site not read as a
-"noisy hacker template". This release departs from that on the owner's explicit instruction.
-
-The previous state is preserved at `backup/pre-red-theme-3.1.0/` and can be restored by copying
-those three files back over `index.html`, `styles.css` and `script.js`.
-
-### Palette
-
-Emerald and blue replaced throughout — variables, hardcoded literals, favicon, `theme-color`
-metas and the web manifest.
-
-| Role | Before | After |
+| Layer | Owns | Where you see it |
 |---|---|---|
-| Accent (dark) | `#67f5c3` | `#ff4d5a` |
-| Accent strong | `#27dba0` | `#ff2233` |
-| Secondary | `#70b8ff` | `#ff9a3c` |
-| Accent (light) | `#087e61` | `#c1121f` |
-| Background | `#050b13` | `#0a0406` |
-| Danger | `#ff7c8f` | `#ffb648` |
+| **Sentinel X Executive** | Global shell, hierarchy, typography, spacing, recruiter clarity | Header, section rhythm, Recruiter Quick View, evidence register |
+| **BlackICE Operator** | Entry and command surfaces | Secure welcome, command-centre hero, cyber globe, operator terminal, command palette |
+| **Red Cell / Blue Team** | Security semantics | Mission classification, attack-path diagram, offensive/defensive module |
+| **Neo-Forensics** | Evidence and detail | Case-study reports, work-sequence timelines, working-material register, Forensic Daylight, print layouts |
 
-Danger moved to amber so it stays distinguishable now that red is the brand colour.
+---
 
-Measured contrast, all passing WCAG AA:
+## 2. Mandatory content corrections
 
-| Pair | Dark | Light |
+All four baseline failures recorded in `CURRENT_BASELINE_REPORT.txt` are fixed.
+
+| # | Was | Now |
 |---|---|---|
-| Accent on background | 6.26:1 | 5.61:1 |
-| Body text on background | 18.36:1 | 15.73:1 |
-| Muted text on background | 8.58:1 | 5.73:1 |
-| Accent on surface | 5.95:1 | — |
-| Primary button label on fill | 5.80:1 | 6.22:1 |
+| 1 | Hero pill: "Open to UK cyber security opportunities" | **"Open to cyber security opportunities worldwide"** |
+| 2 | Contact copy limited opportunities to the United Kingdom | Base remains the United Kingdom; availability is **Worldwide**, with remote, hybrid, on-site and relocation stated explicitly |
+| 3 | `linkedin.com/in/sarmad-saeed-cyber` in the contact directory, the JSON-LD `sameAs` array and the command palette | **`https://www.linkedin.com/in/sarmad-saeed-845a7b267`** in all three, plus the README |
+| 4 | No "Worldwide" wording anywhere | Present in the hero pill, the hero status strip, the Quick View, the availability section, the operator terminal, the footer status line, the JSON-LD `seeks` block, the meta description and the social preview |
 
-**Primary button label fixed (4.0.1).** The emerald palette used a near-black label on a bright
-mint fill. Carrying that label straight over to the light theme's deep red left the primary
-buttons at **3.03:1**, which fails AA for normal text. The light theme now flips the label to
-white, reaching 6.22:1. The dark theme keeps the near-black label on bright red at 5.80:1.
+Work modes now appear as a labelled set — **Remote · Hybrid · On-site · Relocation** —
+in the hero status strip, the Recruiter Quick View and the availability section.
 
-**Leftover emerald literals swept (4.0.2 – 4.0.3).** The first conversion pass missed a set of
-hardcoded colours that a variable rename could not reach: the welcome-panel scan gradient and
-orbit borders, the selection highlight, project-visual backdrops, the evidence tag, several
-mint-tinted text colours and four blue-black surfaces. These left a visible green cast on the
-welcome screen. A DOM sweep for green-dominant computed colours now returns **zero** matches
-across `backgroundImage`, `backgroundColor`, `boxShadow`, `borderColor` and `color` on every
-element.
+`MSc Cyber Security Graduate`, `University of Chester`, `2025–2026` and `Graduated`
+are unchanged. `candidate`, `expected 2026`, `currently studying` and `pursuing MSc`
+appear nowhere. `Sarmad Saeed` is the single `<h1>`.
 
-### Added — motion and visuals
+The stale LinkedIn slug was also removed from `AUDIT_BASELINE.md` and the previous
+`FINAL_TEST_REPORT.md`, where it survived as a historical quotation. Those
+references now read `<previous-vanity-slug>` so the dead URL exists nowhere in the
+repository.
 
-- **Code-rain canvas.** Injected by script only on fine-pointer devices at 900 px and wider,
-  never under reduced motion. Throttled to ~15 fps, capped column count, DPR clamped to 2, and
-  cancelled whenever the tab is hidden.
-- **CRT scanlines** across the page, with a slow refresh-band sweep.
-- **RGB-split glitch** on the hero headline, fired as a 460 ms burst every 4.2 s rather than as a
-  permanent animation, so the headline stays readable. Pauses when the tab is hidden.
-- **Text scramble** resolving each section index the first time it scrolls into view.
-- **Brand-mark flicker** and a red glow pulse on the status indicators.
-- **Terminal boot lines** on the welcome panel.
+---
 
-### Restored to bolder values
+## 3. Page composition
 
-Background grid `.28` → `.5`; aurora `.08` → `.16` and `26s` → `14s`; radar sweep alpha `.22` →
-`.5` and `8s` → `3.4s`; marquees `48s` → `26s` and `55s` → `30s`; marquee dots re-glowed.
+The previous page was About / Expertise / Projects / Education / Experience /
+Contact, built from repeated bordered cards. The new order is:
 
-### Preserved
+1. **Secure welcome** — BlackICE boot with a verification checklist, Enter / Skip / Download CV
+2. **Sticky product header** — brand, seven-item nav, command trigger, motion menu, theme menu
+3. **Command-centre hero** — single H1, availability pill, focus tags, canvas globe, operator terminal
+4. **Hero status strip** — base, availability, degree status, focus
+5. **Recruiter Quick View** — four metrics, six facts, CV downloads, copy email, print, install, UK local time
+6. **Profile** — working philosophy, three principles, capability relationship map
+7. **Capability lifecycle** — five NIST CSF functions as a tablist, each with the academic work that grounds it
+8. **Red Cell / Blue Team** — attack path drawn against defensive controls, with a Both / Red / Blue control
+9. **Missions** — five illustrated mission cards, discipline and NIST filters
+10. **Route** — education and experience as a single sequenced timeline
+11. **Credential evidence register** — three verified, two additional, kept visibly separate
+12. **Global availability** — reach map, work modes, contact directory
+13. **Footer** — navigation, system actions, release and connection status
 
-Everything load-bearing from earlier passes survives this restyle:
+Overlays: case-study report, command palette, keyboard shortcuts sheet, toast region.
 
-- 44 px touch targets, single `h1`, accessible names on every control.
-- No numeric skill bars, no certification overclaim, no invented facts.
-- Reduced-motion, touch-first and print all switch every new effect off — verified in the CSSOM.
-- Static, no-build, no external dependency.
+### Replaced outright
 
-### Social preview regenerated
+- Repetitive expertise cards → the NIST lifecycle tablist
+- Generic project cards → mission cards with per-subject original SVG artwork
+- Flat project dialog → three-region forensic case-study report
+- Bento "about" grid → a profile statement with an abstract capability map
+- Two "robotic banner" lego scenes → removed; they carried no information
+- Hero radar panel and diagnostics → the cyber globe and the honest status strip
 
-`assets/social-preview.png` was the last emerald artefact — a raster image that no variable
-rename could reach, so anyone sharing the link got a green card against a red site. It has been
-rebuilt at 1200 × 630 in the red palette (101 KB, down from an intermediate 325 KB by flattening
-the full-canvas gradients that PNG compresses poorly).
+---
 
-The card was also brought back in line with the current interface: its window label read
-`SECURE_PROFILE.INTERFACE`, wording removed from the site itself in 3.1.0, and now reads
-**Portfolio access**.
+## 4. Design system
 
-`assets/social-preview.svg` is kept alongside it as the editable source, so the image can be
-regenerated rather than hand-patched. To rebuild the PNG: open the SVG at 1200 × 630 in a
-browser, draw it to a canvas of the same size, and export via `toDataURL('image/png')`.
+### Tokens
 
-## 3.1.0 — 29 July 2026
+`assets/css/tokens.css` was rebuilt from 64 KB of accreted, largely dead
+declarations down to a single readable contract. Both themes are now defined
+independently against the same token names.
 
-Professional polish pass. Three defects fixed, visible copy rewritten, cyber visual layer
-calmed, documentation brought back in line with the actual files.
+**BlackICE Night** — `--canvas #020507`, surfaces `#06111D → #14364D`, borders
+`#102B3F → #24567A`. Black and navy carry the structure. `--secure #22E58B` is a
+solid signal, not an atmosphere. `--incident #FF4D5E` appears only for incident,
+offensive and risk states. `--evidence #E9B949` labels forensic artefacts.
 
-### Fixed
+**Forensic Daylight** — a digital-forensics laboratory, not an inversion:
+`--canvas #EDF2F6`, white and cool-grey surfaces, navy type `#08151F`, forest green
+`#0A6E45`, controlled red `#B62537`. The two glow tokens collapse to flat elevation
+in this theme, so anything that glows in the dark theme reads as a printed panel
+here. Nothing neon survives the switch.
 
-- **System colour scheme was ignored on first visit.** `script.js` resolved the theme as
-  `storedTheme() || 'dark'`, so a visitor whose operating system asked for light always got dark.
-  Resolution is now stored choice → system preference, and the site follows live OS changes while
-  no explicit choice has been made. Dark remains the default when the system states no
-  preference, preserving the intended dark-primary design.
-- **Dark flash on system-light devices.** Because `script.js` is deferred, the theme was applied
-  after first paint. An inline head script now resolves the theme before paint using the same
-  order, and syncs the `theme-color` meta. No Content-Security-Policy is configured on any of the
-  three host configs, so this executes normally in production.
-- **Touch targets below 44 px.** At phone widths the brand link measured 37 × 37 and the theme
-  button, menu toggle and five filter buttons measured 40 px. A
-  `@media (pointer: coarse), (max-width: 960px)` block raises the brand mark, icon buttons, menu
-  toggle, filter buttons and nav links to a 44 px minimum, with the menu-toggle bars re-centred
-  for the taller box. Fine-pointer desktops above 960 px keep the denser 40 px header rhythm.
-- **Unsupported skill-level bars.** The hero diagnostics rendered proportional fill bars at
-  88 %, 84 %, 81 % and 86 % — numeric skill ratings that the content source of truth prohibits
-  and that no evidence supports. The bar is now a neutral one-pixel connector carrying no
-  quantitative meaning; the qualifier beside it (Core, Applied, Project, MSc) is the only claim.
-- **Two `<h1>` elements.** The welcome panel's name is now a paragraph carrying the dialog's
-  `aria-labelledby` target, leaving the hero heading as the document's only `h1`.
+### Green discipline
 
-### Changed — content and tone
+The audit's complaint was that green was "repeatedly diluted through weak
+transparent effects". The whole page now has exactly one ambient glow — a single
+radial gradient behind the hero, at 9% of `--secure`, reaching full transparency
+inside its own box. Everywhere else green is a solid fill, a 1px line, a `--secure-soft`
+chip or a 2px left border. `--glow-secure` is used on precisely one component: the
+primary button.
 
-- "Professional certificates" (hero statistic) and "Certificates" (credential card) now both read
-  **"Course completions"**, matching the source-of-truth instruction to avoid an inflated
-  certification claim. No occurrence of `certificat*` remains in rendered text.
-- Terminal-style interface labels replaced with plain professional wording:
+### No purple anywhere
 
-  | Before | After |
-  |---|---|
-  | `secure_profile.interface` | Portfolio access |
-  | `security_profile.monitor` | Security profile |
-  | `live` (pulsing indicator) | Summary |
-  | `Signal map` / `6 domains active` | Focus areas / 6 security domains |
-  | `sarmad@portfolio:~$ profile --status` | Current focus |
-  | `entropy_score` / `analysis_running` | Entropy analysis / Statistical testing |
-  | `EVIDENCE_04` | Evidence handling |
-  | `SCOPED LAB` | Authorised lab |
+`404.html` still carried `#818CF8` from an abandoned violet theme, including an
+inline comment describing a scheme the site had already left. The page was rebuilt
+on the AEGIS tokens with its own light-theme block. The starfield canvas in the
+previous `app.js`, which read `--accent-rgb` / `--accent-2-rgb` and painted violet
+defaults when those tokens were missing, is gone entirely.
 
-  The "live" indicator was removed specifically because the panel shows a static summary, not
-  live telemetry.
+### Typography and spacing
 
-- The rotating status line was rewritten from lowercase command output into complete sentences.
+System-first stack; monospace reserved for technical labels, keys, terminal lines
+and evidence identifiers. `H1 clamp(2.75rem, 8vw, 6.25rem)`, `H2 clamp(1.85rem,
+3.6vw, 3.25rem)`. 8px spacing scale, `--section-gap clamp(3rem, 8vw, 7.5rem)`,
+content max-width 1340px, radii 8 / 12 / 16 / 20px.
 
-### Changed — visual restraint
+---
 
-Motion and decoration were calmed without altering layout, spacing or structure:
+## 5. Motion architecture
 
-- Background grid opacity `.42` → `.28`.
-- Aurora opacity `.11` → `.08`; drift `18s` → `26s`.
-- Radar sweep peak alpha `.38` → `.22`; rotation `5s` → `8s`.
-- Technical-areas marquee `33s` → `48s`; tool marquee `38s` → `55s`.
-- Marquee separator dots reduced and de-glowed.
+One attribute drives everything: `html[data-motion]` = `full` | `calm` | `off`.
 
-### Documentation
+Every motion rule in `assets/css/motion.css` is nested under that attribute, so the
+base stylesheet describes a completely static page and motion is only ever *added*.
+That is what makes "off" trustworthy — there is nothing to undo, and no element can
+be stranded mid-transition with its content hidden.
 
-- Added `FINAL_TEST_REPORT.md` with the full ten-size viewport matrix and honest coverage notes.
-- Added this changelog.
-- Rewrote `UPGRADE_REPORT.md`, which described work and QA that no longer matched the code.
-- Corrected the `README.md` file listing and feature descriptions.
+- **Full** — reveal choreography, staggered grids, boot verification sequence, globe
+  rotation with routed packets, packet routes in the diagrams, mission scan on
+  hover/focus, filter layout transition, restrained control micro-interactions.
+- **Calm** — short opacity-only fades, no translation, no globe rotation, no
+  ambient loops.
+- **Off** — all durations 1ms, all content immediately visible, instant scrolling.
 
-### Housekeeping
+Default resolution, mirrored byte-for-byte between the pre-paint inline script and
+`core.js`: `prefers-reduced-motion` → `off`; touch-first, under 720px, ≤4 cores or
+≤4 GB → `calm`; otherwise `full`.
 
-- Asset cache version `3.0.0` → `3.1.0` on both `styles.css` and `script.js`.
-- Removed the now-unused `diagnosticLoad` keyframe and its reduced-motion override.
+### Contention removed
 
-### Verification
+The previous release ran two IntersectionObservers over the same `.reveal` class —
+a one-shot reveal observer and a "reverse flow" observer that re-hid elements on
+scroll-up. They fought each other. There is now one observer, one direction, one
+class: elements resolve once and stay resolved.
 
-`tools/verify_portfolio.py` 8/8 pass · `node --check script.js` pass · viewport matrix 10/10 pass ·
-no console errors · no failed requests.
+### Offscreen and hidden
 
-Five items remain untested for environmental reasons and are listed in section H of
-`FINAL_TEST_REPORT.md`: screenshots, Escape-to-close, counter animations, live OS theme
-switching, and Lighthouse scores.
+Sections marked `data-ambient` gain `.is-idle` when they leave the viewport, which
+pauses every packet route, node pulse and scan animation inside them. The globe's
+rAF loop stops on `document.hidden` and when the hero leaves the viewport, and is
+never started below Full motion — at Calm it paints exactly one static frame.
 
-### Not changed, deliberately
+---
 
-- All four CV files are preserved as required. `Sarmad_Saeed_CV.pdf` and
-  `Sarmad_Saeed_Professional_Resume.pdf` are byte-identical, as are the two DOCX files; the
-  duplication is intentional and the pairs must not be allowed to diverge.
-- No factual content was altered. Names, dates, degrees, modules, employers, projects and
-  recognition remain exactly as stated in the content source of truth.
+## 6. The cyber globe
+
+`assets/js/globe.js` is new and entirely original: a wireframe sphere with a
+graticule, fifteen regional nodes, great-circle routes slerped from the UK base
+node, and one travelling marker per route, phase-offset so they never pulse in
+unison.
+
+Budget: one canvas, one rAF loop, ~24fps, DPR clamped to 1.5, no shadow blur, no
+filters. It is not created at all on touch-first or small screens — there, the
+static SVG twin renders the same topology with no script and no animation, and it
+is also what remains visible at motion off.
+
+It illustrates one truthful fact: base United Kingdom, availability worldwide. No
+counters, no traffic figures, no telemetry.
+
+---
+
+## 7. Case-study reports
+
+The flat dialog became a three-region forensic report:
+
+- **Desktop** — evidence navigation rail, report body, artefact panel
+- **Tablet** — the rail becomes a horizontal tab strip
+- **Mobile** — a full-screen sheet with a sticky title bar and a single scroller
+
+Each mission gained a **work-sequence timeline** and a **working-material** list.
+Both describe process and material type only — never a measured result, a quantity
+or an outcome. Missions without a genuine NIST mapping omit the framework block
+entirely rather than inventing one.
+
+Added: Previous / Next navigation across missions, Web Share where the browser
+supports it, and a print layout that renders *every* panel rather than the selected
+tab — a report with four of its five sections missing would be a misleading document.
+
+---
+
+## 8. Features preserved and improved
+
+| Feature | Change |
+|---|---|
+| Theme control | Two-state toggle → **three-state System / Dark / Light** disclosure menu with `menuitemradio` state |
+| Motion control | Cycling button → **three-state menu** with descriptions and exposed state |
+| Command palette | Now also opens all five case studies, both CV formats, copy-link, print, and each theme and motion level by name |
+| Keyboard shortcuts | Added `M` for motion; jump targets remapped to the new sections |
+| Project filters | Added NIST filters, a live `aria-live` result count and an empty state |
+| Deep links | Unchanged behaviour, extended with Previous/Next |
+| Share / copy / print | Added Web Share, copy-page-link and a full-page print layout |
+| CV downloads | Both PDF and DOCX now surfaced in the Quick View and the palette |
+| PWA | Added online/offline status and an install-app action that appears only when the browser offers it |
+| Local time | Preserved, moved into the Quick View |
+| No-JS fallback | Extended: hides the welcome, restores scrolling, reveals every lifecycle panel and mission, and explains what is unavailable |
+
+---
+
+## 9. Engineering
+
+### File structure
+
+CSS: 9 modules replaced by 9 modules, but along component lines rather than
+historical accretion — `tokens`, `base`, `shell`, `hero`, `sections`, `missions`,
+`overlays`, `motion`, `print`. Removed: `design`, `effects`, `flow`, `responsive`,
+`sentinel`, `surfaces`, `terminal`.
+
+JS: `app.js` (50 KB single closure) split into `core.js` (shared helpers, theme and
+motion resolution), `globe.js`, `report.js`, `project-data.js` and a slimmer
+`app.js` orchestrator.
+
+### Version synchronisation
+
+`15.0.0` across all nine CSS links, the module script tag, every JS import
+specifier, `ASSET_REV`, `CACHE_VERSION = 'v15-0-0'`, the footer status line and this
+document. The service worker's precache list is now generated from the module name
+arrays, so a module can no longer be added to the site and forgotten in the cache.
+
+### Bugs fixed during implementation
+
+1. **`[hidden]` was not working.** The UA rule `[hidden] { display: none }` is a
+   bare selector, so any component setting `display` beat it. All five lifecycle
+   panels rendered at once, and the install-app button and local-time block showed
+   before they had anything to show. Fixed with an explicit `[hidden] { display:
+   none !important }` in the base layer.
+2. **`M` shadowed the `G`-then-`M` jump.** The single-key motion shortcut was
+   evaluated before the pending `g` prefix, so the documented "go to missions"
+   sequence silently cycled the motion level instead. The prefix now claims the
+   keystroke first.
+3. **Page-level horizontal overflow at 320–430px.** The welcome panel used
+   `width: min(760px, 100%)` inside a `place-items: center` grid, where the
+   percentage resolved against a content-sized track and refused to shrink. Changed
+   to flex centring.
+4. **Overflow from scroll containers inside grids.** The availability map and the
+   Red/Blue diagram carry `min-width` for legibility; as grid items their default
+   `min-width: auto` propagated that to the column and pushed the page sideways.
+   Fixed with explicit `min-width: 0`.
+5. **Header overflow at 1024px.** Seven nav items plus four controls did not fit.
+   The mobile-navigation breakpoint moved from 1023px to 1119px.
+6. **A visible seam across the hero.** The ambient glow lived in an inset box whose
+   gradient was still tinted at the box edge, drawing a hard rectangular line down
+   the hero on narrow screens. The gradient now reaches full transparency inside
+   its own box.
+7. **Sticky action block covered the artefact list.** In the report aside, a sticky
+   footer floated over the working-material list. Replaced with a flex column where
+   the artefact list absorbs the remaining height and scrolls inside itself.
+8. **Footer controls below the minimum target size.** Plain inline links measured
+   23px high; they now carry `min-height: 28px`.
+
+### Security and safety
+
+No `eval`, no `document.write`, no `javascript:` URLs. All external links carry
+`rel="noopener noreferrer"`. No new dependency, no build step, no remote asset —
+every image on the page is inline SVG or a local file. `_headers`, `netlify.toml`
+and `vercel.json` are unchanged.
+
+---
+
+## 10. Metadata and SEO
+
+- Meta description rewritten around worldwide availability
+- Open Graph: added `og:site_name` and `og:locale`, absolute image URL retained
+- JSON-LD: `jobTitle` corrected to `MSc Cyber Security Graduate`, `addressCountry`
+  changed to the ISO code `GB`, `url` added, a `seeks` / `Demand` block added
+  stating worldwide availability, `knowsAbout` expanded, `sameAs` corrected
+- `site.webmanifest`: theme colours retuned to `#04090E`, added `lang`,
+  `orientation`, `categories` and two app shortcuts
+- `404.html` rebuilt on the AEGIS palette with its own light-theme block
+- `assets/social-preview.svg` redrawn and re-rendered to
+  `assets/social-preview.png` at exactly 1200 × 630
+- `robots.txt` and `sitemap.xml` verified unchanged and correct
+
+---
+
+## 11. Honest limitations
+
+- **Lighthouse was not run.** No Lighthouse binary is available in this
+  environment. Real measured navigation timings, transfer weight, layout shift,
+  long-task counts and DOM size are reported instead in `FINAL_TEST_REPORT.md`. They
+  are measurements, not a score.
+- **Screen-reader testing was automated, not manual.** Roles, names, states,
+  `aria-live` regions, focus management and focus restoration were verified
+  programmatically. No NVDA, JAWS or VoiceOver session was run.
+- **Contrast was computed, not sampled from rendered pixels.** Every visible text
+  node's computed colour was composited against its resolved backdrop and checked
+  against WCAG AA. Text over the canvas globe and over mission artwork is not
+  measured this way, because there is none — all artwork is behind or beside text,
+  never under it.
+- **`prefers-reduced-motion` and colour-scheme were emulated** through Chrome's
+  media emulation rather than toggled in an operating system.
+- **Real-device testing was not possible.** All nine viewports were tested under
+  Chrome device emulation with touch emulation enabled below 768px.
