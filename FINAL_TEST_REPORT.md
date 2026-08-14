@@ -1,4 +1,4 @@
-# FINAL TEST REPORT — AEGIS NEXUS 16.0.0
+# FINAL TEST REPORT — AEGIS NEXUS 17.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
 
@@ -21,9 +21,9 @@ Totals: **72 / 72** functional, keyboard, accessibility, contrast and content
 checks passed. **18 / 18** viewport sweeps (9 viewports × 2 themes) passed.
 **35 / 35** static checks passed.
 
-Release 16.0.0 re-lays the page on the supplied visual reference. The two
-lifecycle-tablist checks from 15.0.0 were retired with the component itself and
-replaced by two checks on the evidence-count skills panel that took its place.
+Release 17.0.0 finishes the marked areas of the reference (globe atmosphere, lit
+project artwork, report banner, tool glyphs) and adds two GitHub Actions
+workflows. The suite is unchanged from 16.0.0 and still passes in full.
 
 ---
 
@@ -63,7 +63,7 @@ replaced by two checks on the evidence-count skills panel that took its place.
 
 Live repository folder, `.git` metadata, all five required files, branch
 `redesign/aegis-nexus-v15-live`, correct GitHub remote, readable status, exactly
-one HTML asset revision (`16.0.0`), and HTML / service-worker revisions matching.
+one HTML asset revision (`17.0.0`), and HTML / service-worker revisions matching.
 
 ## 3. JavaScript syntax
 
@@ -243,7 +243,7 @@ HTTP cache disabled and service worker bypassed, so these are cold-load figures.
 | Metric | Desktop 1440 × 900 | Mobile 390 × 844 |
 |---|---|---|
 | Requests (same origin) | 16 | 16 |
-| Transferred | 157 KB | 157 KB |
+| Transferred | 163 KB | 163 KB |
 | DOM nodes | 1,392 | 1,391 |
 | Long tasks (> 50 ms) | 0 | 0 |
 | **Cumulative Layout Shift** | **0** | **0** |
@@ -257,13 +257,13 @@ merely small.
 
 | Location | Value |
 |---|---|
-| Nine `<link>` tags in `index.html` | `?v=16.0.0` |
-| Module `<script>` tag | `?v=16.0.0` |
-| Import specifiers in `app.js`, `globe.js`, `report.js` | `?v=16.0.0` |
-| `service-worker.js` `ASSET_REV` | `16.0.0` |
-| `service-worker.js` `CACHE_VERSION` | `v16-0-0` |
-| Footer status line | `Release 16.0.0` |
-| `README.md`, `FINAL_CHANGELOG.md`, this report | `16.0.0` |
+| Nine `<link>` tags in `index.html` | `?v=17.0.0` |
+| Module `<script>` tag | `?v=17.0.0` |
+| Import specifiers in `app.js`, `globe.js`, `report.js` | `?v=17.0.0` |
+| `service-worker.js` `ASSET_REV` | `17.0.0` |
+| `service-worker.js` `CACHE_VERSION` | `v17-0-0` |
+| Footer status line | `Release 17.0.0` |
+| `README.md`, `FINAL_CHANGELOG.md`, this report | `17.0.0` |
 
 Verified by `verify_live_workspace.py`: exactly one distinct HTML revision, matching
 the service worker.
@@ -274,6 +274,21 @@ the service worker.
 **1200 × 630**. Content: availability pill, name, title, university and status,
 Current base / Availability status cards, focus tags, globe, work modes. No
 percentages, no certification marks, no portrait.
+
+---
+
+## 15. Continuous verification
+
+`.github/workflows/verify.yml` re-runs a subset of these checks inside GitHub on
+every push and pull request: JavaScript syntax on all five modules and the
+service worker, asset-revision synchronisation, required-file presence, exactly
+one H1, and every content rule (worldwide wording present, correct LinkedIn URL
+present, stale URL and forbidden status wording absent). A change that breaks any
+of them fails the build rather than reaching the live site.
+
+`.github/workflows/deploy.yml` publishes `main` to Vercel and Netlify once their
+secrets exist, and skips cleanly until then. GitHub Pages is left to its existing
+branch-based publish.
 
 ---
 

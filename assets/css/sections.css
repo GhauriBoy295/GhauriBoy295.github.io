@@ -279,19 +279,50 @@
 .tool-mark {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   margin-bottom: var(--space-2);
   border: 1px solid var(--secure-line);
   border-radius: var(--radius-md);
   background: var(--secure-soft);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
   color: var(--secure);
   flex: none;
 }
+
+.tool-mark svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Tint by what the tool is for, so the grid carries the same semantics as the
+   rest of the page: red is offensive, amber is forensic evidence, green is
+   defensive, neutral is a platform or language. */
+.tool-grid li[data-kind="offensive"] .tool-mark {
+  border-color: var(--incident-line);
+  background: var(--incident-soft);
+  color: var(--incident);
+}
+
+.tool-grid li[data-kind="forensic"] .tool-mark {
+  border-color: var(--evidence);
+  background: var(--evidence-soft);
+  color: var(--evidence);
+}
+
+.tool-grid li[data-kind="platform"] .tool-mark,
+.tool-grid li[data-kind="build"] .tool-mark {
+  border-color: var(--border-strong);
+  background: var(--surface-3);
+  color: var(--text-2);
+}
+
+.tool-grid li[data-kind="offensive"]:hover { border-color: var(--incident-line); }
+.tool-grid li[data-kind="forensic"]:hover { border-color: var(--evidence); }
 
 .tool-grid strong { font-size: 0.85rem; color: var(--text-1); }
 .tool-grid small { font-size: 0.72rem; color: var(--text-3); }

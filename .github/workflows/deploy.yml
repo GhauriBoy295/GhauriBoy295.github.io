@@ -1,0 +1,103 @@
+name: Deploy
+
+# Publishes main to Vercel and Netlify.
+#
+# GitHub Pages is deliberately NOT handled here. This repository is a
+# <user>.github.io site published straight from the main branch, so Pages
+# already rebuilds on every push with no workflow at all. Adding an
+# actions/deploy-pages job would conflict with that unless the Pages source is
+# switched to "GitHub Actions" first, so it is left alone.
+#
+# Vercel and Netlify only run once their secrets exist. Each job checks for its
+# token first and skips cleanly if it is absent, so this workflow is green from
+# the moment it lands and starts deploying the other two hosts the minute the
+# secrets are added. Nothing here ever prints a secret.
+#
+# Secrets to add under Settings → Secrets and variables → Actions:
+#   VERCEL_TOKEN         vercel.com/account/tokens
+#   VERCEL_ORG_ID        from .vercel/project.json after `vercel link`
+#   VERCEL_PROJECT_ID    from the same file
+#   NETLIFY_AUTH_TOKEN   app.netlify.com/user/applications#personal-access-tokens
+#   NETLIFY_SITE_ID      Site configuration → Site information → Site ID
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deployment at a time; a newer push supersedes an in-flight one.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  vercel:
+    name: Vercel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for credentials
+        id: check
+        env:
+          TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          ORG: ${{ secrets.VERCEL_ORG_ID }}
+          PROJECT: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ORG" ] && [ -n "$PROJECT" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Vercel secrets are not set yet — skipping. See the header of this workflow."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.ready == 'true'
+        with:
+          node-version: '20'
+
+      - name: Deploy to production
+        if: steps.check.outputs.ready == 'true'
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm install --global vercel@latest
+          vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
+
+  netlify:
+    name: Netlify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for credentials
+        id: check
+        env:
+          TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          SITE: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$SITE" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Netlify secrets are not set yet — skipping. See the header of this workflow."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.ready == 'true'
+        with:
+          node-version: '20'
+
+      - name: Deploy to production
+        if: steps.check.outputs.ready == 'true'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npm install --global netlify-cli@latest
+          netlify deploy --prod --dir=. --message="Deploy ${{ github.sha }}"

@@ -8,8 +8,8 @@
    bookmarked and restored on load. History is replaced rather than pushed, so
    Back never has to walk through every report the visitor opened. */
 
-import { $, el, svgIcon, showToast, copyText, motionLevel } from './core.js?v=16.0.0';
-import { projectData, order } from './project-data.js?v=16.0.0';
+import { $, el, svgIcon, showToast, copyText, motionLevel } from './core.js?v=17.0.0';
+import { projectData, order } from './project-data.js?v=17.0.0';
 
 const HASH_PREFIX = '#case-';
 
@@ -102,11 +102,35 @@ function selectPanel(id) {
     tab.tabIndex = active ? 0 : -1;
   });
 
-  Array.from(main.children).forEach((panel) => {
+  // Only the panels toggle; the banner above them stays for every section.
+  main.querySelectorAll('.report-panel').forEach((panel) => {
     panel.hidden = panel.id !== `report-panel-${id}`;
   });
 
   main.scrollTop = 0;
+}
+
+/* The report opens on the same artwork the card showed, so moving from card to
+   report is continuous. The SVG is cloned from the card rather than duplicated
+   in the data, which keeps one source for each illustration.
+
+   The banner element is held here because render() replaces the whole of
+   #reportMain; it is put back at the top of the fresh panel list. */
+function buildBanner(id) {
+  const card = document.querySelector(`[data-open-mission="${id}"]`)?.closest('.mission');
+  const artwork = card?.querySelector('.mission-art svg');
+  if (!artwork) return null;
+
+  const banner = el('div', { className: 'report-banner' });
+  const copy = artwork.cloneNode(true);
+  // The card artwork is already labelled; inside the report it sits beside a
+  // full written account, so it is decoration and hidden from assistive tech.
+  copy.removeAttribute('role');
+  copy.removeAttribute('aria-label');
+  copy.setAttribute('aria-hidden', 'true');
+  copy.querySelector('.art-scan')?.remove();
+  banner.append(copy);
+  return banner;
 }
 
 function render(project) {
@@ -157,7 +181,9 @@ function render(project) {
     return tab;
   }));
 
-  main.replaceChildren(...list.map((section) => buildPanel(project, section)));
+  const banner = buildBanner(currentId);
+  const panels = list.map((section) => buildPanel(project, section));
+  main.replaceChildren(...(banner ? [banner, ...panels] : panels));
 
   selectPanel(list[0].id);
 

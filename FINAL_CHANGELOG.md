@@ -1,5 +1,92 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
+**Release 17.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 16.0.0
+
+16.0.0 matched the reference's structure. 17.0.0 matches its *finish* — the parts
+marked up on the supplied screens — and makes deployment automatic.
+
+---
+
+## 1. The marked areas
+
+**Globe.** The sphere now has an atmosphere: one contained radial gradient behind
+it, reaching full transparency inside its own box. Dots are brighter, nodes
+larger, route arcs heavier. It reads as the lit globe on the reference rather
+than a faint wireframe.
+
+**Project artwork.** All five illustrations were redrawn as layered, lit scenes
+instead of flat diagrams — a gradient sky, a depth grid, a radial glow behind the
+focal element, and foreground detail:
+
+| Project | Scene |
+|---|---|
+| Randomness suite | Entropy cell matrix, a filled distribution curve over a bitstream, a lit shield |
+| ICS intrusion detection | Industrial plant with tanks, towers and pipe runs; segmented OT network; red anomaly node and path; shield |
+| DFIR labs | Evidence disk with platter rings, a lit fingerprint under a magnifier, four-step custody timeline |
+| Security assessment | Lit server racks with a red attack path crossing green control bars |
+| Blood bank database | Lit vault, relational links, record rows, privacy shield |
+
+**Case-study report.** The report now opens on the same artwork the card showed,
+as a banner above the written account. The SVG is *cloned from the card* rather
+than duplicated in the data, so each illustration still has exactly one source,
+and the clone is marked `aria-hidden` because the report already states
+everything in text.
+
+**Tools & Technologies.** Monogram letters were replaced with twelve original
+glyphs — a scan reticle, a packet waveform, an intercept gate, a payload target,
+shields, a fingerprint, a disk, code braces, a database, a terminal, a rack.
+They are tinted by purpose: red for offensive tooling, amber for forensic, green
+for defensive, neutral for platforms and languages. **No vendor logo or
+trademark is reproduced** — each glyph depicts what the tool does.
+
+**About and Skills panels** keep the marked layout. The About visual remains an
+original orbit diagram, since you asked for no photograph.
+
+## 2. Automatic deployment
+
+Two GitHub Actions workflows were added.
+
+`verify.yml` runs on every push and pull request: JavaScript syntax on all five
+modules and the service worker, asset-revision synchronisation between the HTML
+and the worker, the presence of every required file, and the content rules — the
+worldwide wording, the correct LinkedIn URL, exactly one H1, and the absence of
+"candidate", "expected 2026", "currently studying" and UK-only phrasing. A future
+edit that breaks any of those fails the build instead of reaching the live site.
+
+`deploy.yml` runs on every push to `main` and publishes to **Vercel** and
+**Netlify**. Each job checks for its secrets first and skips cleanly when they
+are absent, so the workflow is green immediately and starts deploying the moment
+the secrets are added. No secret is ever printed.
+
+GitHub Pages is deliberately *not* in that workflow: this is a
+`<user>.github.io` repository publishing straight from `main`, so Pages already
+rebuilds on every push. Adding a Pages job would have required switching the
+Pages source first and could have broken a deployment that already works.
+
+## 3. Bugs fixed
+
+1. **Technology chips lost their styling.** `.mission-stack` was dropped during
+   the 16.0.0 rewrite while the report aside still used it, so the chips in the
+   case-study report rendered as one run-on string of concatenated words.
+2. **Wrapped metadata began with a stray separator.** The middot was drawn as a
+   `::before` on the following item, so a wrapped line started with the
+   separator. It is now an `::after` on the preceding item and wraps with it.
+3. **The blood-bank shield glyph read as a letter "T".** Replaced with the same
+   check mark the other shields use.
+4. **The report banner was wiped and then hidden.** `render()` replaces the whole
+   of `#reportMain`, and `selectPanel()` hid every child that was not the active
+   panel. The banner is now built into the panel list, and the panel toggle is
+   scoped to `.report-panel`.
+
+## 4. Version
+
+Asset revision **17.0.0** across the nine CSS links, the module script tag, every
+import specifier, `ASSET_REV`, `CACHE_VERSION = 'v17-0-0'` and the footer.
+
+---
+
+## Release 16.0.0 — reference-matched composition
+
 **Release 16.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 15.0.0
 
 Release 15.0.0 built the AEGIS design system. Release 16.0.0 re-lays the page on
