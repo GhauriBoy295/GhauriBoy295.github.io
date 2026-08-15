@@ -15,3 +15,6 @@ node_modules/
 
 # Agent tooling instructions, not part of the published site
 CLAUDE.md
+
+# Netlify CLI link state, local to one machine
+.netlify/
