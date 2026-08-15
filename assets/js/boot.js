@@ -15,7 +15,7 @@
    At "calm" the checklist resolves in one step with no rain; at "off" it is
    already complete when the panel paints. */
 
-import { motionLevel, coarseOrSmall, reducedMotionQuery } from './core.js?v=18.0.0';
+import { motionLevel, coarseOrSmall, reducedMotionQuery } from './core.js?v=19.0.0';
 
 const GLYPHS = '01<>[]{}/\\|=+*#$%&ABCDEFHKLMNPRSTVXZ';
 

@@ -42,6 +42,7 @@
   --space-9: 6rem;
 
   --shell-max: 1340px;
+  --rail-inset: clamp(1rem, 2vw, 2.5rem);
   --shell-pad: clamp(1rem, 4vw, 2.75rem);
   --section-gap: clamp(3rem, 8vw, 7.5rem);
   --header-h: 68px;
@@ -159,4 +160,15 @@
   --grid-line: rgba(143, 166, 183, 0.32);
   --scrim: rgba(21, 38, 51, 0.42);
   --bar-colour: #EDF2F6;
+}
+
+/* Very wide screens: let the shell breathe rather than stranding the layout in
+   a narrow column with hundreds of pixels of dead gutter either side. The hero
+   rails fill what remains. */
+@media (min-width: 1700px) {
+  :root { --shell-max: 1560px; }
+}
+
+@media (min-width: 2200px) {
+  :root { --shell-max: 1720px; }
 }

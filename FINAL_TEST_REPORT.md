@@ -1,4 +1,4 @@
-# FINAL TEST REPORT — AEGIS NEXUS 18.0.0
+# FINAL TEST REPORT — AEGIS NEXUS 19.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
 
@@ -17,7 +17,7 @@ the end, with the reason.
 | Touch | Touch emulation with 5 contact points below 768px |
 | Static checks | `tools/verify_portfolio.py`, `tools/verify_live_workspace.py`, `node --check` |
 
-Totals: **72 / 72** functional, keyboard, accessibility, contrast and content
+Totals: **73 / 73** functional, keyboard, accessibility, contrast and content
 checks passed. **18 / 18** viewport sweeps (9 viewports × 2 themes) passed.
 **35 / 35** static checks passed.
 
@@ -65,7 +65,7 @@ still passes in full.
 
 Live repository folder, `.git` metadata, all five required files, branch
 `redesign/aegis-nexus-v15-live`, correct GitHub remote, readable status, exactly
-one HTML asset revision (`18.0.0`), and HTML / service-worker revisions matching.
+one HTML asset revision (`19.0.0`), and HTML / service-worker revisions matching.
 
 ## 3. JavaScript syntax
 
@@ -139,6 +139,7 @@ or 3:1 for large text (≥24px, or ≥18.66px at weight ≥700).
 | No heavy continuous motion on small/touch devices | PASS — the canvas globe is not created; the static SVG is served instead |
 | Dot-matrix globe renders at Calm as one static frame, with no loop | PASS |
 | Animation pauses offscreen / when hidden | PASS — `.is-idle` on `data-ambient` sections; the globe loop returns on `document.hidden` and on leaving the viewport |
+| Core-skill bars fill on scroll at Full, static at Calm and Off | PASS |
 | Welcome verification sequence runs at Full | PASS — sampled 0% → 25% → 75% → 100% over ~2.3s, state label `Verifying` → `Ready` |
 | Welcome sequence completes instantly at Calm and Off | PASS — checklist painted complete on first frame, no rain canvas created |
 | Glyph-rain canvas is skipped on touch-first / small screens | PASS — canvas removed, panel unaffected |
