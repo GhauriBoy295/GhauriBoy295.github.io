@@ -72,7 +72,7 @@ icon-512.png
 apple-touch-icon.png
 assets/
   css/  tokens · base · shell · hero · sections · missions · overlays · motion · print
-  js/   app · core · globe · report · project-data
+  js/   app · core · boot · globe · report · project-data
   social-preview.png
   social-preview.svg
   icon-source.svg
@@ -96,7 +96,7 @@ Every CSS and JS request carries `?v=<release>`, the JS module graph imports car
 same string, and the service worker holds `ASSET_REV` and `CACHE_VERSION`. All three must
 be bumped together — `tools/verify_live_workspace.py` fails the build if they drift.
 
-Current release: **17.0.0** (`CACHE_VERSION = 'v17-0-0'`).
+Current release: **18.0.0** (`CACHE_VERSION = 'v18-0-0'`).
 
 ## Continuous integration and deployment
 

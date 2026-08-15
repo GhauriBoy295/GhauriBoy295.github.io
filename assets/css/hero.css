@@ -194,11 +194,20 @@
 }
 
 .globe-frame canvas,
-.globe-frame .globe-static {
+.globe-frame .globe-static,
+.globe-frame .globe-hud {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+/* Instrument frame around the sphere: corner brackets, tick marks and a
+   dashed ring. Pure decoration, so it is hidden from assistive technology and
+   sits under the canvas. */
+.globe-hud {
+  color: var(--secure);
+  pointer-events: none;
 }
 
 /* The static SVG is the honest fallback: it renders the same topology with no

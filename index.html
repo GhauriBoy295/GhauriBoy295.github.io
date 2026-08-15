@@ -32,16 +32,16 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=17.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=17.0.0">
-  <script type="module" src="assets/js/app.js?v=17.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=18.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=18.0.0">
+  <script type="module" src="assets/js/app.js?v=18.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -138,27 +138,35 @@
 
   <!-- ============================ Secure welcome ============================ -->
   <section class="boot" id="boot" role="dialog" aria-modal="true" aria-labelledby="bootName" aria-describedby="bootBrief" tabindex="-1">
+    <canvas class="boot-rain" id="bootRain" aria-hidden="true"></canvas>
+    <div class="boot-grid" aria-hidden="true"></div>
+
     <div class="boot-panel">
       <div class="boot-bar">
         <span class="win-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span>Secure profile · access</span>
-        <span class="boot-bar-state">Ready</span>
+        <span>Secure profile &middot; access</span>
+        <span class="boot-bar-state" id="bootState">Verifying</span>
       </div>
 
       <div class="boot-body">
         <div class="boot-mark">
           <div class="boot-crest" aria-hidden="true">
-            <svg viewBox="0 0 120 120" role="presentation">
-              <path d="M60 8 104 25v31c0 26-17 47-44 58C33 103 16 82 16 56V25L60 8Z" fill="none" stroke="currentColor" stroke-width="3"/>
-              <path d="m39 60 14 14 30-31" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M29 34c18-7 42-7 62 0" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
-              <rect class="crest-scan" x="12" y="56" width="96" height="2" fill="currentColor" opacity="0"/>
+            <svg viewBox="0 0 140 140" role="presentation">
+              <g class="crest-rings" fill="none" stroke="currentColor">
+                <circle cx="70" cy="70" r="66" stroke-opacity=".16"/>
+                <circle cx="70" cy="70" r="56" stroke-opacity=".24" stroke-dasharray="4 8"/>
+              </g>
+              <path class="crest-shield" d="M70 16 108 32v29c0 24-16 44-38 53-22-9-38-29-38-53V32L70 16Z"
+                    fill="none" stroke="currentColor" stroke-width="2.6"/>
+              <path class="crest-check" d="m52 70 13 13 27-29"
+                    fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect class="crest-scan" x="26" y="68" width="88" height="2" fill="currentColor" opacity="0"/>
             </svg>
           </div>
           <p class="mono" style="color:var(--text-3)">AEGIS NEXUS</p>
           <p class="boot-name" id="bootName">Sarmad Saeed</p>
           <p class="boot-role">MSc Cyber Security Graduate</p>
-          <p class="boot-place">University of Chester · 2025–2026</p>
+          <p class="boot-place">University of Chester &middot; 2025&ndash;2026</p>
         </div>
 
         <div>
@@ -171,11 +179,19 @@
             <div><span>Bachelor</span><strong>Cyber Security, Air University</strong></div>
           </dl>
 
+          <div class="boot-progress" aria-hidden="true">
+            <div class="boot-progress-head">
+              <span>Profile verification</span>
+              <span id="bootPercent">0%</span>
+            </div>
+            <div class="boot-progress-track" id="bootProgress"><span></span></div>
+          </div>
+
           <ul class="boot-checks" aria-hidden="true">
-            <li style="--line:0">Profile record loaded<b>OK</b></li>
-            <li style="--line:1">Case studies indexed<b>OK</b></li>
-            <li style="--line:2">Credential register verified<b>OK</b></li>
-            <li style="--line:3">Awaiting operator input<b>···</b></li>
+            <li><i></i>Profile record loaded<b>OK</b></li>
+            <li><i></i>Case studies indexed<b>OK</b></li>
+            <li><i></i>Credential register verified<b>OK</b></li>
+            <li><i></i>Availability confirmed worldwide<b>OK</b></li>
           </ul>
 
           <div class="boot-actions">
@@ -190,7 +206,7 @@
             </a>
           </div>
 
-          <p class="boot-hint" style="margin-top:1rem"><kbd>Enter</kbd> to continue · <kbd>Esc</kbd> to skip · motion follows your device settings</p>
+          <p class="boot-hint"><kbd>Enter</kbd> to continue &middot; <kbd>Esc</kbd> to skip &middot; motion follows your device settings</p>
         </div>
       </div>
     </div>
@@ -312,6 +328,19 @@
             <!-- Globe -->
             <div class="hero-globe reveal" data-reveal="scale" data-delay="100">
               <div class="globe-frame" id="globe">
+                <svg class="globe-hud" viewBox="0 0 240 240" aria-hidden="true">
+                  <g fill="none" stroke="currentColor">
+                    <circle cx="120" cy="120" r="118" stroke-opacity=".18"/>
+                    <circle class="hud-ring" cx="120" cy="120" r="112" stroke-opacity=".3" stroke-dasharray="2 10"/>
+                  </g>
+                  <g stroke="currentColor" stroke-opacity=".55" stroke-width="1.4" fill="none">
+                    <path d="M6 34V6h28M234 34V6h-28M6 206v28h28M234 206v28h-28"/>
+                  </g>
+                  <g fill="currentColor" opacity=".5">
+                    <rect x="116" y="0" width="8" height="2"/><rect x="116" y="238" width="8" height="2"/>
+                    <rect x="0" y="116" width="2" height="8"/><rect x="238" y="116" width="2" height="8"/>
+                  </g>
+                </svg>
                 <canvas aria-hidden="true"></canvas>
                 <svg class="globe-static" viewBox="0 0 240 240" role="img" aria-labelledby="globeTitle globeDesc">
                   <title id="globeTitle">Global availability network</title>
@@ -1454,7 +1483,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 17.0.0</span>
+          <span>Release 18.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>

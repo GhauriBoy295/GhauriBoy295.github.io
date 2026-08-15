@@ -14,10 +14,11 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=17.0.0';
-import { initGlobe } from './globe.js?v=17.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=17.0.0';
-import { projectData } from './project-data.js?v=17.0.0';
+} from './core.js?v=18.0.0';
+import { initGlobe } from './globe.js?v=18.0.0';
+import { initBoot } from './boot.js?v=18.0.0';
+import { initReport, openReport, projectFromHash } from './report.js?v=18.0.0';
+import { projectData } from './project-data.js?v=18.0.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');
@@ -78,6 +79,9 @@ reducedMotionQuery.addEventListener?.('change', () => {
 
 /* ================= Secure welcome ================= */
 const boot = $('#boot');
+// The rain canvas and the verification sequence live in their own module; this
+// keeps a handle so both can be stopped the moment the visitor moves on.
+const bootScene = initBoot();
 const siteShell = $('#siteShell');
 const mainContent = $('#main');
 const bootEnter = $('#bootEnter');
@@ -91,6 +95,7 @@ function setShellInert(value) {
 function completeBoot({ focusMain = true } = {}) {
   if (!boot || !body.classList.contains('boot-active')) return;
   window.clearTimeout(state.bootTimer);
+  bootScene.stop();
   body.classList.remove('boot-active');
   boot.setAttribute('aria-hidden', 'true');
   setShellInert(false);

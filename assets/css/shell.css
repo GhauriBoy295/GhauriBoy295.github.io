@@ -18,6 +18,26 @@
   overscroll-behavior: contain;
 }
 
+/* Glyph rain and grid sit behind the panel and are purely atmospheric. */
+.boot-rain,
+.boot-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.boot-rain { opacity: 0.34; }
+:root[data-theme="light"] .boot-rain { opacity: 0.16; }
+
+.boot-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.3;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, #000 100%);
+}
+
 body:not(.boot-active) .boot {
   opacity: 0;
   visibility: hidden;
@@ -31,11 +51,13 @@ body.boot-active .site-shell { filter: blur(2px); }
 
 .boot-panel {
   position: relative;
-  width: min(760px, 100%);
+  z-index: 1;
+  width: min(820px, 100%);
   margin-block: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  background: var(--surface-1);
+  background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+  backdrop-filter: blur(8px);
   box-shadow: var(--shadow-2);
   overflow: hidden;
 }
@@ -63,7 +85,23 @@ body.boot-active .site-shell { filter: blur(2px); }
 }
 .win-dots span:last-child { background: var(--secure); }
 
-.boot-bar-state { margin-left: auto; color: var(--secure); }
+.boot-bar-state {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--evidence);
+}
+
+.boot-bar-state::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.boot-bar-state.is-ready { color: var(--secure); }
 
 .boot-body {
   display: grid;
@@ -71,7 +109,7 @@ body.boot-active .site-shell { filter: blur(2px); }
   padding: clamp(var(--space-5), 4vw, var(--space-7));
 }
 
-@media (min-width: 720px) {
+@media (min-width: 760px) {
   /* 240px is the width at which "Sarmad Saeed" stays on one line at the
      column's own type size. */
   .boot-body { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); align-items: start; }
@@ -85,8 +123,8 @@ body.boot-active .site-shell { filter: blur(2px); }
 
 .boot-crest {
   position: relative;
-  width: 84px;
-  height: 84px;
+  width: 118px;
+  height: 118px;
   color: var(--secure);
 }
 
@@ -107,7 +145,7 @@ body.boot-active .site-shell { filter: blur(2px); }
   display: grid;
   gap: var(--space-2);
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  margin-block: var(--space-2);
+  margin-block: var(--space-4);
 }
 
 .boot-facts > div {
@@ -129,6 +167,39 @@ body.boot-active .site-shell { filter: blur(2px); }
 .boot-facts strong { color: var(--text-1); font-size: var(--text-small); }
 .boot-facts .is-secure { color: var(--secure); }
 
+/* ---------- Verification progress ---------- */
+.boot-progress { margin-bottom: var(--space-3); }
+
+.boot-progress-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.boot-progress-head span:last-child { color: var(--secure); }
+
+.boot-progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.boot-progress-track span {
+  display: block;
+  width: var(--fill, 0%);
+  height: 100%;
+  border-radius: 999px;
+  background: var(--secure);
+  transition: width var(--duration-layout) var(--ease-standard);
+}
+
 .boot-checks {
   display: grid;
   gap: var(--space-2);
@@ -147,26 +218,43 @@ body.boot-active .site-shell { filter: blur(2px); }
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  opacity: 0.4;
+  transition: opacity var(--duration-control) var(--ease-standard),
+              color var(--duration-control) var(--ease-standard);
 }
 
-.boot-checks li::before {
-  content: "";
-  width: 7px;
-  height: 7px;
+.boot-checks li.is-done { opacity: 1; color: var(--text-2); }
+
+.boot-checks i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--border-strong);
   border-radius: 2px;
-  background: var(--secure);
   flex: none;
+  transition: background var(--duration-control) var(--ease-standard),
+              border-color var(--duration-control) var(--ease-standard);
 }
 
-.boot-checks b { margin-left: auto; color: var(--secure); font-weight: 600; }
+.boot-checks li.is-done i { background: var(--secure); border-color: var(--secure); }
+
+.boot-checks b {
+  margin-left: auto;
+  color: var(--text-3);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity var(--duration-control) var(--ease-standard);
+}
+
+.boot-checks li.is-done b { color: var(--secure); opacity: 1; }
 
 .boot-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
+  margin-top: var(--space-5);
 }
 
-.boot-hint { color: var(--text-3); font-size: var(--text-micro); }
+.boot-hint { margin-top: var(--space-4); color: var(--text-3); font-size: var(--text-micro); }
 
 /* ================= Header ================= */
 .site-header {
