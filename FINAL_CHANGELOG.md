@@ -1,6 +1,6 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
-**Release 17.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 16.0.0
+**Release 18.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 16.0.0
 
 16.0.0 matched the reference's structure. 17.0.0 matches its *finish* — the parts
 marked up on the supplied screens — and makes deployment automatic.

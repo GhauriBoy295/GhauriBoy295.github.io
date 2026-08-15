@@ -1,4 +1,4 @@
-# FINAL TEST REPORT — AEGIS NEXUS 17.0.0
+# FINAL TEST REPORT — AEGIS NEXUS 18.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
 
@@ -21,9 +21,11 @@ Totals: **72 / 72** functional, keyboard, accessibility, contrast and content
 checks passed. **18 / 18** viewport sweeps (9 viewports × 2 themes) passed.
 **35 / 35** static checks passed.
 
-Release 17.0.0 finishes the marked areas of the reference (globe atmosphere, lit
-project artwork, report banner, tool glyphs) and adds two GitHub Actions
-workflows. The suite is unchanged from 16.0.0 and still passes in full.
+Release 18.0.0 rebuilds the welcome as an animated verification scene (glyph-rain
+canvas, self-drawing crest, progress bar and a checklist that resolves line by
+line), adds the globe instrument frame and the project-card brackets, and links
+the repository to Vercel and Netlify. The suite is unchanged from 17.0.0 and
+still passes in full.
 
 ---
 
@@ -63,11 +65,11 @@ workflows. The suite is unchanged from 16.0.0 and still passes in full.
 
 Live repository folder, `.git` metadata, all five required files, branch
 `redesign/aegis-nexus-v15-live`, correct GitHub remote, readable status, exactly
-one HTML asset revision (`17.0.0`), and HTML / service-worker revisions matching.
+one HTML asset revision (`18.0.0`), and HTML / service-worker revisions matching.
 
 ## 3. JavaScript syntax
 
-`node --check` clean on `app.js`, `core.js`, `globe.js`, `report.js`,
+`node --check` clean on `app.js`, `core.js`, `globe.js`, `report.js`, `boot.js`,
 `project-data.js` and `service-worker.js`.
 
 ---
@@ -137,6 +139,10 @@ or 3:1 for large text (≥24px, or ≥18.66px at weight ≥700).
 | No heavy continuous motion on small/touch devices | PASS — the canvas globe is not created; the static SVG is served instead |
 | Dot-matrix globe renders at Calm as one static frame, with no loop | PASS |
 | Animation pauses offscreen / when hidden | PASS — `.is-idle` on `data-ambient` sections; the globe loop returns on `document.hidden` and on leaving the viewport |
+| Welcome verification sequence runs at Full | PASS — sampled 0% → 25% → 75% → 100% over ~2.3s, state label `Verifying` → `Ready` |
+| Welcome sequence completes instantly at Calm and Off | PASS — checklist painted complete on first frame, no rain canvas created |
+| Glyph-rain canvas is skipped on touch-first / small screens | PASS — canvas removed, panel unaffected |
+| Skipping mid-sequence completes it immediately | PASS — `finish()` is idempotent and called by Enter, Esc, Skip and the safety timer |
 
 ## 7. Keyboard and accessibility
 
@@ -242,9 +248,9 @@ HTTP cache disabled and service worker bypassed, so these are cold-load figures.
 
 | Metric | Desktop 1440 × 900 | Mobile 390 × 844 |
 |---|---|---|
-| Requests (same origin) | 16 | 16 |
-| Transferred | 163 KB | 163 KB |
-| DOM nodes | 1,392 | 1,391 |
+| Requests (same origin) | 17 | 17 |
+| Transferred | 175 KB | 175 KB |
+| DOM nodes | 1,577 | 1,575 |
 | Long tasks (> 50 ms) | 0 | 0 |
 | **Cumulative Layout Shift** | **0** | **0** |
 

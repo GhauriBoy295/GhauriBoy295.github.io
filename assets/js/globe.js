@@ -14,7 +14,7 @@
    on motion levels below "full". At "calm" a single static frame is painted,
    which costs one paint and no loop. */
 
-import { motionLevel, root } from './core.js?v=17.0.0';
+import { motionLevel, root } from './core.js?v=18.0.0';
 
 const NODES = [
   { name: 'United Kingdom', lat: 52.5, lon: -1.5, base: true },

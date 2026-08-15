@@ -13,17 +13,17 @@
    Documents and CV files are intentionally not precached — they are large and
    rarely needed offline. They still cache on first use via the asset path. */
 
-const CACHE_VERSION = 'v17-0-0';
+const CACHE_VERSION = 'v18-0-0';
 const SHELL_CACHE = `portfolio-shell-${CACHE_VERSION}`;
 
 /* Must match the query strings the document and the module graph actually
    request, or the precache stores URLs the page never asks for and the
    largest assets silently fall through to the network. Keep ASSET_REV in step
    with the ?v= values in index.html and in the import specifiers in app.js. */
-const ASSET_REV = '17.0.0';
+const ASSET_REV = '18.0.0';
 
 const CSS_MODULES = ['tokens', 'base', 'shell', 'hero', 'sections', 'missions', 'overlays', 'motion', 'print'];
-const JS_MODULES = ['app', 'core', 'globe', 'report', 'project-data'];
+const JS_MODULES = ['app', 'core', 'globe', 'report', 'boot', 'project-data'];
 
 const SHELL_ASSETS = [
   './',
