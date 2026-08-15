@@ -8,8 +8,8 @@
    bookmarked and restored on load. History is replaced rather than pushed, so
    Back never has to walk through every report the visitor opened. */
 
-import { $, el, svgIcon, showToast, copyText, motionLevel } from './core.js?v=19.0.0';
-import { projectData, order } from './project-data.js?v=19.0.0';
+import { $, el, svgIcon, showToast, copyText, motionLevel } from './core.js?v=20.0.0';
+import { projectData, order } from './project-data.js?v=20.0.0';
 
 const HASH_PREFIX = '#case-';
 
