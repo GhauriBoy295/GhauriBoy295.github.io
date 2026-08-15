@@ -11,7 +11,16 @@ The portfolio is designed as a professional security-operations interface rather
 | Red Cell / Blue Team | Offensive vs defensive semantics, mission classification, attack-path diagram |
 | Neo-Forensics | Evidence-led case-study reports, work-sequence timelines, light theme, print layouts |
 
-Live site: <https://ghauriboy295.github.io/>
+## Where it is published
+
+| Host | URL | How it deploys |
+|---|---|---|
+| GitHub Pages | <https://ghauriboy295.github.io/> | Native — `main` is the Pages source, so every push rebuilds it |
+| Vercel | <https://ghauri-boy295-github-io.vercel.app/> | Native — repo linked to the Vercel project, `main` is the production branch |
+| Netlify | <https://sarmad-saeed-portfolio.netlify.app/> | GitHub Actions (`.github/workflows/deploy.yml`), once the two Netlify secrets are set |
+
+All three serve the same static files from the repository root. There is no
+build step and no server-side component: pushing to `main` is the deploy.
 
 ## Profile details used
 
