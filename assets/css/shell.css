@@ -129,6 +129,8 @@ body.boot-active .site-shell { filter: blur(2px); }
   justify-items: start;
 }
 
+.boot-ident { display: grid; gap: var(--space-2); }
+
 .boot-crest {
   position: relative;
   width: 118px;
@@ -263,6 +265,25 @@ body.boot-active .site-shell { filter: blur(2px); }
 }
 
 .boot-hint { margin-top: var(--space-4); color: var(--text-3); font-size: var(--text-micro); }
+
+/* ---------- Docked welcome ----------
+   From 1100px the panel moves off the centre line and the tunnel takes the
+   frame. Inside a tube the readable geometry is the middle of the view, so a
+   centred panel hides exactly the part worth seeing — the walls only ever
+   showed as stray dots in the margins. Docking it is what makes the flight
+   legible; the panel's content is unchanged. */
+@media (min-width: 1100px) {
+  .boot {
+    justify-content: flex-start;
+    padding-left: clamp(1.5rem, 5vw, 4.5rem);
+  }
+
+  /* The two-column body is kept rather than stacked: a single column at this
+     width made the panel taller than a 900px viewport and cut the CV button
+     off. Two columns keep it at the height it has always been, and 760px still
+     leaves the tunnel a ~560px window to converge in. */
+  .boot-panel { width: min(760px, 100%); }
+}
 
 /* ================= Header ================= */
 .site-header {

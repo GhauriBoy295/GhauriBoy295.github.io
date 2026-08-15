@@ -15,20 +15,31 @@
    At "calm" the checklist resolves in one step with no tunnel; at "off" it is
    already complete when the panel paints. */
 
-import { motionLevel, coarseOrSmall, reducedMotionQuery } from './core.js?v=20.0.0';
+import { motionLevel, coarseOrSmall, reducedMotionQuery } from './core.js?v=21.0.0';
 
 /* ---------- Data tunnel ----------
 
-   A cylinder of points flown toward the camera, projected by hand — the same
-   technique globe.js uses, so the welcome gains a 3D backdrop without the site
-   taking on a 3D library. Three.js would be ~600KB from a third-party CDN
-   against a 175KB page that ships no framework and works offline; that trade is
-   not worth one background.
+   The camera sits inside a cylinder of rings and flies down it: the near wall
+   sweeps past the frame edges, the throat recedes ahead, the field
+   barrel-rolls, and the pointer banks the flight and parts the wall where it
+   points.
 
-   Budget matches every other canvas here: DPR clamped to 1.5, a fixed ~30fps
-   step, a hard point cap, stopped when the tab is hidden, and never created
-   below the "full" motion level or on a touch-first or small screen. */
-function initTunnel(canvas) {
+   The vanishing point is placed in the widest free space beside the access
+   panel rather than at the middle of the canvas. That is the whole trick: an
+   inside-the-tube view needs its centre visible, and a centred panel would
+   hide it — every ring would show only as a few stray dots in the margins.
+
+   Projected by hand on a 2D canvas — the same technique globe.js uses — so the
+   welcome gains a 3D flight without the site taking on a 3D library. Three.js
+   would be ~600KB from a third-party CDN against a 175KB page that ships no
+   framework and works offline; that trade is not worth one background.
+
+   Budget: DPR clamped to 1.5, a fixed ~30fps step, rings rather than scatter
+   (structure reads at a fraction of the point count), a fill-rate cap on near
+   sprites, points behind the panel skipped rather than drawn, stopped when the
+   tab is hidden, and never created below the "full" motion level or on a
+   touch-first or small screen. */
+function initTunnel(canvas, panel) {
   if (!canvas) return () => {};
   if (motionLevel() !== 'full' || coarseOrSmall() || reducedMotionQuery.matches) {
     canvas.remove();
@@ -41,26 +52,30 @@ function initTunnel(canvas) {
     return () => {};
   }
 
-  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
   const STEP_MS = 33;
-  const RINGS = 52;
-  const PER_RING = 54;          // 2,808 points before culling — the cap, not a target
-  const NEAR = 0.5;             // recycle depth
-  const FAR = 9;                // shorter range so depth ramps fast and the wall stays lit
+  const RINGS = 24;
+  const PER_RING = 32;          // 768 points. Rings carry the structure, so the
+                                // count can stay low; additive blits are the cost.
+  const NEAR = 0.5;
+  const FAR = 6.5;
   const FOCAL = 0.62;           // projection strength, in half-heights
-  // The panel is centred and ~820px wide, so a centred vanishing point puts the
-  // throat exactly where the content sits. Pushing it into the upper-left
-  // quadrant lets the walls sweep the margins diagonally instead of hiding
-  // behind the card.
-  const VP_X = 0.13, VP_Y = 0.42;
+  const SPEED = 1.5;            // depth units per second
+  const ROLL = 0.10;            // barrel roll, radians per second
+  const BANK = 0.07;            // how far the pointer pulls the vanishing point
+  const PART = 140;             // wall-parting radius, px
+  const PART_PUSH = 62;
+  const MAX_SIZE = 4.6;         // fill-rate cap: near sprites dominate the cost
+  const MIN_FREE = 320;         // narrower than this and the tube has nowhere to
+                                // converge, so it is not drawn at all
 
-  let width = 0, height = 0, half = 0, cx = 0, cy = 0;
-  let frame = 0, last = 0, t = 0;
-  let secure = '#22E58B', structure = '#24567A';
-  let sprite = null;
+  let width = 0, height = 0, half = 0, cx = 0, cy = 0, vpx = 0, vpy = 0, freeSpace = 0;
+  let frame = 0, last = 0, t = 0, roll = 0;
+  let sprites = null;
+  let panelBox = null;
 
-  // One pre-rendered soft dot, drawn per point. Cheaper than a per-point arc()
-  // and it gives the additive bloom the demo got from blending.
+  const ptr = { x: 0, y: 0, tx: 0, ty: 0, active: 0, want: 0 };
+
   function buildSprite(colour) {
     const size = 32;
     const off = document.createElement('canvas');
@@ -68,7 +83,7 @@ function initTunnel(canvas) {
     const c = off.getContext('2d');
     const grd = c.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
     grd.addColorStop(0, colour);
-    grd.addColorStop(0.35, colour);
+    grd.addColorStop(0.32, colour);
     grd.addColorStop(1, 'rgba(0,0,0,0)');
     c.fillStyle = grd;
     c.beginPath();
@@ -77,17 +92,37 @@ function initTunnel(canvas) {
     return off;
   }
 
-  const rings = Array.from({ length: RINGS }, (_, i) => ({
-    z: NEAR + (i / RINGS) * (FAR - NEAR),
-    phase: Math.random() * Math.PI * 2,
-    wobble: 0.6 + Math.random() * 0.8
-  }));
-
+  /* Depth reads as colour: deep navy far down the throat resolving to secure
+     green as the wall reaches the camera. The AEGIS equivalent of the
+     indigo-to-cyan ramp, with no violet anywhere. */
   function readColours() {
     const styles = getComputedStyle(document.documentElement);
-    secure = styles.getPropertyValue('--secure').trim() || '#22E58B';
-    structure = styles.getPropertyValue('--border-strong').trim() || '#24567A';
-    sprite = buildSprite(secure);
+    sprites = [
+      buildSprite(styles.getPropertyValue('--border-strong').trim() || '#24567A'),
+      buildSprite(styles.getPropertyValue('--secure-deep').trim() || '#0BA860'),
+      buildSprite(styles.getPropertyValue('--secure').trim() || '#22E58B')
+    ];
+  }
+
+  const rings = Array.from({ length: RINGS }, (_, i) => ({
+    z: NEAR + (i / RINGS) * (FAR - NEAR),
+    seed: Math.random() * Math.PI * 2
+  }));
+
+  /* The panel's own box decides where the tube goes: the vanishing point sits
+     in the middle of whichever side has more room, so this adapts to the
+     docked layout, a centred one, or any future arrangement without being
+     told which is in play. */
+  function measurePanel() {
+    if (!panel) { panelBox = null; vpx = width / 2; vpy = height / 2; freeSpace = width; return; }
+    const r = panel.getBoundingClientRect();
+    if (r.width <= 0) { panelBox = null; vpx = width / 2; vpy = height / 2; freeSpace = width; return; }
+    panelBox = { l: r.left + 10, rr: r.right - 10, t: r.top + 10, b: r.bottom - 10 };
+    const rightFree = width - r.right;
+    const leftFree = r.left;
+    freeSpace = Math.max(rightFree, leftFree);
+    vpx = rightFree >= leftFree ? r.right + rightFree / 2 : leftFree / 2;
+    vpy = height / 2;
   }
 
   function resize() {
@@ -98,8 +133,7 @@ function initTunnel(canvas) {
     canvas.height = Math.floor(height * dpr);
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
     half = height / 2;
-    cx = width * VP_X;
-    cy = height * VP_Y;
+    measurePanel();
   }
 
   function draw(now) {
@@ -109,59 +143,85 @@ function initTunnel(canvas) {
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
     last = now;
     t += dt;
+    roll += dt * ROLL;
+
+    ptr.x += (ptr.tx - ptr.x) * 0.06;
+    ptr.y += (ptr.ty - ptr.y) * 0.06;
+    ptr.active += (ptr.want - ptr.active) * 0.05;
+    cx = vpx + (ptr.x - vpx) * BANK * ptr.active;
+    cy = vpy + (ptr.y - vpy) * BANK * ptr.active;
 
     context.clearRect(0, 0, width, height);
-    // Additive, so overlapping points build the glow themselves rather than
-    // needing a bloom pass.
     context.globalCompositeOperation = 'lighter';
 
-    for (let r = 0; r < RINGS; r += 1) {
-      const ring = rings[r];
-      ring.z -= dt * 1.9;
-      if (ring.z <= NEAR) { ring.z += FAR - NEAR; ring.phase = Math.random() * Math.PI * 2; }
+    for (let ri = 0; ri < RINGS; ri += 1) {
+      const ring = rings[ri];
+      ring.z -= dt * SPEED;
+      if (ring.z <= NEAR) { ring.z += FAR - NEAR; ring.seed = Math.random() * Math.PI * 2; }
 
       const z = ring.z;
       const scale = FOCAL * half / z;
-      // Depth cues: far rings are dim navy, near rings resolve to secure green.
       const depth = 1 - (z - NEAR) / (FAR - NEAR);
-      const fade = Math.min(1, depth * 2.2) * Math.min(1, (z - NEAR) / 0.25);
-      if (fade <= 0.01) continue;
+      const fade = Math.min(1, (z - NEAR) / 0.25);
+      const size = Math.min(MAX_SIZE, Math.max(1, 3.0 * (1.3 / z)));
+      const sprite = sprites[depth > 0.7 ? 2 : depth > 0.35 ? 1 : 0];
+      context.globalAlpha = fade * (0.18 + depth * 0.82);
 
-      // The whole ring twists with depth and time — the swirl.
-      const twist = ring.phase + t * 0.22 + z * 0.28;
-      const radius = 1 + Math.sin(t * 0.7 + z * 0.5) * 0.05 * ring.wobble;
+      // Twist grows with depth, plus the global barrel roll. The whole ring
+      // shares it, which is what makes the rotation legible.
+      const twist = z * 0.85 + roll + ring.seed;
 
       for (let i = 0; i < PER_RING; i += 1) {
         const a = (i / PER_RING) * Math.PI * 2 + twist;
-        // A little per-point ripple so the wall is not a clean cylinder.
-        const rr = radius + Math.sin(a * 3 + t * 1.3 + z) * 0.06;
-        const sx = cx + Math.cos(a) * rr * scale;
-        const sy = cy + Math.sin(a) * rr * scale;
-        if (sx < -60 || sx > width + 60 || sy < -60 || sy > height + 60) continue;
+        // Layered sines stand in for the noise ripple: the wall breathes
+        // instead of being a clean cylinder.
+        const rr = 1
+          + Math.sin(a * 3 + z * 0.9 + t * 1.1 + ring.seed) * 0.09
+          + Math.sin(a * 5 - z * 0.6 + t * 0.7) * 0.05;
 
-        const size = Math.max(1.1, 3.4 * (1.4 / z));
-        context.globalAlpha = fade * (0.35 + depth * 0.65);
+        let sx = cx + Math.cos(a) * rr * scale;
+        let sy = cy + Math.sin(a) * rr * scale;
+
+        if (ptr.active > 0.01) {
+          const dx = sx - ptr.x, dy = sy - ptr.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < PART * PART) {
+            const d = Math.sqrt(d2) || 1;
+            const push = (1 - d / PART) * PART_PUSH * ptr.active;
+            sx += (dx / d) * push;
+            sy += (dy / d) * push;
+          }
+        }
+
+        if (sx < -50 || sx > width + 50 || sy < -50 || sy > height + 50) continue;
+        if (panelBox && sx > panelBox.l && sx < panelBox.rr && sy > panelBox.t && sy < panelBox.b) continue;
+
         context.drawImage(sprite, sx - size, sy - size, size * 2, size * 2);
       }
     }
 
-    // A faint structural rim at the throat, in navy, to seat the tunnel.
-    context.globalCompositeOperation = 'source-over';
-    context.globalAlpha = 0.5;
-    context.strokeStyle = structure;
-    context.lineWidth = 1;
-    context.beginPath();
-    context.arc(cx, cy, FOCAL * half / FAR, 0, Math.PI * 2);
-    context.stroke();
-
     context.globalAlpha = 1;
+    context.globalCompositeOperation = 'source-over';
   }
 
   readColours();
   resize();
+
+  // The flight only reads if the tube has room to converge beside the panel.
+  // Below that it degrades to stray dots in a margin, which is worse than no
+  // backdrop at all — so there is no backdrop.
+  if (freeSpace < MIN_FREE) {
+    canvas.remove();
+    return () => {};
+  }
+
+  ptr.x = ptr.tx = vpx;
+  ptr.y = ptr.ty = vpy;
   frame = requestAnimationFrame(draw);
 
   const onResize = () => resize();
+  const onMove = (e) => { ptr.tx = e.clientX; ptr.ty = e.clientY; ptr.want = 1; };
+  const onLeave = () => { ptr.want = 0; };
   const onVisibility = () => {
     if (document.hidden) {
       cancelAnimationFrame(frame);
@@ -174,6 +234,8 @@ function initTunnel(canvas) {
   const onTheme = () => readColours();
 
   window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('mousemove', onMove, { passive: true });
+  window.addEventListener('mouseout', onLeave, { passive: true });
   document.addEventListener('visibilitychange', onVisibility);
   document.addEventListener('aegis:theme', onTheme);
 
@@ -181,6 +243,8 @@ function initTunnel(canvas) {
     cancelAnimationFrame(frame);
     frame = 0;
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseout', onLeave);
     document.removeEventListener('visibilitychange', onVisibility);
     document.removeEventListener('aegis:theme', onTheme);
   };
@@ -244,7 +308,7 @@ export function initBoot() {
   const panel = document.querySelector('#boot');
   if (!panel) return { finish: () => {}, stop: () => {} };
 
-  const stopTunnel = initTunnel(panel.querySelector('#bootTunnel'));
+  const stopTunnel = initTunnel(panel.querySelector('#bootTunnel'), panel.querySelector('.boot-panel'));
   const sequence = initSequence(panel);
 
   return {

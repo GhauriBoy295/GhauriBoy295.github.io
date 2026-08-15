@@ -1,4 +1,4 @@
-# FINAL TEST REPORT — AEGIS NEXUS 20.0.0
+# FINAL TEST REPORT — AEGIS NEXUS 21.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
 
@@ -21,7 +21,13 @@ Totals: **73 / 73** functional, keyboard, accessibility, contrast and content
 checks passed. **18 / 18** viewport sweeps (9 viewports × 2 themes) passed.
 **35 / 35** static checks passed.
 
-Release 20.0.0 replaces the welcome glyph rain with a data tunnel — a cylinder of
+Release 21.0.0 docks the access panel and flies the camera *inside* the tunnel:
+the vanishing point is placed in the widest free space beside the panel, so the
+throat and its converging rings are visible rather than hidden behind the card.
+A guard removes the canvas entirely when that free space is under 320px, because
+below it the flight degrades to stray dots in a margin.
+
+Release 20.0.0 replaced the welcome glyph rain with a data tunnel — a cylinder of
 points flown at the camera, projected by hand on a 2D canvas so the site takes on
 no 3D library. It also fixes a live sizing bug: a canvas is a replaced element, so
 `inset: 0` never stretched it and the 19.0.0 rain was rendering into a 300x150 box
@@ -65,7 +71,7 @@ in the corner. The suite is unchanged and still passes in full.
 
 Live repository folder, `.git` metadata, all five required files, branch
 `redesign/aegis-nexus-v15-live`, correct GitHub remote, readable status, exactly
-one HTML asset revision (`20.0.0`), and HTML / service-worker revisions matching.
+one HTML asset revision (`21.0.0`), and HTML / service-worker revisions matching.
 
 ## 3. JavaScript syntax
 
@@ -145,7 +151,9 @@ or 3:1 for large text (≥24px, or ≥18.66px at weight ≥700).
 | Welcome tunnel is skipped on touch-first / small screens | PASS — at 390x844 with touch emulation the canvas is removed and the panel is unaffected |
 | Welcome tunnel is skipped under prefers-reduced-motion | PASS — motion resolves to `off`, canvas removed, checklist still completes |
 | Welcome tunnel canvas is full-bleed | PASS — backing store and CSS box both 1440x900 at 1440x900 |
-| Welcome tunnel frame budget | PASS — median 33.4ms (its 30fps cap), p95 50.1ms, on a ~3s scene gated to Full motion |
+| Welcome tunnel frame budget | PASS — median 33.4ms (its 30fps cap), p95 50.0ms, on a ~3s scene gated to Full motion |
+| Welcome tunnel appears only where it can converge | PASS — present at 1440 and 1280, removed at 1100, 1024 and 390 by the 320px free-space guard |
+| Docked panel keeps every control on screen | PASS — Enter, Skip and Download CV all inside the viewport at 1440, 1920, 1100 and 1024 |
 | Skipping mid-sequence completes it immediately | PASS — `finish()` is idempotent and called by Enter, Esc, Skip and the safety timer |
 
 ## 7. Keyboard and accessibility

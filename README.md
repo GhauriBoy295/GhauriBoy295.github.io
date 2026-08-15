@@ -107,7 +107,7 @@ Every CSS and JS request carries `?v=<release>`, the JS module graph imports car
 same string, and the service worker holds `ASSET_REV` and `CACHE_VERSION`. All three must
 be bumped together — `tools/verify_live_workspace.py` fails the build if they drift.
 
-Current release: **20.0.0** (`CACHE_VERSION = 'v20-0-0'`).
+Current release: **21.0.0** (`CACHE_VERSION = 'v21-0-0'`).
 
 ## Continuous integration and deployment
 
