@@ -208,8 +208,9 @@
   background: var(--surface-1);
 }
 
-/* The legend is load-bearing, not decoration: it states exactly what the bar
-   measures, so nothing here reads as a self-assessed proficiency score. */
+/* The legend is load-bearing, not decoration: the bars are a self-assessment,
+   and saying so is what stops them being read as a measurement. Each bar also
+   names the work it rests on, so the claim is checkable. */
 .skills-legend {
   padding: var(--space-3);
   border: 1px solid var(--border-soft);
@@ -246,7 +247,20 @@
   width: var(--fill, 0%);
   height: 100%;
   border-radius: 999px;
-  background: var(--secure);
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--secure) 70%, var(--secure-deep)),
+    var(--secure));
+}
+
+/* The fill grows into place once the panel scrolls in, and only at Full. */
+:root[data-motion="full"] .skill-track span {
+  width: 0;
+  transition: width 900ms var(--ease-enter);
+}
+
+:root[data-motion="full"] .reveal.is-visible .skill-track span,
+:root[data-motion="full"] .skills-panel.is-visible .skill-track span {
+  width: var(--fill, 0%);
 }
 
 .skill-sources {

@@ -22,6 +22,58 @@
 
 :root[data-theme="light"] .hero::before { display: none; }
 
+/* ---------- Instrument rails ---------- */
+/* Only drawn where there is genuine empty gutter beside the centred shell.
+   Absolutely positioned inside .hero, which clips its own overflow, so they
+   can never widen the page. */
+.hero-rail { display: none; }
+
+@media (min-width: 1500px) {
+  .hero-rail {
+    position: absolute;
+    top: 12%;
+    bottom: 12%;
+    z-index: 0;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    justify-items: center;
+    gap: var(--space-4);
+    width: 22px;
+    pointer-events: none;
+  }
+
+  .hero-rail-start { left: var(--rail-inset); }
+  .hero-rail-end { right: var(--rail-inset); }
+
+  .rail-text {
+    writing-mode: vertical-rl;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text-3);
+    opacity: 0.62;
+  }
+
+  .hero-rail-start .rail-text { rotate: 180deg; }
+
+  /* A ruled tick column, drawn with one repeating gradient rather than an
+     element per tick. */
+  .rail-ticks {
+    width: 100%;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--border-strong) 0 1px,
+      transparent 1px 12px
+    );
+    opacity: 0.4;
+    mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  }
+
+  .hero-rail-start .rail-ticks { mask-image: linear-gradient(to top, transparent, #000 22%, #000 78%, transparent); }
+}
+
 .hero-grid {
   display: grid;
   gap: clamp(var(--space-5), 4vw, var(--space-7));

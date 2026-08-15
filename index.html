@@ -32,16 +32,16 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=18.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=18.0.0">
-  <script type="module" src="assets/js/app.js?v=18.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=19.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=19.0.0">
+  <script type="module" src="assets/js/app.js?v=19.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -279,6 +279,20 @@
     <main id="main" tabindex="-1">
       <!-- ============================ Hero ============================ -->
       <section class="hero" id="home" data-ambient>
+        <!-- Instrument rails. Decoration for wide screens only: they fill the
+             gutters either side of the centred shell and are removed entirely
+             below 1500px, where there is no gutter to fill. -->
+        <div class="hero-rail hero-rail-start" aria-hidden="true">
+          <span class="rail-ticks"></span>
+          <span class="rail-text">AEGIS NEXUS &middot; SECURE PROFILE</span>
+          <span class="rail-ticks"></span>
+        </div>
+        <div class="hero-rail hero-rail-end" aria-hidden="true">
+          <span class="rail-ticks"></span>
+          <span class="rail-text">BASE UNITED KINGDOM &middot; AVAILABILITY WORLDWIDE</span>
+          <span class="rail-ticks"></span>
+        </div>
+
         <div class="shell">
           <div class="hero-grid">
             <!-- Identity -->
@@ -1046,70 +1060,71 @@
                 <h3>Core skills</h3>
               </header>
               <p class="skills-legend">
-                Each bar shows how many documented pieces of work back that capability — out of the three sources listed beneath it.
-                These are evidence counts, not self-assessed proficiency scores.
+                Self-assessed proficiency across the areas covered by my degrees, projects and labs.
+                Each bar names the work it rests on underneath, so the claim can be checked against
+                the case studies rather than taken on trust.
               </p>
 
               <ul class="skill-list">
                 <li>
                   <div class="skill-row">
-                    <span class="skill-name">Threat detection &amp; monitoring</span>
-                    <span class="skill-count mono">3 / 3 sources</span>
+                    <span class="skill-name">Network Security</span>
+                    <span class="skill-count mono">90%</span>
                   </div>
-                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
-                    <span style="--fill:100%"></span>
+                  <div class="skill-track" role="img" aria-label="Network Security: self-assessed at 90 percent">
+                    <span style="--fill:90%"></span>
                   </div>
-                  <p class="skill-sources">ICS intrusion-detection project · Phi-Tech ICS internship · network security coursework</p>
+                  <p class="skill-sources">Undergraduate network security modules · ICS intrusion-detection project · Phi-Tech internship</p>
                 </li>
                 <li>
                   <div class="skill-row">
-                    <span class="skill-name">Digital forensics &amp; incident response</span>
-                    <span class="skill-count mono">3 / 3 sources</span>
+                    <span class="skill-name">Penetration Testing</span>
+                    <span class="skill-count mono">85%</span>
                   </div>
-                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
-                    <span style="--fill:100%"></span>
+                  <div class="skill-track" role="img" aria-label="Penetration Testing: self-assessed at 85 percent">
+                    <span style="--fill:85%"></span>
                   </div>
-                  <p class="skill-sources">DFIR labs · MSc DFIR module · undergraduate forensics coursework</p>
+                  <p class="skill-sources">MSc penetration testing and active defence · authorised assessment labs · undergraduate vulnerability assessment</p>
                 </li>
                 <li>
                   <div class="skill-row">
-                    <span class="skill-name">Penetration testing &amp; assessment</span>
-                    <span class="skill-count mono">3 / 3 sources</span>
+                    <span class="skill-name">Digital Forensics</span>
+                    <span class="skill-count mono">80%</span>
                   </div>
-                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
-                    <span style="--fill:100%"></span>
+                  <div class="skill-track" role="img" aria-label="Digital Forensics: self-assessed at 80 percent">
+                    <span style="--fill:80%"></span>
                   </div>
-                  <p class="skill-sources">Authorised assessment labs · MSc active defence module · undergraduate vulnerability assessment</p>
+                  <p class="skill-sources">MSc DFIR module · digital forensics and incident response labs · undergraduate forensics coursework</p>
                 </li>
                 <li>
                   <div class="skill-row">
-                    <span class="skill-name">ICS / OT security</span>
-                    <span class="skill-count mono">2 / 3 sources</span>
+                    <span class="skill-name">Incident Response</span>
+                    <span class="skill-count mono">85%</span>
                   </div>
-                  <div class="skill-track" role="img" aria-label="Backed by 2 of 3 documented sources">
-                    <span style="--fill:66.6%"></span>
+                  <div class="skill-track" role="img" aria-label="Incident Response: self-assessed at 85 percent">
+                    <span style="--fill:85%"></span>
                   </div>
-                  <p class="skill-sources">ICS intrusion-detection final year project · Phi-Tech internship</p>
+                  <p class="skill-sources">DFIR labs · incident handling workflow · evidence and chain-of-custody practice</p>
                 </li>
                 <li>
                   <div class="skill-row">
-                    <span class="skill-name">Cryptography &amp; security research</span>
-                    <span class="skill-count mono">2 / 3 sources</span>
+                    <span class="skill-name">Python</span>
+                    <span class="skill-count mono">75%</span>
                   </div>
-                  <div class="skill-track" role="img" aria-label="Backed by 2 of 3 documented sources">
-                    <span style="--fill:66.6%"></span>
+                  <div class="skill-track" role="img" aria-label="Python: self-assessed at 75 percent">
+                    <span style="--fill:75%"></span>
                   </div>
-                  <p class="skill-sources">MSc randomness-testing dissertation · undergraduate cryptography modules</p>
+                  <p class="skill-sources">MSc randomness-testing dissertation · analysis and orchestration scripting</p>
                 </li>
                 <li>
                   <div class="skill-row">
-                    <span class="skill-name">Programming &amp; databases</span>
-                    <span class="skill-count mono">3 / 3 sources</span>
+                    <span class="skill-name">Linux</span>
+                    <span class="skill-count mono">90%</span>
                   </div>
-                  <div class="skill-track" role="img" aria-label="Backed by 3 of 3 documented sources">
-                    <span style="--fill:100%"></span>
+                  <div class="skill-track" role="img" aria-label="Linux: self-assessed at 90 percent">
+                    <span style="--fill:90%"></span>
                   </div>
-                  <p class="skill-sources">Randomness suite (Python) · Blood Bank database (SQL) · MSc software development module</p>
+                  <p class="skill-sources">Kali and Ubuntu lab platforms · Google Tools of the Trade: Linux and SQL · daily lab use</p>
                 </li>
               </ul>
             </article>
@@ -1483,7 +1498,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 18.0.0</span>
+          <span>Release 19.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>
