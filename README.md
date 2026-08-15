@@ -84,6 +84,8 @@ assets/
   js/   app · core · boot · globe · report · project-data
   social-preview.png
   social-preview.svg
+  linkedin-banner.png     1584 x 396, for the LinkedIn profile banner
+  linkedin-banner.svg
   icon-source.svg
 Sarmad_Saeed_CV.pdf
 Sarmad_Saeed_CV.docx
