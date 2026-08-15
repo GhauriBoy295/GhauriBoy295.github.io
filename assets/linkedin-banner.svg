@@ -22,10 +22,20 @@
       <stop offset="0.42" stop-color="#22E58B" stop-opacity="0.09"/>
       <stop offset="1" stop-color="#22E58B" stop-opacity="0"/>
     </radialGradient>
+    <!-- The left third carries the profile photo, so it is dropped to solid
+         black. It also stops the grid competing with the avatar's edge. -->
+    <linearGradient id="lbLeftShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000000" stop-opacity="1"/>
+      <stop offset="0.16" stop-color="#000000" stop-opacity="0.94"/>
+      <stop offset="0.32" stop-color="#000000" stop-opacity="0.62"/>
+      <stop offset="0.46" stop-color="#000000" stop-opacity="0.22"/>
+      <stop offset="0.58" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
   </defs>
 
   <rect width="1584" height="396" fill="#020507"/>
   <rect width="1584" height="396" fill="url(#lbGrid)" mask="url(#lbGridMask)"/>
+  <rect width="1584" height="396" fill="url(#lbLeftShade)"/>
 
   <!-- Left identity rail -->
   <g font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="13" letter-spacing="3.4">
