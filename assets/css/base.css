@@ -377,3 +377,15 @@ kbd {
   background: var(--surface-1);
   box-shadow: none;
 }
+
+/* Blur is dropped on small and touch-first screens. Measured on a desktop the
+   filter is free at the median (4.2ms with and without) and only shows in the
+   worst frame (16.7ms vs 8.5ms) — but that is this machine, and the devices it
+   is not are exactly the ones where six blurred cards would hurt. Translucency,
+   border and sheen stay, so the cards still read as glass. */
+@media (max-width: 899px), (hover: none) {
+  .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

@@ -15,7 +15,7 @@
    At "calm" the checklist resolves in one step with no tunnel; at "off" it is
    already complete when the panel paints. */
 
-import { motionLevel, coarseOrSmall, reducedMotionQuery } from './core.js?v=23.0.0';
+import { motionLevel, coarseOrSmall, reducedMotionQuery } from './core.js?v=24.0.0';
 
 /* ---------- Data tunnel ----------
 

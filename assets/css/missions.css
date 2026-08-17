@@ -103,11 +103,13 @@
 
 /* Ratio is reserved up front so filtering and image decode never shift the
    grid. The artwork is inline SVG, drawn per project subject. */
+/* Translucent so the card's own pane shows through the artwork's backdrop,
+   which is what makes the glass read on a card that is mostly image. */
 .mission-art {
   position: relative;
   aspect-ratio: 16 / 9;
-  border-bottom: 1px solid var(--border-soft);
-  background: var(--surface-2);
+  border-bottom: 1px solid var(--glass-border);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
   overflow: hidden;
 }
 

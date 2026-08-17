@@ -71,59 +71,61 @@
 }
 
 /* ---------- BlackICE Night ---------- */
-/* Cooled from green toward teal-cyan, and the navy ramp shifted bluer with it.
-   Teal rather than a straight cyan: cyan on navy is the most over-used pairing
-   in the category and the brief explicitly rules out generic blue-neon. Teal
-   stays cold without landing there, and keeps red unambiguous as the only
-   warm signal on the page. */
+/* Near-black ground, navy-blue structure, one bright green signal, red kept
+   for incident and offensive states only.
+
+   The ground is close to pure black (#000306) and the surfaces are genuinely
+   navy rather than a desaturated slate, so the blue reads as a colour instead
+   of as "dark grey". Green and red are the only two hues that ever appear at
+   full strength, which is what keeps the red meaningful: if several things
+   glowed, an incident marker would stop being a signal. */
 :root,
 :root[data-theme="dark"] {
-  --canvas: #01050A;
-  --obsidian: #030A12;
-  --surface-1: #061320;
-  --surface-2: #0A1C2C;
-  --surface-3: #10283F;
-  --surface-4: #173A55;
-  --border: #1D4562;
-  --border-soft: #103247;
-  --border-strong: #2A6486;
+  --canvas: #000306;
+  --obsidian: #02070E;
+  --surface-1: #061426;
+  --surface-2: #0A1F38;
+  --surface-3: #102B4D;
+  --surface-4: #173A66;
+  --border: #1E4A7A;
+  --border-soft: #10304F;
+  --border-strong: #2D6BA8;
 
-  --secure: #1FE9CE;
-  --secure-hover: #62FFE4;
-  --secure-deep: #0BA891;
-  --secure-ink: #00201A;
-  --secure-soft: rgba(31, 233, 206, 0.12);
-  --secure-line: rgba(31, 233, 206, 0.34);
+  --secure: #29F58C;
+  --secure-hover: #6DFFB4;
+  --secure-deep: #0FB863;
+  --secure-ink: #00190D;
+  --secure-soft: rgba(41, 245, 140, 0.12);
+  --secure-line: rgba(41, 245, 140, 0.34);
 
   --incident: #FF4D5E;
   --incident-hover: #FF7382;
   --incident-deep: #C92D3C;
   --incident-ink: #210307;
-  --incident-soft: rgba(255, 77, 94, 0.12);
-  --incident-line: rgba(255, 77, 94, 0.34);
+  --incident-soft: rgba(255, 77, 94, 0.13);
+  --incident-line: rgba(255, 77, 94, 0.36);
 
   --evidence: #E9B949;
   --evidence-soft: rgba(233, 185, 73, 0.13);
 
-  --text-1: #F2F8FA;
-  --text-2: #C2D2DC;
-  --text-3: #8CA5B6;
-  --text-invert: #030A12;
+  --text-1: #F2F7FB;
+  --text-2: #C6D6E4;
+  --text-3: #8FA8C0;
+  --text-invert: #02070E;
 
-  --focus-ring: #62FFE4;
-  --shadow-1: 0 8px 24px rgba(0, 0, 0, 0.44);
-  --shadow-2: 0 24px 70px rgba(0, 0, 0, 0.56);
-  --glow-secure: 0 0 28px rgba(31, 233, 206, 0.22);
+  --focus-ring: #6DFFB4;
+  --shadow-1: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-2: 0 24px 70px rgba(0, 0, 0, 0.62);
+  --glow-secure: 0 0 28px rgba(41, 245, 140, 0.22);
   --glow-incident: 0 0 28px rgba(255, 77, 94, 0.2);
 
-  --grid-line: rgba(29, 69, 98, 0.5);
-  --scrim: rgba(1, 5, 10, 0.78);
-  --bar-colour: #030A12;
+  --grid-line: rgba(30, 74, 122, 0.55);
+  --scrim: rgba(0, 3, 6, 0.8);
+  --bar-colour: #02070E;
 
   /* Glass: a translucent pane over whatever sits behind it. Matte is the
-     default surface — flat, opaque, no blur — so glass stays a deliberate
-     accent on a countable number of components rather than a page-wide film. */
-  --glass-bg: color-mix(in srgb, var(--surface-1) 68%, transparent);
+     default surface — flat, opaque, no blur. */
+  --glass-bg: color-mix(in srgb, var(--surface-1) 66%, transparent);
   --glass-border: color-mix(in srgb, var(--border-strong) 52%, transparent);
   --glass-sheen: color-mix(in srgb, var(--secure) 7%, transparent);
   --glass-blur: 16px;
@@ -147,12 +149,12 @@
   --border-soft: #D2DEE7;
   --border-strong: #8AA2B5;
 
-  --secure: #06695C;
-  --secure-hover: #05564C;
-  --secure-deep: #04463E;
+  --secure: #0A6E45;
+  --secure-hover: #085A38;
+  --secure-deep: #064B2F;
   --secure-ink: #FFFFFF;
-  --secure-soft: #D8F2ED;
-  --secure-line: rgba(6, 105, 92, 0.4);
+  --secure-soft: #DCF3E7;
+  --secure-line: rgba(10, 110, 69, 0.4);
 
   --incident: #B62537;
   --incident-hover: #971B2B;
@@ -169,12 +171,12 @@
   --text-3: #4A6173;
   --text-invert: #FFFFFF;
 
-  --focus-ring: #06695C;
+  --focus-ring: #0A6E45;
   --shadow-1: 0 2px 6px rgba(6, 19, 30, 0.07);
   --shadow-2: 0 16px 42px rgba(6, 19, 30, 0.12);
   /* Forensic Daylight does not glow. Both tokens collapse to flat elevation
      so any component that opts into glow simply reads as a printed panel. */
-  --glow-secure: 0 1px 3px rgba(6, 105, 92, 0.18);
+  --glow-secure: 0 1px 3px rgba(10, 110, 69, 0.18);
   --glow-incident: 0 1px 3px rgba(182, 37, 55, 0.18);
 
   --grid-line: rgba(138, 162, 181, 0.32);

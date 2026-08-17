@@ -1,5 +1,62 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
+**Release 24.0.0** — navy on black, bright green, glass on the project cards
+
+## Palette
+
+Near-black ground with **navy-blue structure** and **one bright green signal**,
+red kept for incident and offensive states.
+
+| Token | Value | Role |
+|---|---|---|
+| `--canvas` | `#000306` | Near-pure black ground |
+| `--surface-1..4` | `#061426` -> `#173A66` | Genuinely navy, not desaturated slate |
+| `--border-strong` | `#2D6BA8` | Navy blue that reads as a colour |
+| `--secure` | `#29F58C` | Bright green — the one signal |
+| `--incident` | `#FF4D5E` | Red: incident, offensive, risk only |
+
+Green and red are the only two hues that ever appear at full strength. That is
+deliberate and it is what keeps the red meaningful — if several things glowed,
+an incident marker would stop being a signal.
+
+Contrast re-measured across the new palette: **426 text nodes per theme, zero
+below WCAG AA**.
+
+## Glass on the project cards
+
+Applied, after measuring rather than assuming. Scroll frame times across the
+project grid at 1440x900, 150 frames:
+
+| | median | p95 | worst frame |
+|---|---|---|---|
+| Without blur | 4.2ms | 8.4ms | 8.5ms |
+| With blur | 4.2ms | 8.5ms | 16.7ms |
+
+The filter is free at the median and only shows in the worst frame, so it
+ships. The earlier caution against it was overstated for this hardware.
+
+What did not change is the reasoning behind that caution — this is a fast
+desktop, and it is not the machine that would struggle. So blur is dropped under
+`(max-width: 899px), (hover: none)`, which is where the cards stack and the
+device is most likely to be the weakest. Translucency, hairline border and top
+sheen remain at every size, so the cards read as glass regardless; only the
+filter pass is conditional.
+
+`.mission-art` also became translucent, so the card's pane shows through the
+artwork's own backdrop — without that, a card that is mostly image reads as
+opaque no matter what the container does.
+
+The two-tier `.glass` / `.glass-lite` split written while testing was collapsed
+back to one class. Two names for one visual idea, distinguished only by whether
+a filter is affordable, is a decision the media query already makes.
+
+## Version
+
+Asset revision **24.0.0** across the nine CSS links, the module script tag, every
+import specifier, `ASSET_REV`, `CACHE_VERSION = 'v24-0-0'` and the footer.
+
+---
+
 **Release 23.0.0** — cooler palette, self-hosted type, glass surfaces, hero banner
 
 ## Palette
