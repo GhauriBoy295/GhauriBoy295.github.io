@@ -1,5 +1,33 @@
 /* AEGIS NEXUS — reset, typography and shared primitives. */
 
+/* Self-hosted, SIL OFL 1.1. See assets/fonts/README.md and OFL.txt.
+   font-display: swap so text is readable immediately and layout never blocks
+   on the font arriving. */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../fonts/space-grotesk-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../fonts/space-grotesk-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -33,6 +61,7 @@ body {
 
 h1, h2, h3, h4 {
   margin: 0;
+  font-family: var(--font-display);
   color: var(--text-1);
   font-weight: 700;
   line-height: 1.08;
@@ -322,4 +351,29 @@ kbd {
   background: var(--secure);
   transform: scaleX(0);
   transform-origin: 0 50%;
+}
+
+/* ---------- Surface treatments ----------
+   Matte is the default: flat, opaque, no blur. Glass is opt-in and used on a
+   small, countable set of panels — the ones that sit over the page's own
+   backdrop and benefit from letting it through. Blur is expensive, so it is
+   never applied to anything that repeats in a grid. */
+.glass {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  box-shadow: var(--shadow-1), inset 0 1px 0 var(--glass-sheen);
+}
+
+/* Where backdrop-filter is unsupported the pane must still be readable, so it
+   falls back to the opaque matte surface rather than a see-through box. */
+@supports not (backdrop-filter: blur(2px)) {
+  .glass { background: var(--surface-1); }
+}
+
+/* Matte: an explicitly flat surface, used where glass would compete. */
+.matte {
+  background: var(--surface-1);
+  box-shadow: none;
 }

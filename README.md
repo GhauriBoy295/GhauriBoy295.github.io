@@ -82,6 +82,7 @@ apple-touch-icon.png
 assets/
   css/  tokens · base · shell · hero · sections · missions · overlays · motion · print
   js/   app · core · boot · globe · report · project-data
+  fonts/ Space Grotesk 500/700, JetBrains Mono 400 — SIL OFL, latin subsets
   social-preview.png
   social-preview.svg
   linkedin-banner.png     1584 x 396, for the LinkedIn profile banner
@@ -107,7 +108,7 @@ Every CSS and JS request carries `?v=<release>`, the JS module graph imports car
 same string, and the service worker holds `ASSET_REV` and `CACHE_VERSION`. All three must
 be bumped together — `tools/verify_live_workspace.py` fails the build if they drift.
 
-Current release: **22.0.0** (`CACHE_VERSION = 'v22-0-0'`).
+Current release: **23.0.0** (`CACHE_VERSION = 'v23-0-0'`).
 
 ## Continuous integration and deployment
 

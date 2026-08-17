@@ -13,21 +13,30 @@
    Documents and CV files are intentionally not precached — they are large and
    rarely needed offline. They still cache on first use via the asset path. */
 
-const CACHE_VERSION = 'v22-0-0';
+const CACHE_VERSION = 'v23-0-0';
 const SHELL_CACHE = `portfolio-shell-${CACHE_VERSION}`;
 
 /* Must match the query strings the document and the module graph actually
    request, or the precache stores URLs the page never asks for and the
    largest assets silently fall through to the network. Keep ASSET_REV in step
    with the ?v= values in index.html and in the import specifiers in app.js. */
-const ASSET_REV = '22.0.0';
+const ASSET_REV = '23.0.0';
 
 const CSS_MODULES = ['tokens', 'base', 'shell', 'hero', 'sections', 'missions', 'overlays', 'motion', 'print'];
 const JS_MODULES = ['app', 'core', 'globe', 'report', 'boot', 'project-data'];
 
+/* Fonts are precached: they are part of the shell, and a swap-in font that
+   only arrives online would make the offline copy look different. */
+const FONTS = [
+  'assets/fonts/space-grotesk-500.woff2',
+  'assets/fonts/space-grotesk-700.woff2',
+  'assets/fonts/jetbrains-mono-400.woff2'
+];
+
 const SHELL_ASSETS = [
   './',
   'index.html',
+  ...FONTS,
   ...CSS_MODULES.map((name) => `assets/css/${name}.css?v=${ASSET_REV}`),
   ...JS_MODULES.map((name) => `assets/js/${name}.js?v=${ASSET_REV}`),
   'favicon.svg',

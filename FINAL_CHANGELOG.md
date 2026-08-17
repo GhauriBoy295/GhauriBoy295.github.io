@@ -1,5 +1,70 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
+**Release 23.0.0** — cooler palette, self-hosted type, glass surfaces, hero banner
+
+## Palette
+
+Cooled from green to **teal-cyan** (`--secure: #1FE9CE`), with the navy ramp
+shifted bluer to match. Teal rather than a straight cyan on purpose: cyan on
+navy is the most over-used pairing in the category, and the brief rules out
+generic blue-neon. Teal reads cold without landing there, and it keeps red
+unambiguous as the only warm signal on the page.
+
+Forensic Daylight was cooled in step — a bluer grey ramp and a deep teal action
+colour (`#06695C`) — and remains independently authored rather than an
+inversion.
+
+Every contrast pair was re-measured after the change: **426 text nodes per
+theme, zero below WCAG AA**.
+
+## Type
+
+Two self-hosted faces, latin subsets, **47KB total**:
+
+| Face | Use | Size |
+|---|---|---|
+| Space Grotesk 500 / 700 | Headings, display | 26KB |
+| JetBrains Mono 400 | Labels, logs, technical text | 21KB |
+
+Both are SIL OFL 1.1; the licence and provenance are in `assets/fonts/`. Body
+copy deliberately stays on the system stack — it costs nothing and renders
+natively. `font-display: swap` on all three, so text is readable before the
+font arrives and layout never blocks on it. They are precached by the service
+worker: a swap-in font that only appeared online would make the offline copy
+look different.
+
+## Glass and matte
+
+**Matte is the default** — flat, opaque, no blur. **Glass is opt-in** and applied
+to exactly five panels: the two hero status cards, the Recruiter Quick View, the
+contact panel and the experience tickets. Those are the components that sit over
+the page's own backdrop and gain something from letting it through.
+
+It is deliberately *not* applied to anything that repeats in a grid — the six
+project cards, the education cards, the twelve tool tiles — because
+`backdrop-filter` is expensive and a page-wide film is what makes glass look
+cheap. There is a `@supports not (backdrop-filter)` fallback to the opaque
+surface, so the panel is never see-through-and-unreadable.
+
+## Hero banner
+
+The Operations Deck concept, full-bleed above the hero: a server-room skyline
+with lit rack status lines, a network uplink across the top, and a shield at the
+centre.
+
+Inline SVG rather than an `<img>`, so every colour is a theme token — it
+recolours with the theme instead of needing a second asset, and stays sharp at
+any width. Height is capped in `vw` so it never eats the fold on a short laptop
+screen, the artwork slices rather than distorting, and a bottom fade hands off
+into the page instead of ending on a hard edge.
+
+## Version
+
+Asset revision **23.0.0** across the nine CSS links, the module script tag, every
+import specifier, `ASSET_REV`, `CACHE_VERSION = 'v23-0-0'` and the footer.
+
+---
+
 **Release 22.0.0** — Experience as incident tickets
 
 Each role is now an incident ticket: a classification chip and reference number,

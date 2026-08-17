@@ -32,16 +32,16 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=22.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=22.0.0">
-  <script type="module" src="assets/js/app.js?v=22.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=23.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=23.0.0">
+  <script type="module" src="assets/js/app.js?v=23.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -279,6 +279,60 @@
     </header>
 
     <main id="main" tabindex="-1">
+      <!-- ============================ Hero banner ============================ -->
+      <!-- Full-bleed. Inline SVG rather than an <img> so every colour is a
+           theme token: it recolours with the theme instead of needing a second
+           file, and it stays sharp at any width. Decorative, so it carries a
+           short description and nothing the page does not also say in text. -->
+      <div class="hero-banner" role="img" aria-label="A server-room skyline under a network uplink, with a protective shield at its centre.">
+        <svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="bnSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--surface-3)"/>
+              <stop offset="1" stop-color="var(--canvas)"/>
+            </linearGradient>
+            <pattern id="bnGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M40 0H0V40" fill="none" stroke="var(--border)" stroke-opacity=".55"/>
+            </pattern>
+            <radialGradient id="bnFade" cx="0.5" cy="0.35" r="0.75">
+              <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </radialGradient>
+            <mask id="bnMask"><rect width="1600" height="300" fill="url(#bnFade)"/></mask>
+            <radialGradient id="bnGlow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="var(--secure)" stop-opacity=".42"/>
+              <stop offset="0.45" stop-color="var(--secure)" stop-opacity=".1"/>
+              <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect width="1600" height="300" fill="url(#bnSky)"/>
+          <rect width="1600" height="300" fill="url(#bnGrid)" mask="url(#bnMask)"/>
+          <ellipse cx="800" cy="210" rx="520" ry="170" fill="url(#bnGlow)"/>
+
+          <g fill="var(--surface-1)" stroke="var(--border)" stroke-width="1"><rect x="0" y="222" width="42" height="78"/><rect x="58" y="248" width="26" height="52"/><rect x="106" y="196" width="26" height="104"/><rect x="154" y="142" width="26" height="158"/><rect x="190" y="248" width="26" height="52"/><rect x="232" y="248" width="52" height="52"/><rect x="294" y="142" width="26" height="158"/><rect x="336" y="142" width="26" height="158"/><rect x="372" y="142" width="34" height="158"/><rect x="416" y="248" width="52" height="52"/><rect x="478" y="142" width="26" height="158"/><rect x="514" y="170" width="42" height="130"/><rect x="566" y="142" width="26" height="158"/><rect x="608" y="248" width="34" height="52"/><rect x="664" y="196" width="34" height="104"/><rect x="708" y="142" width="26" height="158"/><rect x="744" y="170" width="34" height="130"/><rect x="800" y="196" width="52" height="104"/><rect x="868" y="196" width="52" height="104"/><rect x="936" y="222" width="34" height="78"/><rect x="992" y="248" width="34" height="52"/><rect x="1048" y="142" width="42" height="158"/><rect x="1106" y="170" width="42" height="130"/><rect x="1164" y="248" width="26" height="52"/><rect x="1212" y="222" width="52" height="78"/><rect x="1280" y="170" width="34" height="130"/><rect x="1330" y="248" width="26" height="52"/><rect x="1378" y="196" width="42" height="104"/><rect x="1442" y="142" width="42" height="158"/><rect x="1500" y="248" width="52" height="52"/><rect x="1562" y="170" width="42" height="130"/></g>
+          <g fill="var(--secure)"><rect x="6" y="210" width="22" height="3" opacity="0.8"/><rect x="6" y="230" width="22" height="3" opacity="0.55"/><rect x="6" y="250" width="22" height="3" opacity="0.8"/><rect x="50" y="182" width="40" height="3" opacity="0.34"/><rect x="50" y="202" width="40" height="3" opacity="0.34"/><rect x="50" y="222" width="40" height="3" opacity="0.2"/><rect x="50" y="242" width="40" height="3" opacity="0.2"/><rect x="50" y="262" width="40" height="3" opacity="0.55"/><rect x="186" y="262" width="22" height="3" opacity="0.2"/><rect x="236" y="182" width="40" height="3" opacity="0.8"/><rect x="236" y="202" width="40" height="3" opacity="0.2"/><rect x="236" y="222" width="40" height="3" opacity="0.55"/><rect x="236" y="242" width="40" height="3" opacity="0.8"/><rect x="236" y="262" width="40" height="3" opacity="0.2"/><rect x="398" y="262" width="40" height="3" opacity="0.55"/><rect x="466" y="262" width="40" height="3" opacity="0.34"/><rect x="540" y="210" width="14" height="3" opacity="0.34"/><rect x="540" y="230" width="14" height="3" opacity="0.2"/><rect x="540" y="250" width="14" height="3" opacity="0.34"/><rect x="624" y="182" width="40" height="3" opacity="0.8"/><rect x="624" y="202" width="40" height="3" opacity="0.34"/><rect x="624" y="222" width="40" height="3" opacity="0.55"/><rect x="624" y="242" width="40" height="3" opacity="0.34"/><rect x="624" y="262" width="40" height="3" opacity="0.8"/><rect x="692" y="210" width="30" height="3" opacity="0.8"/><rect x="692" y="230" width="30" height="3" opacity="0.55"/><rect x="692" y="250" width="30" height="3" opacity="0.8"/><rect x="802" y="210" width="22" height="3" opacity="0.2"/><rect x="802" y="230" width="22" height="3" opacity="0.8"/><rect x="802" y="250" width="22" height="3" opacity="0.2"/><rect x="858" y="182" width="22" height="3" opacity="0.55"/><rect x="858" y="202" width="22" height="3" opacity="0.2"/><rect x="858" y="222" width="22" height="3" opacity="0.34"/><rect x="858" y="242" width="22" height="3" opacity="0.34"/><rect x="858" y="262" width="22" height="3" opacity="0.55"/><rect x="908" y="182" width="30" height="3" opacity="0.55"/><rect x="908" y="202" width="30" height="3" opacity="0.34"/><rect x="908" y="222" width="30" height="3" opacity="0.2"/><rect x="908" y="242" width="30" height="3" opacity="0.34"/><rect x="908" y="262" width="30" height="3" opacity="0.2"/><rect x="960" y="236" width="40" height="3" opacity="0.34"/><rect x="960" y="256" width="40" height="3" opacity="0.2"/><rect x="1034" y="210" width="22" height="3" opacity="0.34"/><rect x="1034" y="230" width="22" height="3" opacity="0.2"/><rect x="1034" y="250" width="22" height="3" opacity="0.55"/><rect x="1084" y="262" width="40" height="3" opacity="0.34"/><rect x="1146" y="210" width="14" height="3" opacity="0.8"/><rect x="1146" y="230" width="14" height="3" opacity="0.8"/><rect x="1146" y="250" width="14" height="3" opacity="0.2"/><rect x="1188" y="236" width="14" height="3" opacity="0.55"/><rect x="1188" y="256" width="14" height="3" opacity="0.2"/><rect x="1230" y="262" width="22" height="3" opacity="0.8"/><rect x="1274" y="262" width="30" height="3" opacity="0.34"/><rect x="1406" y="182" width="22" height="3" opacity="0.8"/><rect x="1406" y="202" width="22" height="3" opacity="0.2"/><rect x="1406" y="222" width="22" height="3" opacity="0.34"/><rect x="1406" y="242" width="22" height="3" opacity="0.55"/><rect x="1406" y="262" width="22" height="3" opacity="0.34"/><rect x="1456" y="210" width="40" height="3" opacity="0.8"/><rect x="1456" y="230" width="40" height="3" opacity="0.55"/><rect x="1456" y="250" width="40" height="3" opacity="0.34"/><rect x="1530" y="262" width="30" height="3" opacity="0.2"/></g>
+          <path d="M0 300 H1600" stroke="var(--border-strong)" stroke-width="1.5"/>
+
+          <g stroke="var(--secure)" stroke-width="1.4" fill="none" opacity=".75">
+            <path class="packet-route" d="M150 92 H600"/>
+            <path class="packet-route is-slow" d="M1000 92 H1450"/>
+          </g>
+          <g fill="var(--secure)">
+            <circle cx="150" cy="92" r="4"/><circle cx="600" cy="92" r="4"/>
+            <circle cx="1000" cy="92" r="4"/><circle cx="1450" cy="92" r="4"/>
+          </g>
+
+          <g transform="translate(800 128)">
+            <circle r="92" fill="url(#bnGlow)"/>
+            <path d="M0 -74 62 -48v46c0 37-24 66-62 82-38-16-62-45-62-82v-46L0 -74Z"
+                  fill="var(--surface-1)" stroke="var(--secure)" stroke-width="2.6"/>
+            <path d="m-24 4 18 18 39-42" fill="none" stroke="var(--secure)" stroke-width="7.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </div>
+
       <!-- ============================ Hero ============================ -->
       <section class="hero" id="home" data-ambient>
         <!-- Instrument rails. Decoration for wide screens only: they fill the
@@ -395,7 +449,7 @@
 
             <!-- Side panels -->
             <div class="hero-panels reveal" data-reveal="right" data-delay="160">
-              <article class="panel-card">
+              <article class="panel-card glass">
                 <header class="panel-card-head">
                   <h2>Profile status</h2>
                   <span class="badge badge-secure">Verified</span>
@@ -430,7 +484,7 @@
                 </ul>
               </article>
 
-              <article class="panel-card">
+              <article class="panel-card glass">
                 <header class="panel-card-head">
                   <h2>Location</h2>
                 </header>
@@ -669,7 +723,7 @@
 
           <div class="tickets">
             <!-- Ticket 01 — current role -->
-            <article class="ticket reveal" data-lane="ops">
+            <article class="ticket glass reveal" data-lane="ops">
               <header class="ticket-head">
                 <span class="ticket-class">OPERATIONS</span>
                 <span class="ticket-ref">#OPS-002</span>
@@ -724,7 +778,7 @@
             </article>
 
             <!-- Ticket 02 — ICS internship -->
-            <article class="ticket reveal" data-lane="ics" data-delay="90">
+            <article class="ticket glass reveal" data-lane="ics" data-delay="90">
               <header class="ticket-head">
                 <span class="ticket-class is-ics">ICS / OT</span>
                 <span class="ticket-ref">#ICS-001</span>
@@ -1416,7 +1470,7 @@
             <p>Open to graduate and entry-level cyber security opportunities worldwide — remote, hybrid, on-site and relocation — across SOC operations, cyber security analysis, DFIR, vulnerability assessment and ICS/OT security.</p>
           </div>
 
-          <div class="contact-grid reveal">
+          <div class="contact-grid glass reveal">
             <div>
               <div class="reach-modes">
                 <span class="badge badge-secure">Remote</span>
@@ -1579,7 +1633,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 22.0.0</span>
+          <span>Release 23.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>
