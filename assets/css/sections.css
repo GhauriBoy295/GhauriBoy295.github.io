@@ -120,73 +120,244 @@
   color: var(--text-2);
 }
 
-/* ================= Experience route ================= */
-.route { display: grid; gap: var(--space-5); }
+/* ================= Experience tickets =================
+   Each role is presented as an incident ticket: a classification chip and
+   reference, an architecture flow showing where the work sat, a labelled work
+   sequence, and the notes.
 
-.route-entry {
-  position: relative;
+   The sequence is deliberately labelled STEP 01..04 rather than given clock
+   timestamps, and no line claims a blocked attack. It describes how the work
+   was done — inventing a captured incident log would be inventing telemetry. */
+.tickets { display: grid; gap: var(--space-5); }
+
+.ticket {
   display: grid;
   gap: var(--space-4);
-  padding-left: var(--space-6);
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+  transition: border-color var(--duration-control) var(--ease-standard);
 }
 
-@media (min-width: 800px) {
-  .route-entry { grid-template-columns: minmax(0, 220px) minmax(0, 1fr); align-items: start; }
+.ticket:hover { border-color: var(--border-strong); }
+
+/* ---------- Head ---------- */
+/* Stacked on the narrowest screens: the chip, the reference and a long job
+   title cannot share a row at 320px without pushing the page sideways. */
+.ticket-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-2) var(--space-3);
 }
 
-.route-entry::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 10px;
-  bottom: calc(-1 * var(--space-5));
-  width: 1px;
-  background: linear-gradient(var(--border-strong), var(--border-soft));
+.ticket-head .ticket-title { grid-column: 1 / -1; }
+
+@media (min-width: 560px) {
+  .ticket-head { grid-template-columns: auto auto minmax(0, 1fr); }
+  .ticket-head .ticket-title { grid-column: auto; }
 }
 
-.route-entry:last-child::before { bottom: auto; height: 0; }
-
-.route-entry::after {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 8px;
-  width: 11px;
-  height: 11px;
-  border: 2px solid var(--secure);
-  border-radius: 50%;
-  background: var(--canvas);
-}
-
-.route-meta { display: grid; gap: var(--space-2); justify-items: start; }
-
-.route-meta time {
+.ticket-class {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--secure-line);
+  border-radius: var(--radius-sm);
+  background: var(--secure-soft);
   font-family: var(--font-mono);
   font-size: var(--text-micro);
+  font-weight: 700;
   letter-spacing: 0.1em;
+  color: var(--secure);
+  white-space: nowrap;
+}
+
+.ticket-class.is-ics {
+  border-color: var(--evidence);
+  background: var(--evidence-soft);
+  color: var(--evidence);
+}
+
+.ticket-ref {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  padding-top: 0.35rem;
+}
+
+.ticket-title h3 { font-size: 1.15rem; overflow-wrap: anywhere; }
+.ticket-title p { margin-top: 2px; font-size: 0.88rem; color: var(--text-3); }
+
+.ticket-meta {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (min-width: 860px) {
+  .ticket-head { grid-template-columns: auto auto minmax(0, 1fr) auto; }
+  .ticket-head .ticket-title { grid-column: auto; }
+  .ticket-meta { grid-column: auto; justify-content: flex-end; }
+}
+
+.ticket-meta time {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
   color: var(--text-3);
 }
 
-.route-card {
+/* ---------- Architecture flow ---------- */
+.ticket-flow {
   display: grid;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-lg);
-  background: var(--surface-1);
+  gap: var(--space-2);
+  align-items: stretch;
 }
 
-.route-card h3 { font-size: 1.15rem; }
-.route-card .route-place { color: var(--text-3); font-size: 0.88rem; }
-.route-card ul { display: grid; gap: var(--space-2); }
-.route-card ul li {
+@media (min-width: 720px) {
+  .ticket-flow { grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr) 40px minmax(0, 1fr); }
+}
+
+.flow-node {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  padding: var(--space-4) var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  text-align: center;
+}
+
+.flow-node.is-focus { border-color: var(--secure); }
+
+.flow-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface-3);
+  color: var(--secure);
+}
+
+.flow-icon .icon { width: 18px; height: 18px; }
+.flow-node strong { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-1); }
+.flow-node small { font-size: 0.75rem; color: var(--text-3); }
+
+/* The link is a horizontal rule with a travelling node on desktop, and a short
+   vertical tick once the flow stacks. */
+.flow-link {
+  display: block;
+  justify-self: center;
+  align-self: center;
+  width: 9px;
+  min-height: 22px;
+  background:
+    radial-gradient(circle at 50% 50%, var(--secure) 0 3.5px, transparent 3.5px) center / 9px 9px no-repeat,
+    linear-gradient(var(--border-strong), var(--border-strong)) center / 1px 100% no-repeat;
+}
+
+@media (min-width: 720px) {
+  .flow-link {
+    width: 100%;
+    height: 9px;
+    min-height: 0;
+    background:
+      radial-gradient(circle at 50% 50%, var(--secure) 0 3.5px, transparent 3.5px) center / 9px 9px no-repeat,
+      linear-gradient(var(--border-strong), var(--border-strong)) center / 100% 1px no-repeat;
+  }
+}
+
+.flow-tag {
+  position: absolute;
+  top: -11px;
+  right: var(--space-3);
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--incident-line);
+  border-radius: 999px;
+  background: var(--incident-soft);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--incident);
+}
+
+/* ---------- Work sequence ---------- */
+.ticket-log {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--obsidian);
+  overflow: hidden;
+}
+
+.log-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.log-lines {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-2);
+  overflow-x: auto;
+}
+
+.log-lines li {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.lv-step { color: var(--text-3); font-weight: 500; white-space: nowrap; }
+
+.lv-tag {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.lv-tag.is-analyse { color: var(--text-2); }
+.lv-tag.is-flag { color: var(--evidence); }
+.lv-tag.is-resolved { color: var(--secure); }
+
+:root[data-theme="light"] .ticket-log { background: var(--surface-2); }
+
+/* ---------- Notes ---------- */
+.ticket-notes { display: grid; gap: var(--space-3); }
+
+.ticket-notes li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-3);
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: var(--text-2);
 }
-.route-card ul li::before { content: "▸"; color: var(--secure); }
+
+.ticket-notes li::before {
+  content: "\203A";
+  color: var(--secure);
+  font-weight: 700;
+}
 
 /* ================= Skills ================= */
 .skills-grid {

@@ -14,11 +14,11 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=21.0.0';
-import { initGlobe } from './globe.js?v=21.0.0';
-import { initBoot } from './boot.js?v=21.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=21.0.0';
-import { projectData } from './project-data.js?v=21.0.0';
+} from './core.js?v=22.0.0';
+import { initGlobe } from './globe.js?v=22.0.0';
+import { initBoot } from './boot.js?v=22.0.0';
+import { initReport, openReport, projectFromHash } from './report.js?v=22.0.0';
+import { projectData } from './project-data.js?v=22.0.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');

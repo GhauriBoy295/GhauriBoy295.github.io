@@ -1,6 +1,54 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
-**Release 21.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 16.0.0
+**Release 22.0.0** — Experience as incident tickets
+
+Each role is now an incident ticket: a classification chip and reference number,
+a three-node architecture flow showing where the work actually sat, a labelled
+work sequence, and the notes as chevron bullets.
+
+## What is deliberately not copied from the reference
+
+The supplied design showed a timestamped console log — `20:46:04 FLAGGED`,
+`20:46:05 BLOCKED` — and named a commercial IDS product.
+
+Neither is on the site:
+
+- **No clock timestamps and no BLOCKED line.** That would present a captured
+  incident record that never existed. The sequence is labelled `STEP 01..04`
+  and describes how the work was done, which is true and still reads as an
+  operations log.
+- **No vendor name.** The internship notes say "industrial network monitoring
+  and threat detection" rather than naming a product that cannot be verified
+  from anything in this repository. If the product was genuinely used, the name
+  goes back in with one edit.
+
+The rest of the reference — chip, reference number, flow diagram, anomaly tag,
+mono log panel, chevron notes — is implemented as drawn.
+
+## Defects caught by the suite during this build
+
+1. **Contrast failure.** `.lv-tag.is-analyse` used `--border-strong` on the
+   near-black log panel: **2.56:1**, well under AA. Changed to `--text-2`,
+   which keeps the three tags distinct as neutral -> amber -> green.
+2. **A 1px element overflowing itself.** `.flow-link` was a 1px-wide rule with a
+   7px absolutely-positioned dot, so the dot overflowed its own parent at every
+   viewport. Line and dot are now both backgrounds on a 9px box.
+3. **Page overflow at 320px.** "E-commerce Operations / eBay Account Management"
+   has no break opportunity and pushed the page to 330px. The ticket head now
+   stacks below 560px and the title breaks anywhere.
+
+A fourth was caught before it shipped: `icon-factory` was referenced by the new
+flow diagram but its `<symbol>` had been dropped from the sprite in an earlier
+rewrite, so the field-devices node would have rendered empty.
+
+## Version
+
+Asset revision **22.0.0** across the nine CSS links, the module script tag, every
+import specifier, `ASSET_REV`, `CACHE_VERSION = 'v22-0-0'` and the footer.
+
+---
+
+**Release 22.0.0** · branch `redesign/aegis-nexus-v15-live` · previous release 16.0.0
 
 16.0.0 matched the reference's structure. 17.0.0 matches its *finish* — the parts
 marked up on the supplied screens — and makes deployment automatic.
