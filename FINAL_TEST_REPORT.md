@@ -1,4 +1,4 @@
-# FINAL TEST REPORT — AEGIS NEXUS 24.0.0
+# FINAL TEST REPORT — AEGIS NEXUS 25.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
 
@@ -10,16 +10,46 @@ the end, with the reason.
 
 | | |
 |---|---|
-| Browser | Chrome 151.0.7922.109, headless, driven over the DevTools Protocol |
-| Server | `python -m http.server 8123 --directory current-portfolio` (port moved off 8080, which is in use by another project) |
-| Isolation | Local storage and cache storage cleared per test page; HTTP cache disabled; service worker bypassed, so every run measures the files on disk |
-| Themes | Emulated `prefers-color-scheme`, both values |
-| Touch | Touch emulation with 5 contact points below 768px |
+| Browser | Chrome, driven over the DevTools Protocol via the in-app preview |
+| Server | Local static preview server, `current-portfolio` as document root |
+| Isolation | Service worker and cache storage unregistered/cleared before each measured load |
+| Themes | `data-theme` set directly (`dark`, `light`), persisted to `localStorage` |
 | Static checks | `tools/verify_portfolio.py`, `tools/verify_live_workspace.py`, `node --check` |
 
-Totals: **73 / 73** functional, keyboard, accessibility, contrast and content
-checks passed. **18 / 18** viewport sweeps (9 viewports × 2 themes) passed.
-**35 / 35** static checks passed.
+## Release 25.0.0 — pure solid palette
+
+Reverses the glass/translucency direction of 23.0.0–24.0.0 on explicit request:
+every gradient, `backdrop-filter` and `color-mix` translucency was removed from
+the CSS layer and from the 28 inline SVG `linearGradient`/`radialGradient`
+definitions in `index.html` (hero banner + five project-card illustrations),
+leaving four solid colours — black, navy, matte grey, red — plus one kept
+exception (`--secure` green, for "confirmed" states only).
+
+| Check | Result |
+|---|---|
+| `grep -rc "linearGradient\|radialGradient\|backdrop-filter\|color-mix"` across all CSS + `index.html` | **0** |
+| `tools/verify_portfolio.py` | **22 / 22 passed** |
+| `tools/verify_live_workspace.py` | **13 / 13 passed**, asset revision `25.0.0` confirmed in both HTML and service worker |
+| `node --check` on every JS module + service worker | clean |
+| WCAG AA contrast, dark theme | **464 text nodes checked, 0 below threshold** |
+| WCAG AA contrast, light theme | **490 text nodes checked, 0 below threshold** |
+| Horizontal overflow, 390×844 | none (`scrollWidth` = `clientWidth` = 390) |
+| Horizontal overflow, 1920×1080 | none |
+| Console errors on load | 0 |
+| Network requests on load (25.0.0 asset revision) | all 200 OK |
+
+A CSS regression was caught and fixed during this pass: the palette rewrite
+left an unclosed `:root { color-scheme: dark light; }` brace, which nested the
+entire rest of `tokens.css` inside one rule and silently dropped every custom
+property. Caught by `getComputedStyle(...).getPropertyValue('--canvas')`
+returning empty instead of `#000000`; fixed by closing the brace before the
+palette block.
+
+---
+
+Totals through 24.0.0: **73 / 73** functional, keyboard, accessibility, contrast
+and content checks passed. **18 / 18** viewport sweeps (9 viewports × 2 themes)
+passed. **35 / 35** static checks passed.
 
 Release 24.0.0 moves the palette to navy-blue structure on a near-black ground
 with one bright green signal, and extends glass to the project cards. The blur

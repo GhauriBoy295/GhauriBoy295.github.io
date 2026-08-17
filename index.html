@@ -32,16 +32,16 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=24.0.0">
-  <script type="module" src="assets/js/app.js?v=24.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=25.0.0">
+  <script type="module" src="assets/js/app.js?v=25.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -287,28 +287,14 @@
       <div class="hero-banner" role="img" aria-label="A server-room skyline under a network uplink, with a protective shield at its centre.">
         <svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <defs>
-            <linearGradient id="bnSky" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="var(--surface-3)"/>
-              <stop offset="1" stop-color="var(--canvas)"/>
-            </linearGradient>
             <pattern id="bnGrid" width="40" height="40" patternUnits="userSpaceOnUse">
               <path d="M40 0H0V40" fill="none" stroke="var(--border)" stroke-opacity=".55"/>
             </pattern>
-            <radialGradient id="bnFade" cx="0.5" cy="0.35" r="0.75">
-              <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
-              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-            </radialGradient>
-            <mask id="bnMask"><rect width="1600" height="300" fill="url(#bnFade)"/></mask>
-            <radialGradient id="bnGlow" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" stop-color="var(--secure)" stop-opacity=".42"/>
-              <stop offset="0.45" stop-color="var(--secure)" stop-opacity=".1"/>
-              <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
-            </radialGradient>
           </defs>
 
-          <rect width="1600" height="300" fill="url(#bnSky)"/>
-          <rect width="1600" height="300" fill="url(#bnGrid)" mask="url(#bnMask)"/>
-          <ellipse cx="800" cy="210" rx="520" ry="170" fill="url(#bnGlow)"/>
+          <rect width="1600" height="300" fill="var(--surface-3)"/>
+          <rect width="1600" height="300" fill="url(#bnGrid)" opacity=".6"/>
+          <ellipse cx="800" cy="210" rx="520" ry="170" fill="var(--secure)" opacity=".1"/>
 
           <g fill="var(--surface-1)" stroke="var(--border)" stroke-width="1"><rect x="0" y="222" width="42" height="78"/><rect x="58" y="248" width="26" height="52"/><rect x="106" y="196" width="26" height="104"/><rect x="154" y="142" width="26" height="158"/><rect x="190" y="248" width="26" height="52"/><rect x="232" y="248" width="52" height="52"/><rect x="294" y="142" width="26" height="158"/><rect x="336" y="142" width="26" height="158"/><rect x="372" y="142" width="34" height="158"/><rect x="416" y="248" width="52" height="52"/><rect x="478" y="142" width="26" height="158"/><rect x="514" y="170" width="42" height="130"/><rect x="566" y="142" width="26" height="158"/><rect x="608" y="248" width="34" height="52"/><rect x="664" y="196" width="34" height="104"/><rect x="708" y="142" width="26" height="158"/><rect x="744" y="170" width="34" height="130"/><rect x="800" y="196" width="52" height="104"/><rect x="868" y="196" width="52" height="104"/><rect x="936" y="222" width="34" height="78"/><rect x="992" y="248" width="34" height="52"/><rect x="1048" y="142" width="42" height="158"/><rect x="1106" y="170" width="42" height="130"/><rect x="1164" y="248" width="26" height="52"/><rect x="1212" y="222" width="52" height="78"/><rect x="1280" y="170" width="34" height="130"/><rect x="1330" y="248" width="26" height="52"/><rect x="1378" y="196" width="42" height="104"/><rect x="1442" y="142" width="42" height="158"/><rect x="1500" y="248" width="52" height="52"/><rect x="1562" y="170" width="42" height="130"/></g>
           <g fill="var(--secure)"><rect x="6" y="210" width="22" height="3" opacity="0.8"/><rect x="6" y="230" width="22" height="3" opacity="0.55"/><rect x="6" y="250" width="22" height="3" opacity="0.8"/><rect x="50" y="182" width="40" height="3" opacity="0.34"/><rect x="50" y="202" width="40" height="3" opacity="0.34"/><rect x="50" y="222" width="40" height="3" opacity="0.2"/><rect x="50" y="242" width="40" height="3" opacity="0.2"/><rect x="50" y="262" width="40" height="3" opacity="0.55"/><rect x="186" y="262" width="22" height="3" opacity="0.2"/><rect x="236" y="182" width="40" height="3" opacity="0.8"/><rect x="236" y="202" width="40" height="3" opacity="0.2"/><rect x="236" y="222" width="40" height="3" opacity="0.55"/><rect x="236" y="242" width="40" height="3" opacity="0.8"/><rect x="236" y="262" width="40" height="3" opacity="0.2"/><rect x="398" y="262" width="40" height="3" opacity="0.55"/><rect x="466" y="262" width="40" height="3" opacity="0.34"/><rect x="540" y="210" width="14" height="3" opacity="0.34"/><rect x="540" y="230" width="14" height="3" opacity="0.2"/><rect x="540" y="250" width="14" height="3" opacity="0.34"/><rect x="624" y="182" width="40" height="3" opacity="0.8"/><rect x="624" y="202" width="40" height="3" opacity="0.34"/><rect x="624" y="222" width="40" height="3" opacity="0.55"/><rect x="624" y="242" width="40" height="3" opacity="0.34"/><rect x="624" y="262" width="40" height="3" opacity="0.8"/><rect x="692" y="210" width="30" height="3" opacity="0.8"/><rect x="692" y="230" width="30" height="3" opacity="0.55"/><rect x="692" y="250" width="30" height="3" opacity="0.8"/><rect x="802" y="210" width="22" height="3" opacity="0.2"/><rect x="802" y="230" width="22" height="3" opacity="0.8"/><rect x="802" y="250" width="22" height="3" opacity="0.2"/><rect x="858" y="182" width="22" height="3" opacity="0.55"/><rect x="858" y="202" width="22" height="3" opacity="0.2"/><rect x="858" y="222" width="22" height="3" opacity="0.34"/><rect x="858" y="242" width="22" height="3" opacity="0.34"/><rect x="858" y="262" width="22" height="3" opacity="0.55"/><rect x="908" y="182" width="30" height="3" opacity="0.55"/><rect x="908" y="202" width="30" height="3" opacity="0.34"/><rect x="908" y="222" width="30" height="3" opacity="0.2"/><rect x="908" y="242" width="30" height="3" opacity="0.34"/><rect x="908" y="262" width="30" height="3" opacity="0.2"/><rect x="960" y="236" width="40" height="3" opacity="0.34"/><rect x="960" y="256" width="40" height="3" opacity="0.2"/><rect x="1034" y="210" width="22" height="3" opacity="0.34"/><rect x="1034" y="230" width="22" height="3" opacity="0.2"/><rect x="1034" y="250" width="22" height="3" opacity="0.55"/><rect x="1084" y="262" width="40" height="3" opacity="0.34"/><rect x="1146" y="210" width="14" height="3" opacity="0.8"/><rect x="1146" y="230" width="14" height="3" opacity="0.8"/><rect x="1146" y="250" width="14" height="3" opacity="0.2"/><rect x="1188" y="236" width="14" height="3" opacity="0.55"/><rect x="1188" y="256" width="14" height="3" opacity="0.2"/><rect x="1230" y="262" width="22" height="3" opacity="0.8"/><rect x="1274" y="262" width="30" height="3" opacity="0.34"/><rect x="1406" y="182" width="22" height="3" opacity="0.8"/><rect x="1406" y="202" width="22" height="3" opacity="0.2"/><rect x="1406" y="222" width="22" height="3" opacity="0.34"/><rect x="1406" y="242" width="22" height="3" opacity="0.55"/><rect x="1406" y="262" width="22" height="3" opacity="0.34"/><rect x="1456" y="210" width="40" height="3" opacity="0.8"/><rect x="1456" y="230" width="40" height="3" opacity="0.55"/><rect x="1456" y="250" width="40" height="3" opacity="0.34"/><rect x="1530" y="262" width="30" height="3" opacity="0.2"/></g>
@@ -324,7 +310,7 @@
           </g>
 
           <g transform="translate(800 128)">
-            <circle r="92" fill="url(#bnGlow)"/>
+            <circle r="92" fill="var(--secure)" opacity=".1"/>
             <path d="M0 -74 62 -48v46c0 37-24 66-62 82-38-16-62-45-62-82v-46L0 -74Z"
                   fill="var(--surface-1)" stroke="var(--secure)" stroke-width="2.6"/>
             <path d="m-24 4 18 18 39-42" fill="none" stroke="var(--secure)" stroke-width="7.5"
@@ -869,23 +855,12 @@
               <div class="mission-art">
                 <svg viewBox="0 0 320 180" role="img" aria-label="An entropy cell matrix, a statistical distribution curve over a bitstream, and a lit cryptographic shield.">
                   <defs>
-                    <linearGradient id="rndSky" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
-                    </linearGradient>
-                    <radialGradient id="rndGlow" cx="0.75" cy="0.5" r="0.5">
-                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.35"/>
-                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
-                    </radialGradient>
-                    <linearGradient id="rndArea" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.35"/>
-                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
-                    </linearGradient>
                   </defs>
-                  <rect width="320" height="180" fill="url(#rndSky)"/>
+                  <rect width="320" height="180" fill="var(--surface-3)"/>
                   <g stroke="var(--border-soft)" stroke-opacity=".5">
                     <path d="M0 45h320M0 90h320M0 135h320M80 0v180M160 0v180M240 0v180"/>
                   </g>
-                  <rect width="320" height="180" fill="url(#rndGlow)"/>
+                  <rect x="192" width="128" height="180" fill="var(--secure)" opacity=".08"/>
                   <g fill="var(--secure)">
                     <rect x="18" y="18" width="13" height="13" rx="2" opacity=".85"/><rect x="35" y="18" width="13" height="13" rx="2" opacity=".28"/>
                     <rect x="52" y="18" width="13" height="13" rx="2" opacity=".6"/><rect x="69" y="18" width="13" height="13" rx="2" opacity=".2"/>
@@ -894,7 +869,7 @@
                     <rect x="18" y="52" width="13" height="13" rx="2" opacity=".65"/><rect x="35" y="52" width="13" height="13" rx="2" opacity=".22"/>
                     <rect x="52" y="52" width="13" height="13" rx="2" opacity=".8"/><rect x="69" y="52" width="13" height="13" rx="2" opacity=".35"/>
                   </g>
-                  <path d="M18 150 C 54 150, 62 100, 96 100 S 140 150, 176 150 Z" fill="url(#rndArea)"/>
+                  <path d="M18 150 C 54 150, 62 100, 96 100 S 140 150, 176 150 Z" fill="var(--secure)" opacity=".18"/>
                   <path d="M18 150 C 54 150, 62 100, 96 100 S 140 150, 176 150" fill="none" stroke="var(--secure)" stroke-width="2.2"/>
                   <path d="M18 150 H176" stroke="var(--border-strong)"/>
                   <circle cx="96" cy="100" r="3.2" fill="var(--secure)"/>
@@ -926,16 +901,9 @@
               <div class="mission-art">
                 <svg viewBox="0 0 320 180" role="img" aria-label="A lit industrial plant with tanks and towers, a segmented OT network with sensor nodes, a red anomaly path and a protective shield.">
                   <defs>
-                    <linearGradient id="icsSky" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
-                    </linearGradient>
-                    <radialGradient id="icsHaze" cx="0.28" cy="0.9" r="0.6">
-                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.3"/>
-                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
-                    </radialGradient>
                   </defs>
-                  <rect width="320" height="180" fill="url(#icsSky)"/>
-                  <rect width="320" height="180" fill="url(#icsHaze)"/>
+                  <rect width="320" height="180" fill="var(--surface-3)"/>
+                  <rect x="0" y="90" width="160" height="90" fill="var(--secure)" opacity=".08"/>
                   <g fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="1.2">
                     <rect x="14" y="104" width="40" height="58" rx="2"/>
                     <rect x="60" y="82" width="26" height="80" rx="2"/>
@@ -987,19 +955,12 @@
               <div class="mission-art">
                 <svg viewBox="0 0 320 180" role="img" aria-label="An evidence disk, a lit fingerprint under a magnifier, and a four-step chain-of-custody timeline.">
                   <defs>
-                    <linearGradient id="dfSky" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
-                    </linearGradient>
-                    <radialGradient id="dfGlow" cx="0.68" cy="0.38" r="0.45">
-                      <stop offset="0" stop-color="var(--evidence)" stop-opacity="0.32"/>
-                      <stop offset="1" stop-color="var(--evidence)" stop-opacity="0"/>
-                    </radialGradient>
                   </defs>
-                  <rect width="320" height="180" fill="url(#dfSky)"/>
+                  <rect width="320" height="180" fill="var(--surface-3)"/>
                   <g stroke="var(--border-soft)" stroke-opacity=".45">
                     <path d="M0 40h320M0 80h320M0 120h320"/>
                   </g>
-                  <rect width="320" height="180" fill="url(#dfGlow)"/>
+                  <rect x="160" width="160" height="110" fill="var(--evidence)" opacity=".08"/>
                   <g stroke="var(--border-strong)" fill="var(--surface-1)" stroke-width="1.2">
                     <ellipse cx="70" cy="48" rx="42" ry="15"/>
                     <path d="M28 48v42c0 8.3 18.8 15 42 15s42-6.7 42-15V48"/>
@@ -1049,15 +1010,8 @@
               <div class="mission-art">
                 <svg viewBox="0 0 320 180" role="img" aria-label="A lit server rack with a red authorised attack path crossing green defensive control bars.">
                   <defs>
-                    <linearGradient id="asSky" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
-                    </linearGradient>
-                    <radialGradient id="asGlow" cx="0.55" cy="0.24" r="0.5">
-                      <stop offset="0" stop-color="var(--incident)" stop-opacity="0.28"/>
-                      <stop offset="1" stop-color="var(--incident)" stop-opacity="0"/>
-                    </radialGradient>
                   </defs>
-                  <rect width="320" height="180" fill="url(#asSky)"/>
+                  <rect width="320" height="180" fill="var(--surface-3)"/>
                   <g fill="var(--surface-1)" stroke="var(--border-strong)" stroke-width="1.1" opacity=".9">
                     <rect x="24" y="96" width="52" height="66" rx="3"/>
                     <rect x="86" y="82" width="52" height="80" rx="3"/>
@@ -1070,7 +1024,7 @@
                     <path d="M190 102h36M190 112h36M190 122h22"/>
                     <path d="M252 116h36M252 126h36"/>
                   </g>
-                  <rect width="320" height="180" fill="url(#asGlow)"/>
+                  <rect x="0" y="0" width="320" height="90" fill="var(--incident)" opacity=".07"/>
                   <g fill="none" stroke="var(--incident)" stroke-width="2">
                     <path class="packet-route" d="M26 40 L108 62 L192 38 L272 66"/>
                   </g>
@@ -1105,19 +1059,12 @@
               <div class="mission-art">
                 <svg viewBox="0 0 320 180" role="img" aria-label="A lit database vault linked to donor, inventory and distribution records, with a privacy shield.">
                   <defs>
-                    <linearGradient id="bbSky" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stop-color="var(--surface-3)"/><stop offset="1" stop-color="var(--obsidian)"/>
-                    </linearGradient>
-                    <radialGradient id="bbGlow" cx="0.24" cy="0.42" r="0.48">
-                      <stop offset="0" stop-color="var(--secure)" stop-opacity="0.3"/>
-                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
-                    </radialGradient>
                   </defs>
-                  <rect width="320" height="180" fill="url(#bbSky)"/>
+                  <rect width="320" height="180" fill="var(--surface-3)"/>
                   <g stroke="var(--border-soft)" stroke-opacity=".45">
                     <path d="M0 46h320M0 92h320M0 138h320"/>
                   </g>
-                  <rect width="320" height="180" fill="url(#bbGlow)"/>
+                  <rect x="0" y="0" width="160" height="90" fill="var(--secure)" opacity=".08"/>
                   <g stroke="var(--border-strong)" fill="var(--surface-1)" stroke-width="1.2">
                     <ellipse cx="72" cy="44" rx="44" ry="14"/>
                     <path d="M28 44v58c0 7.7 19.7 14 44 14s44-6.3 44-14V44"/>
@@ -1633,7 +1580,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 24.0.0</span>
+          <span>Release 25.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>

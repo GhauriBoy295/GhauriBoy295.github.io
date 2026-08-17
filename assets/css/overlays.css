@@ -3,7 +3,6 @@
 
 dialog::backdrop {
   background: var(--scrim);
-  backdrop-filter: blur(3px);
 }
 
 body.dialog-open { overflow: hidden; }

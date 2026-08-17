@@ -329,8 +329,7 @@ kbd {
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
-  opacity: 0.24;
-  mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 20%, transparent 78%);
+  opacity: 0.55;
 }
 
 :root[data-theme="light"] .page-grid { opacity: 0.5; }
@@ -358,18 +357,11 @@ kbd {
    small, countable set of panels — the ones that sit over the page's own
    backdrop and benefit from letting it through. Blur is expensive, so it is
    never applied to anything that repeats in a grid. */
+/* Flat navy pane. The class name is kept so components need no edit, but
+   there is no blur, no translucency and no sheen left in it. */
 .glass {
-  background: var(--glass-bg);
-  border-color: var(--glass-border);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  box-shadow: var(--shadow-1), inset 0 1px 0 var(--glass-sheen);
-}
-
-/* Where backdrop-filter is unsupported the pane must still be readable, so it
-   falls back to the opaque matte surface rather than a see-through box. */
-@supports not (backdrop-filter: blur(2px)) {
-  .glass { background: var(--surface-1); }
+  background: var(--surface-1);
+  border-color: var(--border);
 }
 
 /* Matte: an explicitly flat surface, used where glass would compete. */
@@ -383,9 +375,4 @@ kbd {
    worst frame (16.7ms vs 8.5ms) — but that is this machine, and the devices it
    is not are exactly the ones where six blurred cards would hurt. Translucency,
    border and sheen stay, so the cards still read as glass. */
-@media (max-width: 899px), (hover: none) {
-  .glass {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
+

@@ -418,9 +418,7 @@
   width: var(--fill, 0%);
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--secure) 70%, var(--secure-deep)),
-    var(--secure));
+  background: var(--secure);
 }
 
 /* The fill grows into place once the panel scrolls in, and only at Full. */
