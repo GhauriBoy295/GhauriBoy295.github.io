@@ -18,133 +18,175 @@
 
 :root {
   color-scheme: dark light;
+
+  /* ---------- Type ---------- */
+  /* Body stays on the system stack — it costs nothing and renders natively.
+     Only the display and mono faces are self-hosted, 47KB for all three. */
+  --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  --font-display: "Space Grotesk", Inter, ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+
+  --text-h1: clamp(2.75rem, 8vw, 6.25rem);
+  --text-h2: clamp(1.85rem, 3.6vw, 3.25rem);
+  --text-h3: clamp(1.15rem, 1.6vw, 1.5rem);
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.075rem);
+  --text-small: 0.875rem;
+  --text-micro: 0.72rem;
+
+  /* ---------- Space (8px system) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  --shell-max: 1340px;
+  --rail-inset: clamp(1rem, 2vw, 2.5rem);
+  --shell-pad: clamp(1rem, 4vw, 2.75rem);
+  --section-gap: clamp(3rem, 8vw, 7.5rem);
+  --header-h: 68px;
+
+  /* ---------- Radii ---------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* ---------- Motion ---------- */
+  --ease-enter: cubic-bezier(.22, 1, .36, 1);
+  --ease-standard: cubic-bezier(.2, .8, .2, 1);
+  --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --duration-fast: 160ms;
+  --duration-control: 220ms;
+  --duration-layout: 360ms;
+  --duration-scene: 520ms;
+
+  --z-header: 60;
+  --z-overlay: 90;
+  --z-toast: 120;
 }
 
-/* ---------- BlackICE Night ----------
-   Four solid colours and nothing else: black ground, navy structure, matte
-   grey secondary surfaces, red accent. No gradient, no translucency, no blur —
-   every surface is one flat fill.
+/* ---------- BlackICE Night ---------- */
+/* Near-black ground, navy-blue structure, one bright green signal, red kept
+   for incident and offensive states only.
 
-   Green survives in exactly one role: states that mean "confirmed" (Graduated,
-   Verified, OK) and the defensive half of the Red/Blue module. Without it those
-   would have to be red, and red already means the opposite. It appears nowhere
-   else. */
+   The ground is close to pure black (#000306) and the surfaces are genuinely
+   navy rather than a desaturated slate, so the blue reads as a colour instead
+   of as "dark grey". Green and red are the only two hues that ever appear at
+   full strength, which is what keeps the red meaningful: if several things
+   glowed, an incident marker would stop being a signal. */
 :root,
 :root[data-theme="dark"] {
-  --canvas: #000000;
-  --obsidian: #05070A;
-  --surface-1: #0C1E38;
-  --surface-2: #123056;
-  --surface-3: #1C222B;
-  --surface-4: #262E39;
-  --border: #23405F;
-  --border-soft: #17293D;
-  --border-strong: #3B5C82;
+  --canvas: #000306;
+  --obsidian: #02070E;
+  --surface-1: #061426;
+  --surface-2: #0A1F38;
+  --surface-3: #102B4D;
+  --surface-4: #173A66;
+  --border: #1E4A7A;
+  --border-soft: #10304F;
+  --border-strong: #2D6BA8;
 
-  --accent: #FF5A66;
-  --accent-solid: #C1121F;
-  --accent-ink: #FFFFFF;
-  --accent-soft: #2A0A0E;
-  --accent-line: #7A1218;
+  --secure: #29F58C;
+  --secure-hover: #6DFFB4;
+  --secure-deep: #0FB863;
+  --secure-ink: #00190D;
+  --secure-soft: rgba(41, 245, 140, 0.12);
+  --secure-line: rgba(41, 245, 140, 0.34);
 
-  --secure: #35C46F;
-  --secure-hover: #4FD886;
-  --secure-deep: #1E8F4E;
-  --secure-ink: #04170C;
-  --secure-soft: #0C2A18;
-  --secure-line: #1E6B3C;
+  --incident: #FF4D5E;
+  --incident-hover: #FF7382;
+  --incident-deep: #C92D3C;
+  --incident-ink: #210307;
+  --incident-soft: rgba(255, 77, 94, 0.13);
+  --incident-line: rgba(255, 77, 94, 0.36);
 
-  --incident: #FF5A66;
-  --incident-hover: #FF7C86;
-  --incident-deep: #C1121F;
-  --incident-ink: #FFFFFF;
-  --incident-soft: #2A0A0E;
-  --incident-line: #7A1218;
+  --evidence: #E9B949;
+  --evidence-soft: rgba(233, 185, 73, 0.13);
 
-  --evidence: #E0A93C;
-  --evidence-soft: #2B2010;
+  --text-1: #F2F7FB;
+  --text-2: #C6D6E4;
+  --text-3: #8FA8C0;
+  --text-invert: #02070E;
 
-  --text-1: #F4F7FA;
-  --text-2: #C3D0DE;
-  --text-3: #8B9CB0;
-  --text-invert: #05070A;
+  --focus-ring: #6DFFB4;
+  --shadow-1: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-2: 0 24px 70px rgba(0, 0, 0, 0.62);
+  --glow-secure: 0 0 28px rgba(41, 245, 140, 0.22);
+  --glow-incident: 0 0 28px rgba(255, 77, 94, 0.2);
 
-  --focus-ring: #FF5A66;
-  --shadow-1: none;
-  --shadow-2: 0 24px 60px rgba(0, 0, 0, 0.7);
-  --glow-secure: none;
-  --glow-incident: none;
+  --grid-line: rgba(30, 74, 122, 0.55);
+  --scrim: rgba(0, 3, 6, 0.8);
+  --bar-colour: #02070E;
 
-  --grid-line: #14243A;
-  --scrim: #000000;
-  --bar-colour: #000000;
-
-  /* Kept as tokens so components need no edit, but both resolve to flat fills:
-     "glass" is now a matte navy pane. */
-  --glass-bg: var(--surface-1);
-  --glass-border: var(--border);
-  --glass-sheen: transparent;
-  --glass-blur: 0px;
+  /* Glass: a translucent pane over whatever sits behind it. Matte is the
+     default surface — flat, opaque, no blur. */
+  --glass-bg: color-mix(in srgb, var(--surface-1) 66%, transparent);
+  --glass-border: color-mix(in srgb, var(--border-strong) 52%, transparent);
+  --glass-sheen: color-mix(in srgb, var(--secure) 7%, transparent);
+  --glass-blur: 16px;
 }
 
-/* ---------- Forensic Daylight ----------
-   The same four-colour logic inverted for print-like reading: white and matte
-   grey surfaces, navy type, the same solid red. */
+/* ---------- Forensic Daylight ---------- */
+/* Cooled in step with the dark theme: the grey ramp is bluer and the action
+   colour is a deep teal rather than forest green. Still an independently
+   authored light theme, not an inversion — it has its own surface ramp,
+   borders, shadows and flat glow tokens. */
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --canvas: #E9ECEF;
-  --obsidian: #DDE2E7;
+  --canvas: #EBF1F5;
+  --obsidian: #DFE8EF;
   --surface-1: #FFFFFF;
-  --surface-2: #F3F5F8;
-  --surface-3: #E4E8EC;
-  --surface-4: #D3D9E0;
-  --border: #B4BEC9;
-  --border-soft: #D5DCE3;
-  --border-strong: #7F8FA1;
+  --surface-2: #F4F8FB;
+  --surface-3: #E5EDF3;
+  --surface-4: #D6E3EC;
+  --border: #B2C4D2;
+  --border-soft: #D2DEE7;
+  --border-strong: #8AA2B5;
 
-  --accent: #A50E1A;
-  --accent-solid: #C1121F;
-  --accent-ink: #FFFFFF;
-  --accent-soft: #FBE7E9;
-  --accent-line: #E0A5AB;
-
-  --secure: #16663A;
-  --secure-hover: #10502D;
-  --secure-deep: #0C4023;
+  --secure: #0A6E45;
+  --secure-hover: #085A38;
+  --secure-deep: #064B2F;
   --secure-ink: #FFFFFF;
-  --secure-soft: #E1F1E8;
-  --secure-line: #A8CDB8;
+  --secure-soft: #DCF3E7;
+  --secure-line: rgba(10, 110, 69, 0.4);
 
-  --incident: #A50E1A;
-  --incident-hover: #8A0B15;
-  --incident-deep: #6E0810;
+  --incident: #B62537;
+  --incident-hover: #971B2B;
+  --incident-deep: #7C1523;
   --incident-ink: #FFFFFF;
-  --incident-soft: #FBE7E9;
-  --incident-line: #E0A5AB;
+  --incident-soft: #FAE0E4;
+  --incident-line: rgba(182, 37, 55, 0.38);
 
-  --evidence: #7A5200;
-  --evidence-soft: #F8EFDC;
+  --evidence: #8A5B00;
+  --evidence-soft: #FBEFD6;
 
-  --text-1: #0A1420;
-  --text-2: #2B3B4B;
-  --text-3: #4E5F71;
+  --text-1: #06131E;
+  --text-2: #294152;
+  --text-3: #4A6173;
   --text-invert: #FFFFFF;
 
-  --focus-ring: #C1121F;
-  --shadow-1: none;
-  --shadow-2: 0 16px 40px rgba(10, 20, 32, 0.16);
-  --glow-secure: none;
-  --glow-incident: none;
+  --focus-ring: #0A6E45;
+  --shadow-1: 0 2px 6px rgba(6, 19, 30, 0.07);
+  --shadow-2: 0 16px 42px rgba(6, 19, 30, 0.12);
+  /* Forensic Daylight does not glow. Both tokens collapse to flat elevation
+     so any component that opts into glow simply reads as a printed panel. */
+  --glow-secure: 0 1px 3px rgba(10, 110, 69, 0.18);
+  --glow-incident: 0 1px 3px rgba(182, 37, 55, 0.18);
 
-  --grid-line: #CFD6DD;
-  --scrim: rgba(10, 20, 32, 0.55);
-  --bar-colour: #E9ECEF;
+  --grid-line: rgba(138, 162, 181, 0.32);
+  --scrim: rgba(16, 34, 48, 0.42);
+  --bar-colour: #EBF1F5;
 
-  --glass-bg: var(--surface-1);
-  --glass-border: var(--border);
-  --glass-sheen: transparent;
-  --glass-blur: 0px;
+  --glass-bg: color-mix(in srgb, #FFFFFF 76%, transparent);
+  --glass-border: color-mix(in srgb, var(--border) 80%, transparent);
+  --glass-sheen: color-mix(in srgb, var(--secure) 5%, transparent);
+  --glass-blur: 14px;
 }
 
 /* Very wide screens: let the shell breathe rather than stranding the layout in

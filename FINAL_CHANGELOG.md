@@ -1,51 +1,5 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
-**Release 25.0.0** — pure solid palette, glass removed everywhere
-
-## Palette: flat, not glass
-
-Reverses 23.0.0/24.0.0's glass direction on explicit instruction: the site now
-uses exactly four solid colours and nothing else — black ground, navy
-structure, matte grey secondary surfaces, red accent — with no gradient, no
-`backdrop-filter`, no `color-mix` translucency, anywhere in the codebase.
-
-| Token | Value | Role |
-|---|---|---|
-| `--canvas` | `#000000` | Pure black ground |
-| `--surface-1/2` | `#0C1E38` / `#123056` | Solid navy structure |
-| `--surface-3/4` | `#1C222B` / `#262E39` | Matte grey secondary surfaces |
-| `--accent-solid` / `--incident-deep` | `#C1121F` | Solid red accent/incident |
-| `--secure` | `#35C46F` | The one exception — kept only for "confirmed" states (Graduated, Verified, OK) and the Blue Team half of Red/Blue, because the four-colour brief has no other way to say "positive, not red" |
-
-`.glass` is kept as a class name so no HTML changed, but it now resolves to a
-flat navy pane — no blur, no sheen, no translucency. `--shadow-1`,
-`--glow-secure` and `--glow-incident` are all `none`.
-
-## What was removed
-
-- Every CSS gradient that blended colour (hero glow, globe atmosphere, header/
-  boot-panel translucency, skill-bar and timeline fills, mission-art glass,
-  report-tail fade) — replaced with a single flat fill or removed outright.
-- Every `backdrop-filter` / `-webkit-backdrop-filter` declaration.
-- Every `color-mix()` translucency.
-- All 28 inline SVG `linearGradient`/`radialGradient` definitions across the
-  hero banner and the five project-card illustrations — each "sky" fade is now
-  a flat surface fill, each atmospheric "glow" is a flat low-opacity shape in
-  place of a radial blend.
-
-What remains and is not a gradient in the visual sense: a handful of
-single-colour hard-stop `linear-gradient()`/`radial-gradient()` calls used as a
-CSS drawing technique for grid rule-lines and dot markers (same colour at both
-stops, no blend) — kept because removing them would mean adding markup, not
-removing colour.
-
-Re-verified after the conversion: WCAG AA contrast in both themes (464 text
-nodes dark, 490 light, zero below threshold), zero page-level horizontal
-overflow at 390px and 1920px, zero console errors, both static verifiers
-clean.
-
----
-
 **Release 24.0.0** — navy on black, bright green, glass on the project cards
 
 ## Palette

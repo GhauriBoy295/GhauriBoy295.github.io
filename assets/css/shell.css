@@ -42,7 +42,8 @@
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 48px 48px;
-  opacity: 0.16;
+  opacity: 0.22;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 34%, #000 100%);
 }
 
 body:not(.boot-active) .boot {
@@ -63,7 +64,8 @@ body.boot-active .site-shell { filter: blur(2px); }
   margin-block: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  background: var(--surface-1);
+  background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+  backdrop-filter: blur(8px);
   box-shadow: var(--shadow-2);
   overflow: hidden;
 }
@@ -289,14 +291,15 @@ body.boot-active .site-shell { filter: blur(2px); }
   top: 0;
   z-index: var(--z-header);
   border-bottom: 1px solid transparent;
-  background: var(--canvas);
+  background: color-mix(in srgb, var(--canvas) 82%, transparent);
+  backdrop-filter: blur(14px);
   transition: border-color var(--duration-control) var(--ease-standard),
               background var(--duration-control) var(--ease-standard);
 }
 
 .site-header.is-scrolled {
   border-bottom-color: var(--border-soft);
-  background: var(--canvas);
+  background: color-mix(in srgb, var(--canvas) 94%, transparent);
 }
 
 .header-inner {

@@ -1,6 +1,7 @@
 /* ---------- Hero banner ----------
    Full-bleed above the hero. Height is capped in vw so it never eats the fold
-   on a short laptop screen, and the artwork slices rather than distorting. */
+   on a short laptop screen, and the artwork slices rather than distorting. A
+   bottom fade hands off into the page instead of ending on a hard edge. */
 .hero-banner {
   position: relative;
   width: 100%;
@@ -14,6 +15,14 @@
   height: 100%;
 }
 
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 45%;
+  background: linear-gradient(to bottom, transparent, var(--canvas));
+  pointer-events: none;
+}
 
 /* AEGIS NEXUS — BlackICE command-centre hero: identity, cyber globe,
    profile-status and location panels, and the stat bar. */
@@ -24,6 +33,20 @@
   overflow: hidden;
 }
 
+/* The only ambient glow on the page, and it has to reach full transparency
+   well inside its own box — an inset box whose gradient is still tinted at
+   the edge draws a visible rectangular seam across the hero. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 52% 58% at 14% 34%,
+    color-mix(in srgb, var(--secure) 9%, transparent), transparent 66%);
+  pointer-events: none;
+}
+
+:root[data-theme="light"] .hero::before { display: none; }
 
 /* ---------- Instrument rails ---------- */
 /* Only drawn where there is genuine empty gutter beside the centred shell.
@@ -71,7 +94,10 @@
       transparent 1px 12px
     );
     opacity: 0.4;
+    mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
   }
+
+  .hero-rail-start .rail-ticks { mask-image: linear-gradient(to top, transparent, #000 22%, #000 78%, transparent); }
 }
 
 .hero-grid {
@@ -223,6 +249,27 @@
   isolation: isolate;
 }
 
+/* Atmosphere. A single contained radial gradient behind the sphere — this is
+   the one place on the page allowed to bloom, and it stops well inside its own
+   box so it never washes the section behind it. */
+.globe-frame::before {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--secure) 26%, transparent) 0%,
+    color-mix(in srgb, var(--secure) 10%, transparent) 38%,
+    transparent 68%);
+  pointer-events: none;
+}
+
+:root[data-theme="light"] .globe-frame::before {
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--secure) 12%, transparent) 0%,
+    transparent 66%);
+}
 
 .globe-frame canvas,
 .globe-frame .globe-static,
