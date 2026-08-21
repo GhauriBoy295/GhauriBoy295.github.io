@@ -75,13 +75,18 @@
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
 }
 
+/* No `overflow: hidden` here, deliberately. Overflow is a grouping property:
+   a card that clips its own content is flattened by the browser, and a
+   flattened card cannot hold children at different depths — the 3D layers
+   inside would silently collapse into one plane. The artwork clips itself
+   instead (it is the only child that needs to), and carries the card's top
+   corner radius so the corners still read as one rounded panel. */
 .mission {
   display: grid;
   grid-template-rows: auto 1fr;
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   background: var(--surface-1);
-  overflow: hidden;
   transition: border-color var(--duration-control) var(--ease-standard),
               transform var(--duration-control) var(--ease-standard),
               box-shadow var(--duration-control) var(--ease-standard);
@@ -109,6 +114,7 @@
   position: relative;
   aspect-ratio: 16 / 9;
   border-bottom: 1px solid var(--glass-border);
+  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
   background: color-mix(in srgb, var(--surface-2) 70%, transparent);
   overflow: hidden;
 }

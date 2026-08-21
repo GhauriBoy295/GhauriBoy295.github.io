@@ -51,6 +51,7 @@ verification link.
 - Capability map placed on the NIST Cybersecurity Framework lifecycle
 - Red Cell / Blue Team module with an attack path drawn against defensive controls
 - Five missions with original per-subject SVG artwork and discipline / NIST filters
+- 3D depth layer: pointer-driven card tilt, Z-separated card layers, specular sheen and hero parallax — full motion level and fine pointers only
 - Forensic case-study reports: section rail, work-sequence timeline, working-material list
 - Deep-linkable case studies with copy-link, Web Share (where supported) and print
 - Command palette (`Ctrl+K` / `⌘K`) and a keyboard shortcuts sheet (`?`)
@@ -81,7 +82,7 @@ icon-512.png
 apple-touch-icon.png
 assets/
   css/  tokens · base · shell · hero · sections · missions · overlays · motion · print
-  js/   app · core · boot · globe · report · project-data
+  js/   app · core · boot · globe · depth · report · project-data
   fonts/ Space Grotesk 500/700, JetBrains Mono 400 — SIL OFL, latin subsets
   social-preview.png
   social-preview.svg
@@ -108,7 +109,7 @@ Every CSS and JS request carries `?v=<release>`, the JS module graph imports car
 same string, and the service worker holds `ASSET_REV` and `CACHE_VERSION`. All three must
 be bumped together — `tools/verify_live_workspace.py` fails the build if they drift.
 
-Current release: **24.0.0** (`CACHE_VERSION = 'v24-0-0'`).
+Current release: **25.0.0** (`CACHE_VERSION = 'v25-0-0'`).
 
 ## Continuous integration and deployment
 

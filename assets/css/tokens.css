@@ -129,6 +129,22 @@
   --glass-border: color-mix(in srgb, var(--border-strong) 52%, transparent);
   --glass-sheen: color-mix(in srgb, var(--secure) 7%, transparent);
   --glass-blur: 16px;
+
+  /* ---------- Depth (3D) ----------
+     One perspective value shared by every tilting surface, so cards in the
+     same grid appear to sit in the same room rather than each having its own
+     camera. Tilt is capped low on purpose: past about 8deg a rectangular card
+     stops reading as a panel on a desk and starts reading as a game menu,
+     which the brief rules out. */
+  --perspective: 1100px;
+  --tilt-max: 7deg;
+  --lift-z: 26px;
+
+  /* Elevation is a shadow pair: a tight contact shadow that keeps the card
+     attached to the page, plus a wide soft one that carries the height. */
+  --elev-rest: 0 2px 6px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(0, 0, 0, 0.4);
+  --elev-lift: 0 6px 14px rgba(0, 0, 0, 0.5), 0 30px 70px rgba(0, 0, 0, 0.55);
+  --edge-light: rgba(109, 255, 180, 0.16);
 }
 
 /* ---------- Forensic Daylight ---------- */
@@ -187,6 +203,17 @@
   --glass-border: color-mix(in srgb, var(--border) 80%, transparent);
   --glass-sheen: color-mix(in srgb, var(--secure) 5%, transparent);
   --glass-blur: 14px;
+
+  /* Same geometry, lighter elevation: a forensic-laboratory sheet lifts off a
+     white desk with far less shadow than a panel lifts off black, and the same
+     opacities that read as depth on dark read as dirt on white. */
+  --perspective: 1100px;
+  --tilt-max: 6deg;
+  --lift-z: 20px;
+
+  --elev-rest: 0 1px 3px rgba(6, 19, 30, 0.08), 0 6px 18px rgba(6, 19, 30, 0.08);
+  --elev-lift: 0 3px 8px rgba(6, 19, 30, 0.1), 0 18px 42px rgba(6, 19, 30, 0.14);
+  --edge-light: rgba(10, 110, 69, 0.14);
 }
 
 /* Very wide screens: let the shell breathe rather than stranding the layout in

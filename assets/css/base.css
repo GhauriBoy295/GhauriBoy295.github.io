@@ -389,3 +389,92 @@ kbd {
     -webkit-backdrop-filter: none;
   }
 }
+
+/* ---------- Depth (3D) ----------
+   A grid marked .depth-scene becomes one shared camera: every card inside it
+   tilts against the same vanishing point, so a row reads as panels on a desk
+   rather than as separate little stages.
+
+   The perspective lives on the grid and not on the card on purpose. Per-card
+   perspective gives each card its own centre, and a row of them tilting
+   towards their own middles is the effect that makes 3D card walls look
+   cheap. */
+.depth-scene { perspective: var(--perspective); perspective-origin: 50% 42%; }
+
+/* The card itself only declares how it moves. The actual tilt is written by
+   depth.js as an inline transform, which is also how it stays out of the way
+   of the reveal system: the reveal owns the stylesheet transform, the pointer
+   owns the inline one, and clearing the inline value hands control straight
+   back. */
+.depth-card {
+  position: relative;
+  transform-style: preserve-3d;
+  box-shadow: var(--elev-rest);
+  transition: box-shadow var(--duration-control) var(--ease-standard),
+              transform var(--duration-control) var(--ease-standard);
+}
+
+.depth-card.is-tilting {
+  /* While the pointer drives it, the transform must not lag behind by a
+     transition — it is already being updated every frame. */
+  transition: box-shadow var(--duration-control) var(--ease-standard);
+  box-shadow: var(--elev-lift);
+}
+
+/* Layers inside a tilting card. Pushing them apart in Z is what produces real
+   parallax between artwork and text: they are genuinely at different depths,
+   so they separate as the card turns instead of sliding as one flat image.
+
+   Gated on .is-tilting rather than applied at rest, and that gate is
+   load-bearing: translateZ under perspective also *scales* — a layer 26px
+   closer to the camera projects about 2.4% larger, so a permanently lifted
+   layer overhangs its own card's edges when nothing is happening. The lift
+   only exists while the card is being pointed at, which is also the only time
+   the parallax it produces can be seen. */
+.depth-card.is-tilting .depth-near { transform: translateZ(var(--lift-z)); }
+.depth-card.is-tilting .depth-mid { transform: translateZ(calc(var(--lift-z) * 0.45)); }
+
+.depth-near,
+.depth-mid { transition: transform var(--duration-control) var(--ease-standard); }
+
+/* A specular edge that tracks the pointer, so the card looks lit from where
+   the cursor is rather than uniformly bright. Pure decoration, and it sits
+   above the artwork but below anything clickable. */
+.depth-card .depth-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at var(--sheen-x, 50%) var(--sheen-y, 0%),
+    var(--edge-light),
+    transparent 58%
+  );
+  transition: opacity var(--duration-control) var(--ease-standard);
+}
+
+.depth-card.is-tilting .depth-sheen { opacity: 1; }
+
+/* Depth is decorative, so it is spent only where it is affordable: a fine
+   pointer to aim it and the full motion level to allow it. Everything below
+   collapses the effect without removing a single piece of content. */
+@media (hover: none), (pointer: coarse) {
+  .depth-scene { perspective: none; }
+  .depth-card.is-tilting .depth-near,
+  .depth-card.is-tilting .depth-mid { transform: none; }
+}
+
+:root[data-motion="calm"] .depth-card,
+:root[data-motion="off"] .depth-card {
+  transform: none !important;
+  transition: box-shadow var(--duration-control) var(--ease-standard);
+}
+
+:root[data-motion="calm"] .depth-card.is-tilting .depth-near,
+:root[data-motion="calm"] .depth-card.is-tilting .depth-mid,
+:root[data-motion="off"] .depth-card.is-tilting .depth-near,
+:root[data-motion="off"] .depth-card.is-tilting .depth-mid { transform: none; }
+
+:root[data-motion="off"] .depth-card .depth-sheen { display: none; }

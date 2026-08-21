@@ -32,16 +32,16 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=24.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=24.0.0">
-  <script type="module" src="assets/js/app.js?v=24.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=25.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=25.0.0">
+  <script type="module" src="assets/js/app.js?v=25.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -338,12 +338,12 @@
         <!-- Instrument rails. Decoration for wide screens only: they fill the
              gutters either side of the centred shell and are removed entirely
              below 1500px, where there is no gutter to fill. -->
-        <div class="hero-rail hero-rail-start" aria-hidden="true">
+        <div class="hero-rail hero-rail-start" aria-hidden="true" data-depth="1.4">
           <span class="rail-ticks"></span>
           <span class="rail-text">AEGIS NEXUS &middot; SECURE PROFILE</span>
           <span class="rail-ticks"></span>
         </div>
-        <div class="hero-rail hero-rail-end" aria-hidden="true">
+        <div class="hero-rail hero-rail-end" aria-hidden="true" data-depth="1.4">
           <span class="rail-ticks"></span>
           <span class="rail-text">BASE UNITED KINGDOM &middot; AVAILABILITY WORLDWIDE</span>
           <span class="rail-ticks"></span>
@@ -398,7 +398,7 @@
             <!-- Globe -->
             <div class="hero-globe reveal" data-reveal="scale" data-delay="100">
               <div class="globe-frame" id="globe">
-                <svg class="globe-hud" viewBox="0 0 240 240" aria-hidden="true">
+                <svg class="globe-hud" viewBox="0 0 240 240" aria-hidden="true" data-depth="0.8">
                   <g fill="none" stroke="currentColor">
                     <circle cx="120" cy="120" r="118" stroke-opacity=".18"/>
                     <circle class="hud-ring" cx="120" cy="120" r="112" stroke-opacity=".3" stroke-dasharray="2 10"/>
@@ -674,8 +674,9 @@
             <p>Two cyber security degrees covering technical defence, offensive testing, forensics, secure development and research.</p>
           </div>
 
-          <div class="edu-grid stagger">
-            <article class="edu-card">
+          <div class="edu-grid stagger depth-scene">
+            <article class="edu-card depth-card">
+              <span class="depth-sheen" aria-hidden="true"></span>
               <div class="edu-card-head">
                 <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
                 <div>
@@ -692,7 +693,8 @@
               </div>
             </article>
 
-            <article class="edu-card">
+            <article class="edu-card depth-card">
+              <span class="depth-sheen" aria-hidden="true"></span>
               <div class="edu-card-head">
                 <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
                 <div>
@@ -721,9 +723,10 @@
             <p>An ICS security internship and a current operations role, recorded in sequence.</p>
           </div>
 
-          <div class="tickets">
+          <div class="tickets depth-scene">
             <!-- Ticket 01 — current role -->
-            <article class="ticket glass reveal" data-lane="ops">
+            <article class="ticket glass reveal depth-card" data-lane="ops">
+              <span class="depth-sheen" aria-hidden="true"></span>
               <header class="ticket-head">
                 <span class="ticket-class">OPERATIONS</span>
                 <span class="ticket-ref">#OPS-002</span>
@@ -778,7 +781,8 @@
             </article>
 
             <!-- Ticket 02 — ICS internship -->
-            <article class="ticket glass reveal" data-lane="ics" data-delay="90">
+            <article class="ticket glass reveal depth-card" data-lane="ics" data-delay="90">
+              <span class="depth-sheen" aria-hidden="true"></span>
               <header class="ticket-head">
                 <span class="ticket-class is-ics">ICS / OT</span>
                 <span class="ticket-ref">#ICS-001</span>
@@ -863,10 +867,11 @@
             <p class="filter-status" id="filterStatus" role="status" aria-live="polite">Showing all 5 projects.</p>
           </div>
 
-          <div class="missions" id="missions">
+          <div class="missions depth-scene" id="missions">
             <!-- 01 Randomness -->
-            <article class="mission glass" data-class="research" data-categories="research nist-protect">
-              <div class="mission-art">
+            <article class="mission glass depth-card" data-class="research" data-categories="research nist-protect">
+              <span class="depth-sheen" aria-hidden="true"></span>
+              <div class="mission-art depth-near">
                 <svg viewBox="0 0 320 180" role="img" aria-label="An entropy cell matrix, a statistical distribution curve over a bitstream, and a lit cryptographic shield.">
                   <defs>
                     <linearGradient id="rndSky" x1="0" y1="0" x2="0" y2="1">
@@ -910,7 +915,7 @@
                   <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--secure)" opacity="0"/>
                 </svg>
               </div>
-              <div class="mission-body">
+              <div class="mission-body depth-mid">
                 <div class="mission-title-row">
                   <h3>Integrated Randomness Testing Suite</h3>
                   <span class="badge badge-secure">Research</span>
@@ -922,8 +927,9 @@
             </article>
 
             <!-- 02 ICS IDS -->
-            <article class="mission glass" data-class="defence" data-categories="defence nist-detect">
-              <div class="mission-art">
+            <article class="mission glass depth-card" data-class="defence" data-categories="defence nist-detect">
+              <span class="depth-sheen" aria-hidden="true"></span>
+              <div class="mission-art depth-near">
                 <svg viewBox="0 0 320 180" role="img" aria-label="A lit industrial plant with tanks and towers, a segmented OT network with sensor nodes, a red anomaly path and a protective shield.">
                   <defs>
                     <linearGradient id="icsSky" x1="0" y1="0" x2="0" y2="1">
@@ -971,7 +977,7 @@
                   <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--secure)" opacity="0"/>
                 </svg>
               </div>
-              <div class="mission-body">
+              <div class="mission-body depth-mid">
                 <div class="mission-title-row">
                   <h3>Intrusion Detection for ICS</h3>
                   <span class="badge badge-secure">Defense</span>
@@ -983,8 +989,9 @@
             </article>
 
             <!-- 03 DFIR -->
-            <article class="mission glass" data-class="defence" data-categories="defence nist-respond">
-              <div class="mission-art">
+            <article class="mission glass depth-card" data-class="defence" data-categories="defence nist-respond">
+              <span class="depth-sheen" aria-hidden="true"></span>
+              <div class="mission-art depth-near">
                 <svg viewBox="0 0 320 180" role="img" aria-label="An evidence disk, a lit fingerprint under a magnifier, and a four-step chain-of-custody timeline.">
                   <defs>
                     <linearGradient id="dfSky" x1="0" y1="0" x2="0" y2="1">
@@ -1033,7 +1040,7 @@
                   <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--evidence)" opacity="0"/>
                 </svg>
               </div>
-              <div class="mission-body">
+              <div class="mission-body depth-mid">
                 <div class="mission-title-row">
                   <h3>Digital Forensics &amp; IR Labs</h3>
                   <span class="badge badge-secure">Defense</span>
@@ -1045,8 +1052,9 @@
             </article>
 
             <!-- 04 Assessment -->
-            <article class="mission glass" data-class="offensive" data-categories="offensive nist-identify">
-              <div class="mission-art">
+            <article class="mission glass depth-card" data-class="offensive" data-categories="offensive nist-identify">
+              <span class="depth-sheen" aria-hidden="true"></span>
+              <div class="mission-art depth-near">
                 <svg viewBox="0 0 320 180" role="img" aria-label="A lit server rack with a red authorised attack path crossing green defensive control bars.">
                   <defs>
                     <linearGradient id="asSky" x1="0" y1="0" x2="0" y2="1">
@@ -1089,7 +1097,7 @@
                   <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--incident)" opacity="0"/>
                 </svg>
               </div>
-              <div class="mission-body">
+              <div class="mission-body depth-mid">
                 <div class="mission-title-row">
                   <h3>Security Assessment &amp; Active Defence</h3>
                   <span class="badge badge-incident">Offensive Security</span>
@@ -1101,8 +1109,9 @@
             </article>
 
             <!-- 05 Blood bank -->
-            <article class="mission glass" data-class="development" data-categories="development">
-              <div class="mission-art">
+            <article class="mission glass depth-card" data-class="development" data-categories="development">
+              <span class="depth-sheen" aria-hidden="true"></span>
+              <div class="mission-art depth-near">
                 <svg viewBox="0 0 320 180" role="img" aria-label="A lit database vault linked to donor, inventory and distribution records, with a privacy shield.">
                   <defs>
                     <linearGradient id="bbSky" x1="0" y1="0" x2="0" y2="1">
@@ -1154,7 +1163,7 @@
                   <rect class="art-scan" x="0" y="0" width="320" height="8" fill="var(--secure)" opacity="0"/>
                 </svg>
               </div>
-              <div class="mission-body">
+              <div class="mission-body depth-mid">
                 <div class="mission-title-row">
                   <h3>Blood Bank Database System</h3>
                   <span class="badge">Development</span>
@@ -1167,7 +1176,7 @@
 
             <!-- Placeholder -->
             <article class="mission mission-placeholder glass" data-placeholder>
-              <div class="mission-body">
+              <div class="mission-body depth-mid">
                 <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg></span>
                 <h3>More projects</h3>
                 <p>Additional academic and personal projects are documented as they are completed.</p>
@@ -1633,7 +1642,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 24.0.0</span>
+          <span>Release 25.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>

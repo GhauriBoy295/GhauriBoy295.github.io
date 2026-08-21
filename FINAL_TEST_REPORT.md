@@ -1,3 +1,55 @@
+# FINAL TEST REPORT — AEGIS NEXUS 25.0.0
+
+Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
+
+Everything below was executed. Nothing is marked passed that was not run.
+Checks that could not be executed are named, with the reason.
+
+## Release 25.0.0 — 3D depth layer
+
+| Check | Result |
+|---|---|
+| `tools/verify_portfolio.py` | **22 / 22 passed** |
+| `tools/verify_live_workspace.py` | **13 / 13 passed**, asset revision `25.0.0` matched across HTML and service worker |
+| `node --check` on every JS module + service worker (incl. new `depth.js`) | clean |
+| `depth.js` served | 200 OK at `?v=25.0.0` |
+| Console errors on load | 0 |
+| Depth wiring | 9 `.depth-card`, 9 `.depth-sheen`, `perspective: 1100px` on each `.depth-scene` |
+| `transform-style` on cards | `preserve-3d` (not flattened) |
+| Card tilt at full motion | `rotateX(4.9deg) rotateY(-4.9deg)` at a 15%/15% pointer position |
+| Layer separation | artwork `translateZ(26px)`, body `translateZ(11.7px)` — genuine parallax |
+| Specular sheen | tracks pointer (`15% 15%`), reaches opacity 1, lift shadow applied |
+| Pointer-leave cleanup | inline transform and both sheen variables cleared; control returns to the stylesheet |
+| Motion `calm` | tilt does not engage, layers flatten to `none` |
+| Motion `off` | tilt does not engage, layers flatten to `none` |
+| Coarse pointer / touch | `perspective: none` confirmed at 320px |
+| WCAG AA contrast, dark | **477 text nodes, 0 below threshold** |
+| WCAG AA contrast, light | **477 text nodes, 0 below threshold** |
+| Horizontal overflow at 1440×900, at rest | none |
+| Horizontal overflow at 1440×900, **every card forced to maximum tilt** | none |
+
+### Defect found and fixed during this release
+
+The Z-lift was first applied at rest rather than only while tilting.
+`translateZ` under perspective also scales — a layer 26px nearer the camera
+projects about 2.4% larger — so each card's artwork overhung its own edges
+while idle (art left `25.5px` against card left `34.1px`). Gating the lift
+behind `.is-tilting` fixed it: at rest the artwork measures `380.2px` inside a
+`381.6px` card, `transform: none`.
+
+### Not executed
+
+**Live 60fps frame-time profiling of the tilt.** The preview pane was not
+compositing during the final pass, so `requestAnimationFrame` did not fire and
+frame timings could not be sampled. The tilt engine itself was verified earlier
+in the same session while the pane was live (the rotation, sheen, elevation and
+cleanup rows above are from that run). The per-frame cost is bounded by design
+— one shared rAF for all elements, one `getBoundingClientRect` per pointer
+entry rather than per move, and no layout read inside the write path — but it
+was not measured on this hardware and is not claimed to be.
+
+---
+
 # FINAL TEST REPORT — AEGIS NEXUS 24.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
