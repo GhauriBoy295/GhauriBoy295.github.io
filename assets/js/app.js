@@ -14,11 +14,12 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=24.0.0';
-import { initGlobe } from './globe.js?v=24.0.0';
-import { initBoot } from './boot.js?v=24.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=24.0.0';
-import { projectData } from './project-data.js?v=24.0.0';
+} from './core.js?v=25.0.0';
+import { initGlobe } from './globe.js?v=25.0.0';
+import { initDepth } from './depth.js?v=25.0.0';
+import { initBoot } from './boot.js?v=25.0.0';
+import { initReport, openReport, projectFromHash } from './report.js?v=25.0.0';
+import { projectData } from './project-data.js?v=25.0.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');
@@ -747,6 +748,10 @@ if (yearSlot) yearSlot.textContent = String(new Date().getFullYear());
 
 /* ================= Progressive extras ================= */
 initReport();
+
+// Depth is decorative and self-gating: it checks motion level, pointer type
+// and device power itself, and does nothing at all when any of those say no.
+initDepth();
 
 // The globe is decorative: it is skipped entirely on touch-first or small
 // screens, where its cost is highest and its value lowest.

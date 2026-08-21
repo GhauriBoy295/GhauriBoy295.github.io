@@ -1,5 +1,74 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
+**Release 25.0.0** — 3D depth: card tilt, layer parallax, hero parallax
+
+Adds a depth layer on top of the 24.0.0 look. No 3D library: the effect is CSS
+3D transforms plus one small module, because the site already hand-rolls its
+canvas work and a WebGL dependency is not justified by a card tilt.
+
+## What it does
+
+| Feature | Behaviour |
+|---|---|
+| Card tilt | A card rotates towards the pointer, capped at `--tilt-max` (7deg dark, 6deg light) |
+| Layer parallax | Artwork and body sit at different Z depths, so they separate as the card turns |
+| Specular sheen | A highlight tracks the cursor across the card face |
+| Elevation | Rest and lift shadow pairs — a tight contact shadow plus a wide soft one |
+| Hero parallax | Instrument rails and the globe HUD drift against pointer movement |
+
+Applied to nine components: five project cards, two experience tickets and two
+education cards.
+
+## Decisions
+
+**Perspective lives on the grid, not the card.** Per-card perspective gives
+each card its own vanishing point, and a row tilting towards their own centres
+is what makes 3D card walls look cheap. One `.depth-scene` per grid means a row
+reads as panels on a shared desk.
+
+**The tilt is an inline transform.** The reveal system owns the stylesheet
+transform on the same elements. Inline beats stylesheet, and clearing it hands
+control straight back, so neither system needs to know the other exists.
+
+**Tilt capped at 7deg.** Past roughly 8deg a rectangular panel stops reading as
+a card on a desk and starts reading as a game menu, which the brief rules out.
+
+**One shared rAF for every element.** Nine cards plus the hero reacting to the
+same pointer would otherwise schedule ten callbacks per frame to do one frame
+of work. Pointer events only record coordinates; the transform is written once
+per frame.
+
+**`overflow: hidden` removed from `.mission`.** Overflow is a grouping
+property: a card that clips itself is flattened by the browser, and a flattened
+card cannot hold children at different depths — the layers would silently
+collapse into one plane. The artwork clips itself instead and carries the
+card's top corner radius.
+
+## Defect caught during the build
+
+The Z-lift was initially applied at rest, not just while tilting. `translateZ`
+under perspective also *scales*: a layer 26px closer to the camera projects
+about 2.4% larger, so every card's artwork overhung its own left, right and top
+edges when nothing was happening (art left 25.5px against card left 34.1px).
+Gating the lift behind `.is-tilting` fixed it — verified back inside the card
+at rest (art 380.2px within card 381.6px).
+
+## Motion and capability gating
+
+Runs only at motion level **full**, only with a fine pointer, and never on a
+low-power device (`hardwareConcurrency <= 4` or `deviceMemory <= 4`). At calm
+and off the layers flatten and the tilt does not engage — verified. Perspective
+is dropped entirely under `(hover: none), (pointer: coarse)`. Nothing here is
+content: if it never runs the page is unchanged apart from a flat shadow.
+
+## Version
+
+Asset revision **25.0.0** across the nine CSS links, the module script tag,
+every import specifier, `ASSET_REV`, `CACHE_VERSION = 'v25-0-0'` and the
+footer. `depth.js` added to the service worker's precached module list.
+
+---
+
 **Release 24.0.0** — navy on black, bright green, glass on the project cards
 
 ## Palette
