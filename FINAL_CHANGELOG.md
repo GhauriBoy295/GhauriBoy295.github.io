@@ -1,5 +1,44 @@
 # FINAL CHANGELOG — AEGIS NEXUS
 
+**Release 26.0.0** — elevation pass: interaction craft and instrument-grade detail
+
+A deliberate *elevation* of the 25.0.0 look, not a redesign. The identity —
+BlackICE Night, navy structure, green signal, the globe and operator framing —
+is unchanged. What changed is the finish, in the places craft is actually felt:
+
+| Refinement | What it does |
+|---|---|
+| Branded text selection | Highlighting any text now reads in the signal green instead of browser-default blue, so a selection still looks like part of the interface |
+| Themed scrollbar | A thin bar on the canvas that tracks the theme and brightens to the signal colour on hover (fine-pointer devices only) |
+| Button tactility | The `transform` transition the buttons already declared is now used — a 1px lift on hover, a settle on press — gated to full motion and off under reduced-motion |
+| Animated nav underline | One underline rule for every nav link: it grows from the left on hover and focus (compositor-only `scaleX`), and sits full-width for the current section |
+| Instrument figures | `tabular-nums slashed-zero` on the mono labels, the clock and the stat values, so digits sit in fixed columns and a zero never reads as an O |
+
+### Why restraint
+
+The base was already a strong, cohesive professional design. The right
+elevation was precision in the interaction and detail layer — not more
+decoration, which would have cheapened it. Every change here is craft the eye
+feels in use rather than a new visual element competing with the globe.
+
+### Verified
+
+- WCAG AA both themes: **456 text nodes dark, 477 light, zero below threshold**
+- Zero horizontal overflow at desktop; the only sub-viewport elements are the
+  pre-existing scroll-reveal items, contained by `body { overflow-x: clip }`
+- Console clean; a11y sweep clean (no missing alt, unnamed controls, duplicate
+  IDs or unlabelled inputs)
+- All changes are layout-neutral (`transform` / `box-shadow` / selection /
+  scrollbar / numeric glyphs only), so nothing shifts the grid
+- `verify_portfolio.py` 22/22, `verify_live_workspace.py` 13/13, JS syntax clean
+
+### Version
+
+Asset revision **26.0.0** across the CSS links, module script tag, every import
+specifier, `ASSET_REV`, `CACHE_VERSION = 'v26-0-0'` and the footer.
+
+---
+
 **Release 25.0.0** — 3D depth: card tilt, layer parallax, hero parallax
 
 Adds a depth layer on top of the 24.0.0 look. No 3D library: the effect is CSS

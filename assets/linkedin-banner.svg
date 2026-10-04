@@ -1,29 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1584" height="396" viewBox="0 0 1584 396">
-  <!-- LinkedIn banner, 1584x396. Same design system as the portfolio:
-       BlackICE Night palette, navy structure, green as a signal only.
+  <!-- LinkedIn banner, 1584x396. Matches the deployed portfolio at release
+       25.0.0: BlackICE Night palette, navy structure, green as a signal only,
+       and the same Operations Deck motif used above the site's hero.
 
        Layout is dictated by LinkedIn's own chrome. The profile photo overlaps
-       the lower-left of the banner on desktop, and mobile crops the sides, so
-       nothing that has to be read is placed below y=230 on the left third or
-       within 90px of either edge. Original artwork; no external assets. -->
+       the lower-left on desktop and mobile crops the sides, so nothing that has
+       to be read sits below y=230 in the left third or within 90px of either
+       edge. Original artwork; no external assets. -->
   <defs>
     <pattern id="lbGrid" width="44" height="44" patternUnits="userSpaceOnUse">
-      <path d="M44 0H0V44" fill="none" stroke="#1B405A" stroke-opacity="0.5" stroke-width="1"/>
+      <path d="M44 0H0V44" fill="none" stroke="#1E4A7A" stroke-opacity="0.5" stroke-width="1"/>
     </pattern>
     <radialGradient id="lbFade" cx="0.72" cy="0.5" r="0.65">
       <stop offset="0" stop-color="#fff" stop-opacity="0.85"/>
       <stop offset="1" stop-color="#fff" stop-opacity="0"/>
     </radialGradient>
-    <mask id="lbGridMask">
-      <rect width="1584" height="396" fill="url(#lbFade)"/>
-    </mask>
+    <mask id="lbGridMask"><rect width="1584" height="396" fill="url(#lbFade)"/></mask>
     <radialGradient id="lbGlow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#22E58B" stop-opacity="0.26"/>
-      <stop offset="0.42" stop-color="#22E58B" stop-opacity="0.09"/>
-      <stop offset="1" stop-color="#22E58B" stop-opacity="0"/>
+      <stop offset="0" stop-color="#29F58C" stop-opacity="0.24"/>
+      <stop offset="0.42" stop-color="#29F58C" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#29F58C" stop-opacity="0"/>
     </radialGradient>
-    <!-- The left third carries the profile photo, so it is dropped to solid
-         black. It also stops the grid competing with the avatar's edge. -->
+    <!-- The left third carries the profile photo, so it drops to solid black.
+         It also stops the grid competing with the avatar's edge. -->
     <linearGradient id="lbLeftShade" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#000000" stop-opacity="1"/>
       <stop offset="0.16" stop-color="#000000" stop-opacity="0.94"/>
@@ -31,79 +30,88 @@
       <stop offset="0.46" stop-color="#000000" stop-opacity="0.22"/>
       <stop offset="0.58" stop-color="#000000" stop-opacity="0"/>
     </linearGradient>
+    <!-- Racks fade into the ground rather than ending on a hard line. -->
+    <linearGradient id="lbDeckFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000306" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000306" stop-opacity="0.85"/>
+    </linearGradient>
   </defs>
 
-  <rect width="1584" height="396" fill="#020507"/>
+  <rect width="1584" height="396" fill="#000306"/>
   <rect width="1584" height="396" fill="url(#lbGrid)" mask="url(#lbGridMask)"/>
+
+  <!-- Operations deck -->
+  <g opacity="0.85"><rect x="430" y="276" width="54" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="436" y="298" width="42" height="3" fill="#29F58C" opacity="0.72"/><rect x="436" y="320" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="436" y="342" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="436" y="364" width="42" height="3" fill="#29F58C" opacity="0.72"/><rect x="506" y="342" width="34" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="512" y="364" width="22" height="3" fill="#29F58C" opacity="0.72"/><rect x="556" y="342" width="34" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="562" y="364" width="22" height="3" fill="#29F58C" opacity="0.18"/><rect x="612" y="276" width="54" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="618" y="298" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="618" y="320" width="42" height="3" fill="#29F58C" opacity="0.18"/><rect x="618" y="342" width="42" height="3" fill="#29F58C" opacity="0.18"/><rect x="618" y="364" width="42" height="3" fill="#29F58C" opacity="0.18"/><rect x="676" y="324" width="34" height="72" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="682" y="346" width="22" height="3" fill="#29F58C" opacity="0.18"/><rect x="682" y="368" width="22" height="3" fill="#29F58C" opacity="0.72"/><rect x="726" y="324" width="54" height="72" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="732" y="346" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="732" y="368" width="42" height="3" fill="#29F58C" opacity="0.5"/><rect x="796" y="342" width="26" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="802" y="364" width="14" height="3" fill="#29F58C" opacity="0.72"/><rect x="844" y="276" width="44" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="850" y="298" width="32" height="3" fill="#29F58C" opacity="0.18"/><rect x="850" y="320" width="32" height="3" fill="#29F58C" opacity="0.5"/><rect x="850" y="342" width="32" height="3" fill="#29F58C" opacity="0.5"/><rect x="850" y="364" width="32" height="3" fill="#29F58C" opacity="0.3"/><rect x="910" y="342" width="44" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="916" y="364" width="32" height="3" fill="#29F58C" opacity="0.18"/><rect x="976" y="276" width="26" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="982" y="298" width="14" height="3" fill="#29F58C" opacity="0.18"/><rect x="982" y="320" width="14" height="3" fill="#29F58C" opacity="0.5"/><rect x="982" y="342" width="14" height="3" fill="#29F58C" opacity="0.72"/><rect x="982" y="364" width="14" height="3" fill="#29F58C" opacity="0.18"/><rect x="1012" y="324" width="26" height="72" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1018" y="346" width="14" height="3" fill="#29F58C" opacity="0.3"/><rect x="1018" y="368" width="14" height="3" fill="#29F58C" opacity="0.18"/><rect x="1054" y="276" width="54" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1060" y="298" width="42" height="3" fill="#29F58C" opacity="0.72"/><rect x="1060" y="320" width="42" height="3" fill="#29F58C" opacity="0.18"/><rect x="1060" y="342" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="1060" y="364" width="42" height="3" fill="#29F58C" opacity="0.5"/><rect x="1124" y="300" width="26" height="96" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1130" y="322" width="14" height="3" fill="#29F58C" opacity="0.5"/><rect x="1130" y="344" width="14" height="3" fill="#29F58C" opacity="0.18"/><rect x="1130" y="366" width="14" height="3" fill="#29F58C" opacity="0.72"/><rect x="1160" y="324" width="34" height="72" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1166" y="346" width="22" height="3" fill="#29F58C" opacity="0.18"/><rect x="1166" y="368" width="22" height="3" fill="#29F58C" opacity="0.18"/><rect x="1204" y="276" width="54" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1210" y="298" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="1210" y="320" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="1210" y="342" width="42" height="3" fill="#29F58C" opacity="0.72"/><rect x="1210" y="364" width="42" height="3" fill="#29F58C" opacity="0.3"/><rect x="1280" y="276" width="34" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1286" y="298" width="22" height="3" fill="#29F58C" opacity="0.72"/><rect x="1286" y="320" width="22" height="3" fill="#29F58C" opacity="0.18"/><rect x="1286" y="342" width="22" height="3" fill="#29F58C" opacity="0.72"/><rect x="1286" y="364" width="22" height="3" fill="#29F58C" opacity="0.72"/><rect x="1324" y="300" width="26" height="96" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1330" y="322" width="14" height="3" fill="#29F58C" opacity="0.5"/><rect x="1330" y="344" width="14" height="3" fill="#29F58C" opacity="0.18"/><rect x="1330" y="366" width="14" height="3" fill="#29F58C" opacity="0.3"/><rect x="1360" y="342" width="54" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1366" y="364" width="42" height="3" fill="#29F58C" opacity="0.18"/><rect x="1424" y="276" width="34" height="120" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1430" y="298" width="22" height="3" fill="#29F58C" opacity="0.5"/><rect x="1430" y="320" width="22" height="3" fill="#29F58C" opacity="0.18"/><rect x="1430" y="342" width="22" height="3" fill="#29F58C" opacity="0.5"/><rect x="1430" y="364" width="22" height="3" fill="#29F58C" opacity="0.5"/><rect x="1474" y="342" width="26" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1480" y="364" width="14" height="3" fill="#29F58C" opacity="0.18"/><rect x="1510" y="342" width="34" height="54" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1516" y="364" width="22" height="3" fill="#29F58C" opacity="0.5"/><rect x="1560" y="324" width="54" height="72" fill="#061426" stroke="#10304F" stroke-width="1"/><rect x="1566" y="346" width="42" height="3" fill="#29F58C" opacity="0.72"/><rect x="1566" y="368" width="42" height="3" fill="#29F58C" opacity="0.3"/></g>
+  <rect x="0" y="250" width="1584" height="146" fill="url(#lbDeckFade)"/>
+
   <rect width="1584" height="396" fill="url(#lbLeftShade)"/>
 
   <!-- Left identity rail -->
   <g font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="13" letter-spacing="3.4">
-    <circle cx="52" cy="52" r="4.5" fill="#22E58B"/>
-    <text x="68" y="57" fill="#91A6B7">AEGIS NEXUS &#183; SECURE PROFILE</text>
+    <circle cx="52" cy="52" r="4.5" fill="#29F58C"/>
+    <text x="68" y="57" fill="#8FA8C0">AEGIS NEXUS &#183; SECURE PROFILE</text>
   </g>
-  <path d="M52 78 V150" stroke="#1B405A" stroke-width="1.5"/>
+  <path d="M52 78 V150" stroke="#1E4A7A" stroke-width="1.5"/>
 
   <!-- Globe -->
-  <g transform="translate(1300 198)">
+  <g transform="translate(1300 186)">
     <circle r="196" fill="url(#lbGlow)"/>
-    <g fill="none" stroke="#1B405A">
-      <circle r="148" stroke-opacity="0.9"/>
-      <ellipse rx="99" ry="148" stroke-opacity="0.55"/>
-      <ellipse rx="49" ry="148" stroke-opacity="0.55"/>
-      <line x1="0" y1="-148" x2="0" y2="148" stroke-opacity="0.55"/>
-      <path d="M-110 -99 Q0 -78 110 -99" stroke-opacity="0.55"/>
-      <path d="M-140 -49 Q0 -25 140 -49" stroke-opacity="0.55"/>
-      <path d="M-148 0 Q0 25 148 0" stroke-opacity="0.65"/>
-      <path d="M-140 49 Q0 74 140 49" stroke-opacity="0.55"/>
-      <path d="M-110 99 Q0 121 110 99" stroke-opacity="0.55"/>
+    <g fill="none" stroke="#2D6BA8">
+      <circle r="148" stroke-opacity="0.85"/>
+      <ellipse rx="99" ry="148" stroke-opacity="0.5"/>
+      <ellipse rx="49" ry="148" stroke-opacity="0.5"/>
+      <line x1="0" y1="-148" x2="0" y2="148" stroke-opacity="0.5"/>
+      <path d="M-110 -99 Q0 -78 110 -99" stroke-opacity="0.5"/>
+      <path d="M-140 -49 Q0 -25 140 -49" stroke-opacity="0.5"/>
+      <path d="M-148 0 Q0 25 148 0" stroke-opacity="0.6"/>
+      <path d="M-140 49 Q0 74 140 49" stroke-opacity="0.5"/>
+      <path d="M-110 99 Q0 121 110 99" stroke-opacity="0.5"/>
     </g>
 
-    <!-- Routes from the UK base node -->
-    <g fill="none" stroke="#22E58B" stroke-opacity="0.5" stroke-width="1.4">
+    <!-- Routes from the UK base node: base is UK, availability is worldwide -->
+    <g fill="none" stroke="#29F58C" stroke-opacity="0.5" stroke-width="1.4">
       <path d="M-20 -64 Q-80 -30 -97 21"/>
       <path d="M-20 -64 Q50 -26 81 23"/>
       <path d="M-20 -64 Q-4 11 -39 81"/>
       <path d="M-20 -64 Q74 -6 58 92"/>
       <path d="M-20 -64 Q-96 -70 -128 -22"/>
     </g>
-    <g fill="#91A6B7">
+    <g fill="#8FA8C0">
       <circle cx="-97" cy="21" r="3.6"/><circle cx="81" cy="23" r="3.6"/>
       <circle cx="-39" cy="81" r="3.6"/><circle cx="58" cy="92" r="3.6"/>
       <circle cx="-128" cy="-22" r="3.2"/><circle cx="-55" cy="-35" r="3"/>
       <circle cx="42" cy="-78" r="3"/><circle cx="5" cy="117" r="3"/>
     </g>
-    <circle cx="-20" cy="-64" r="13" fill="#22E58B" fill-opacity="0.22"/>
-    <circle cx="-20" cy="-64" r="6.4" fill="#22E58B"/>
+    <circle cx="-20" cy="-64" r="13" fill="#29F58C" fill-opacity="0.22"/>
+    <circle cx="-20" cy="-64" r="6.4" fill="#29F58C"/>
 
-    <!-- Instrument frame -->
-    <g fill="none" stroke="#22E58B" stroke-opacity="0.55" stroke-width="1.6">
+    <g fill="none" stroke="#29F58C" stroke-opacity="0.5" stroke-width="1.6">
       <path d="M-176 -140 V-176 H-140M176 -140 V-176 H140M-176 140 V176 H-140M176 140 V176 H140"/>
     </g>
   </g>
 
   <!-- Availability pill -->
-  <rect x="430" y="86" width="452" height="36" rx="18" fill="#0C2B22" stroke="#22E58B" stroke-opacity="0.45" stroke-width="1.4"/>
-  <circle cx="453" cy="104" r="5.5" fill="#22E58B"/>
-  <text x="469" y="110" fill="#22E58B" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Open to cyber security opportunities worldwide</text>
+  <rect x="430" y="86" width="452" height="36" rx="18" fill="#03231A" stroke="#29F58C" stroke-opacity="0.45" stroke-width="1.4"/>
+  <circle cx="453" cy="104" r="5.5" fill="#29F58C"/>
+  <text x="469" y="110" fill="#29F58C" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Open to cyber security opportunities worldwide</text>
 
   <!-- Name -->
-  <text x="428" y="196" fill="#F5F8FA" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="800" letter-spacing="-2.2">SARMAD <tspan fill="#22E58B">SAEED</tspan></text>
+  <text x="428" y="196" fill="#F2F7FB" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="64" font-weight="800" letter-spacing="-2.2">SARMAD <tspan fill="#29F58C">SAEED</tspan></text>
 
-  <text x="430" y="234" fill="#F5F8FA" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="23" font-weight="650">MSc Cyber Security Graduate</text>
-  <text x="430" y="264" fill="#91A6B7" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17">University of Chester &#183; Graduated &#183; Based in the United Kingdom</text>
+  <text x="430" y="234" fill="#F2F7FB" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="23" font-weight="650">MSc Cyber Security Graduate</text>
+  <text x="430" y="264" fill="#C6D6E4" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17">University of Chester &#183; Graduated &#183; Based in the United Kingdom</text>
 
   <!-- Focus tags -->
   <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600">
-    <rect x="430" y="292" width="124" height="30" rx="8" fill="#081827" stroke="#1B405A"/>
-    <text x="492" y="312" text-anchor="middle" fill="#C6D2DC">SOC OPERATIONS</text>
-    <rect x="564" y="292" width="66" height="30" rx="8" fill="#081827" stroke="#1B405A"/>
-    <text x="597" y="312" text-anchor="middle" fill="#C6D2DC">DFIR</text>
-    <rect x="640" y="292" width="98" height="30" rx="8" fill="#081827" stroke="#1B405A"/>
-    <text x="689" y="312" text-anchor="middle" fill="#C6D2DC">ICS / OT</text>
-    <rect x="748" y="292" width="164" height="30" rx="8" fill="#081827" stroke="#1B405A"/>
-    <text x="830" y="312" text-anchor="middle" fill="#C6D2DC">SECURITY RESEARCH</text>
+    <rect x="430" y="292" width="124" height="30" rx="8" fill="#0A1F38" stroke="#1E4A7A"/>
+    <text x="492" y="312" text-anchor="middle" fill="#C6D6E4">SOC OPERATIONS</text>
+    <rect x="564" y="292" width="66" height="30" rx="8" fill="#0A1F38" stroke="#1E4A7A"/>
+    <text x="597" y="312" text-anchor="middle" fill="#C6D6E4">DFIR</text>
+    <rect x="640" y="292" width="98" height="30" rx="8" fill="#0A1F38" stroke="#1E4A7A"/>
+    <text x="689" y="312" text-anchor="middle" fill="#C6D6E4">ICS / OT</text>
+    <rect x="748" y="292" width="164" height="30" rx="8" fill="#0A1F38" stroke="#1E4A7A"/>
+    <text x="830" y="312" text-anchor="middle" fill="#C6D6E4">SECURITY RESEARCH</text>
   </g>
 
-  <text x="430" y="352" fill="#91A6B7" font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.6">ghauriboy295.github.io</text>
+  <text x="430" y="352" fill="#8FA8C0" font-family="Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" letter-spacing="1.6">ghauriboy295.github.io</text>
 </svg>

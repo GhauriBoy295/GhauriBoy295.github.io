@@ -366,7 +366,10 @@ body.boot-active .site-shell { filter: blur(2px); }
 
 .primary-nav a[aria-current="true"] { color: var(--secure); }
 
-.primary-nav a[aria-current="true"]::after {
+/* One underline rule for every link: it grows from the left on hover and
+   focus, and sits full-width for the current section. Scaling a transform
+   rather than animating width keeps it on the compositor and off the layout. */
+.primary-nav a::after {
   content: "";
   position: absolute;
   left: 0.6rem;
@@ -375,6 +378,17 @@ body.boot-active .site-shell { filter: blur(2px); }
   height: 2px;
   border-radius: 2px;
   background: var(--secure);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-control) var(--ease-enter);
+}
+
+.primary-nav a:hover::after,
+.primary-nav a:focus-visible::after,
+.primary-nav a[aria-current="true"]::after { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-nav a::after { transition: none; }
 }
 
 .header-actions {

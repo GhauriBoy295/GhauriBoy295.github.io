@@ -101,6 +101,37 @@ dialog { color: inherit; }
   border-radius: var(--radius-sm);
 }
 
+/* ---------- Text selection ----------
+   Selection reads in the signal colour rather than the browser default blue,
+   so highlighting a line still looks like part of this interface. */
+::selection {
+  background: var(--secure);
+  color: var(--secure-ink);
+  text-shadow: none;
+}
+
+/* ---------- Scrollbars ----------
+   A thin, themed bar instead of the OS default. It tracks the theme, sits on
+   the canvas, and brightens to the signal colour on hover, so even the chrome
+   around the page belongs to the same system. Firefox gets the standard
+   two-value form; WebKit/Blink get the element rules. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border: 3px solid var(--canvas);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--secure-deep); }
+  ::-webkit-scrollbar-corner { background: transparent; }
+}
+
 .skip-link {
   position: fixed;
   top: var(--space-3);
@@ -180,6 +211,15 @@ dialog { color: inherit; }
   text-transform: uppercase;
 }
 
+/* Tabular, slashed-zero figures wherever the page reads like an instrument —
+   the mono labels, the local clock and the stat values — so digits sit in
+   fixed columns and a zero never reads as an O. */
+.mono,
+time,
+.stat-value,
+.lv-tag,
+.boot-bar-state { font-variant-numeric: tabular-nums slashed-zero; }
+
 .lede { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--text-2); }
 
 /* Inline emphasis on the secure signal colour. Used inside headings and
@@ -233,7 +273,7 @@ dialog { color: inherit; }
   box-shadow: var(--glow-secure);
 }
 
-.btn-primary:hover { background: var(--secure-hover); }
+.btn-primary:hover { background: var(--secure-hover); box-shadow: var(--glow-secure), 0 8px 20px rgba(0, 0, 0, 0.45); }
 
 .btn-secondary {
   background: var(--surface-2);
@@ -250,6 +290,20 @@ dialog { color: inherit; }
 }
 
 .btn-ghost:hover { color: var(--text-1); border-color: var(--border-strong); }
+
+/* The transform transition was already declared; this is what it was for. A
+   1px lift on hover and a settle on press give the buttons a physical quality
+   without moving layout. Suppressed below "full" motion and for reduced
+   motion, where any ambient movement is unwanted. */
+:root[data-motion="full"] .btn:hover { transform: translateY(-1px); }
+:root[data-motion="full"] .btn:active { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: background var(--duration-control) var(--ease-standard),
+                     border-color var(--duration-control) var(--ease-standard),
+                     color var(--duration-control) var(--ease-standard); }
+  .btn:hover, .btn:active { transform: none; }
+}
 
 .btn-block { width: 100%; }
 
