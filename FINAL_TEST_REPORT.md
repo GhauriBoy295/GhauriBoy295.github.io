@@ -1,3 +1,35 @@
+# FINAL TEST REPORT — AEGIS NEXUS 26.0.0
+
+Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
+
+Everything below was executed. Nothing is marked passed that was not run.
+
+## Release 26.0.0 — elevation pass
+
+| Check | Result |
+|---|---|
+| `verify_portfolio.py` | **22 / 22 passed** |
+| `verify_live_workspace.py` | **13 / 13 passed**, asset revision `26.0.0` matched across HTML and service worker |
+| `node --check` on every JS module + service worker | clean |
+| Console errors on fresh 26.0.0 load | 0 |
+| Accessibility sweep | 0 missing `alt`, 0 unnamed buttons, 0 href-less links, 0 unlabelled `svg[role=img]`, 0 duplicate IDs, 0 unlabelled inputs |
+| `::selection` rule live | yes (branded green) |
+| Themed scrollbar | `scrollbar-color: --border-strong transparent`; WebKit thumb brightens to `--secure-deep` on hover |
+| Nav underline | resting `scaleX(0)`, hover/focus/current `scaleX(1)` |
+| Button tactility | hover `translateY(-1px)`, active `translateY(0)`, full-motion only; reduced-motion drops the transform |
+| Instrument figures | `tabular-nums slashed-zero` applied on `.mono`, `time`, `.stat-value`, `.lv-tag`, `.boot-bar-state` |
+| WCAG AA contrast, dark | **456 text nodes checked, 0 below threshold** |
+| WCAG AA contrast, light | **477 text nodes checked, 0 below threshold** |
+| Horizontal overflow, 1440px | 0 (nav in full desktop mode) |
+| Horizontal overflow, mobile | no real overflow; `body` is `overflow-x: clip`, only pre-existing `.reveal` items sit off-axis mid-animation |
+
+All 26.0.0 changes are layout-neutral — `transform`, `box-shadow`, text
+selection, scrollbar chrome and numeric glyph variants only — so they cannot
+shift the grid, which is why the responsive geometry is inherited unchanged
+from the 25.0.0 sweep below.
+
+---
+
 # FINAL TEST REPORT — AEGIS NEXUS 25.0.0
 
 Branch `redesign/aegis-nexus-v15-live` · repository `GhauriBoy295/GhauriBoy295.github.io`
