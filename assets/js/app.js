@@ -14,12 +14,12 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=26.0.0';
-import { initGlobe } from './globe.js?v=26.0.0';
-import { initDepth } from './depth.js?v=26.0.0';
-import { initBoot } from './boot.js?v=26.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=26.0.0';
-import { projectData } from './project-data.js?v=26.0.0';
+} from './core.js?v=27.0.0';
+import { initGlobe } from './globe.js?v=27.0.0';
+import { initDepth } from './depth.js?v=27.0.0';
+import { initBoot } from './boot.js?v=27.0.0';
+import { initReport, openReport, projectFromHash } from './report.js?v=27.0.0';
+import { projectData } from './project-data.js?v=27.0.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');

@@ -123,6 +123,9 @@
   --scrim: rgba(0, 3, 6, 0.8);
   --bar-colour: #02070E;
 
+  --gradient-accent: linear-gradient(135deg, var(--secure) 0%, #6DFFB4 50%, var(--secure) 100%);
+  --divider: linear-gradient(90deg, transparent 0%, var(--border-soft) 20%, var(--border-soft) 80%, transparent 100%);
+
   /* Glass: a translucent pane over whatever sits behind it. Matte is the
      default surface — flat, opaque, no blur. */
   --glass-bg: color-mix(in srgb, var(--surface-1) 66%, transparent);
@@ -198,6 +201,9 @@
   --grid-line: rgba(138, 162, 181, 0.32);
   --scrim: rgba(16, 34, 48, 0.42);
   --bar-colour: #EBF1F5;
+
+  --gradient-accent: linear-gradient(135deg, var(--secure) 0%, #064B2F 50%, var(--secure) 100%);
+  --divider: linear-gradient(90deg, transparent 0%, var(--border-soft) 20%, var(--border-soft) 80%, transparent 100%);
 
   --glass-bg: color-mix(in srgb, #FFFFFF 76%, transparent);
   --glass-border: color-mix(in srgb, var(--border) 80%, transparent);

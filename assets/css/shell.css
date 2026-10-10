@@ -300,6 +300,7 @@ body.boot-active .site-shell { filter: blur(2px); }
 .site-header.is-scrolled {
   border-bottom-color: var(--border-soft);
   background: color-mix(in srgb, var(--canvas) 94%, transparent);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-inner {
@@ -624,6 +625,13 @@ body.boot-active .site-shell { filter: blur(2px); }
   transition: opacity var(--duration-control) var(--ease-standard),
               transform var(--duration-control) var(--ease-standard),
               visibility 0s linear var(--duration-control);
+}
+
+.back-to-top:hover {
+  border-color: var(--secure);
+  background: var(--secure-soft);
+  color: var(--secure);
+  box-shadow: var(--glow-secure);
 }
 
 .back-to-top.is-visible {
