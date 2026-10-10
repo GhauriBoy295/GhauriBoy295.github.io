@@ -19,7 +19,7 @@
   content: "";
   position: absolute;
   inset: auto 0 0;
-  height: 45%;
+  height: 60%;
   background: linear-gradient(to bottom, transparent, var(--canvas));
   pointer-events: none;
 }
@@ -41,12 +41,13 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(ellipse 52% 58% at 14% 34%,
-    color-mix(in srgb, var(--secure) 9%, transparent), transparent 66%);
+  background:
+    radial-gradient(ellipse 60% 60% at 10% 30%, rgba(0, 255, 156, 0.08), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 70%, rgba(0, 212, 255, 0.05), transparent 60%);
   pointer-events: none;
 }
 
-:root[data-theme="light"] .hero::before { display: none; }
+:root[data-theme="light"] .hero::before { opacity: 0.4; }
 
 /* ---------- Instrument rails ---------- */
 /* Only drawn where there is genuine empty gutter beside the centred shell.
@@ -136,6 +137,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--secure);
+  box-shadow: 0 0 20px rgba(0, 255, 156, 0.1);
 }
 
 .hero-availability i {
@@ -144,6 +146,16 @@
   border-radius: 50%;
   background: var(--secure);
   flex: none;
+  box-shadow: 0 0 8px var(--secure);
+}
+
+:root[data-motion="full"] .hero-availability i {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 4px var(--secure); }
+  50% { box-shadow: 0 0 12px var(--secure), 0 0 24px rgba(0, 255, 156, 0.3); }
 }
 
 .hero-greeting {
@@ -156,14 +168,26 @@
 .hero-title {
   margin-block: var(--space-1) var(--space-3);
   text-transform: uppercase;
-  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
 }
 
 .hero-title .surname {
   background: var(--gradient-accent);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+:root[data-motion="full"] .hero-title .surname {
+  animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 
 .hero-role {
@@ -499,6 +523,7 @@
   border-radius: var(--radius-lg);
   background: var(--border-soft);
   overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 255, 156, 0.04);
 }
 
 .stat-item {
@@ -513,13 +538,14 @@
 .stat-icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border: 1px solid var(--secure-line);
   border-radius: var(--radius-md);
   background: var(--secure-soft);
   color: var(--secure);
   flex: none;
+  box-shadow: 0 0 16px rgba(0, 255, 156, 0.08);
 }
 
 .stat-icon .icon { width: 19px; height: 19px; }

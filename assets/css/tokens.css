@@ -1,34 +1,24 @@
-/* AEGIS NEXUS — design tokens.
+/* AEGIS NEXUS v28 — design tokens.
 
    Two independently designed themes share one token contract:
 
-   BlackICE Night     black and deep navy structure, solid green for secure
-                      states and primary actions, red reserved for incident,
-                      offensive and risk semantics.
+   BlackICE Night     true-black ground with deep surfaces, electric green
+                      signal, cyan secondary, red for incident/offensive.
 
-   Forensic Daylight  a digital-forensics laboratory: white and cool grey
-                      surfaces, navy type, forest-green actions, controlled
-                      red evidence labels, no neon glow. Not an inversion —
-                      the surface ramp, borders, shadows and glow tokens are
-                      all defined separately.
-
-   Rule of the palette: navy/black carries 75–85% of the interface. Green is a
-   signal, not an atmosphere; --glow-* exist so that the small number of places
-   allowed to glow are countable. */
+   Forensic Daylight  a crisp forensic-laboratory aesthetic with stronger
+                      contrast and saturated accent greens. */
 
 :root {
   color-scheme: dark light;
 
   /* ---------- Type ---------- */
-  /* Body stays on the system stack — it costs nothing and renders natively.
-     Only the display and mono faces are self-hosted, 47KB for all three. */
-  --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-  --font-display: "Space Grotesk", Inter, ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Outfit", Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  --font-display: "Outfit", "Space Grotesk", Inter, ui-sans-serif, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
 
-  --text-h1: clamp(2.75rem, 8vw, 6.25rem);
-  --text-h2: clamp(1.85rem, 3.6vw, 3.25rem);
-  --text-h3: clamp(1.15rem, 1.6vw, 1.5rem);
+  --text-h1: clamp(3rem, 9vw, 7rem);
+  --text-h2: clamp(2rem, 4vw, 3.75rem);
+  --text-h3: clamp(1.2rem, 1.8vw, 1.6rem);
   --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.075rem);
   --text-small: 0.875rem;
   --text-micro: 0.72rem;
@@ -60,6 +50,7 @@
   --ease-enter: cubic-bezier(.22, 1, .36, 1);
   --ease-standard: cubic-bezier(.2, .8, .2, 1);
   --ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
   --duration-fast: 160ms;
   --duration-control: 220ms;
   --duration-layout: 360ms;
@@ -71,160 +62,146 @@
 }
 
 /* ---------- BlackICE Night ---------- */
-/* Near-black ground, navy-blue structure, one bright green signal, red kept
-   for incident and offensive states only.
-
-   The ground is close to pure black (#000306) and the surfaces are genuinely
-   navy rather than a desaturated slate, so the blue reads as a colour instead
-   of as "dark grey". Green and red are the only two hues that ever appear at
-   full strength, which is what keeps the red meaningful: if several things
-   glowed, an incident marker would stop being a signal. */
 :root,
 :root[data-theme="dark"] {
-  --canvas: #000306;
-  --obsidian: #02070E;
-  --surface-1: #061426;
-  --surface-2: #0A1F38;
-  --surface-3: #102B4D;
-  --surface-4: #173A66;
-  --border: #1E4A7A;
-  --border-soft: #10304F;
-  --border-strong: #2D6BA8;
+  --canvas: #000000;
+  --obsidian: #020408;
+  --surface-1: #0A0F18;
+  --surface-2: #111826;
+  --surface-3: #1A2236;
+  --surface-4: #242E44;
+  --border: #1C2B42;
+  --border-soft: #141E30;
+  --border-strong: #2A4060;
 
-  --secure: #29F58C;
-  --secure-hover: #6DFFB4;
-  --secure-deep: #0FB863;
-  --secure-ink: #00190D;
-  --secure-soft: rgba(41, 245, 140, 0.12);
-  --secure-line: rgba(41, 245, 140, 0.34);
+  --secure: #00FF9C;
+  --secure-hover: #33FFB3;
+  --secure-deep: #00CC7D;
+  --secure-ink: #000D06;
+  --secure-soft: rgba(0, 255, 156, 0.08);
+  --secure-line: rgba(0, 255, 156, 0.25);
 
-  --incident: #FF4D5E;
-  --incident-hover: #FF7382;
-  --incident-deep: #C92D3C;
-  --incident-ink: #210307;
-  --incident-soft: rgba(255, 77, 94, 0.13);
-  --incident-line: rgba(255, 77, 94, 0.36);
+  --cyan: #00D4FF;
+  --cyan-soft: rgba(0, 212, 255, 0.08);
+  --cyan-line: rgba(0, 212, 255, 0.25);
 
-  --evidence: #E9B949;
-  --evidence-soft: rgba(233, 185, 73, 0.13);
+  --incident: #FF3B53;
+  --incident-hover: #FF6478;
+  --incident-deep: #D92940;
+  --incident-ink: #1A0005;
+  --incident-soft: rgba(255, 59, 83, 0.1);
+  --incident-line: rgba(255, 59, 83, 0.3);
 
-  --text-1: #F2F7FB;
-  --text-2: #C6D6E4;
-  --text-3: #8FA8C0;
-  --text-invert: #02070E;
+  --evidence: #FFB020;
+  --evidence-soft: rgba(255, 176, 32, 0.1);
 
-  --focus-ring: #6DFFB4;
-  --shadow-1: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-2: 0 24px 70px rgba(0, 0, 0, 0.62);
-  --glow-secure: 0 0 28px rgba(41, 245, 140, 0.22);
-  --glow-incident: 0 0 28px rgba(255, 77, 94, 0.2);
+  --text-1: #F0F4F8;
+  --text-2: #A0B4C8;
+  --text-3: #5A7A94;
+  --text-invert: #000000;
 
-  --grid-line: rgba(30, 74, 122, 0.55);
-  --scrim: rgba(0, 3, 6, 0.8);
-  --bar-colour: #02070E;
+  --focus-ring: #00FF9C;
+  --shadow-1: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-2: 0 24px 80px rgba(0, 0, 0, 0.7);
+  --glow-secure: 0 0 40px rgba(0, 255, 156, 0.15), 0 0 80px rgba(0, 255, 156, 0.05);
+  --glow-incident: 0 0 40px rgba(255, 59, 83, 0.15);
+  --glow-cyan: 0 0 40px rgba(0, 212, 255, 0.15);
 
-  --gradient-accent: linear-gradient(135deg, var(--secure) 0%, #6DFFB4 50%, var(--secure) 100%);
-  --divider: linear-gradient(90deg, transparent 0%, var(--border-soft) 20%, var(--border-soft) 80%, transparent 100%);
+  --grid-line: rgba(20, 40, 70, 0.6);
+  --scrim: rgba(0, 0, 0, 0.85);
+  --bar-colour: #020408;
 
-  /* Glass: a translucent pane over whatever sits behind it. Matte is the
-     default surface — flat, opaque, no blur. */
-  --glass-bg: color-mix(in srgb, var(--surface-1) 66%, transparent);
-  --glass-border: color-mix(in srgb, var(--border-strong) 52%, transparent);
-  --glass-sheen: color-mix(in srgb, var(--secure) 7%, transparent);
-  --glass-blur: 16px;
+  --gradient-accent: linear-gradient(135deg, #00FF9C 0%, #00D4FF 50%, #00FF9C 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(0, 255, 156, 0.06) 0%, transparent 40%, rgba(0, 212, 255, 0.04) 100%);
+  --gradient-card-border: linear-gradient(135deg, rgba(0, 255, 156, 0.3), rgba(0, 212, 255, 0.15), rgba(0, 255, 156, 0.05));
+  --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 255, 156, 0.6), rgba(0, 212, 255, 0.4), rgba(0, 255, 156, 0.2));
+  --divider: linear-gradient(90deg, transparent 0%, rgba(0, 255, 156, 0.12) 20%, rgba(0, 212, 255, 0.12) 80%, transparent 100%);
 
-  /* ---------- Depth (3D) ----------
-     One perspective value shared by every tilting surface, so cards in the
-     same grid appear to sit in the same room rather than each having its own
-     camera. Tilt is capped low on purpose: past about 8deg a rectangular card
-     stops reading as a panel on a desk and starts reading as a game menu,
-     which the brief rules out. */
+  --glass-bg: rgba(10, 15, 24, 0.7);
+  --glass-border: rgba(42, 64, 96, 0.5);
+  --glass-sheen: rgba(0, 255, 156, 0.04);
+  --glass-blur: 20px;
+
   --perspective: 1100px;
   --tilt-max: 7deg;
   --lift-z: 26px;
 
-  /* Elevation is a shadow pair: a tight contact shadow that keeps the card
-     attached to the page, plus a wide soft one that carries the height. */
-  --elev-rest: 0 2px 6px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(0, 0, 0, 0.4);
-  --elev-lift: 0 6px 14px rgba(0, 0, 0, 0.5), 0 30px 70px rgba(0, 0, 0, 0.55);
-  --edge-light: rgba(109, 255, 180, 0.16);
+  --elev-rest: 0 2px 8px rgba(0, 0, 0, 0.5), 0 12px 36px rgba(0, 0, 0, 0.45);
+  --elev-lift: 0 8px 20px rgba(0, 0, 0, 0.55), 0 36px 80px rgba(0, 0, 0, 0.6);
+  --edge-light: rgba(0, 255, 156, 0.12);
 }
 
 /* ---------- Forensic Daylight ---------- */
-/* Cooled in step with the dark theme: the grey ramp is bluer and the action
-   colour is a deep teal rather than forest green. Still an independently
-   authored light theme, not an inversion — it has its own surface ramp,
-   borders, shadows and flat glow tokens. */
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --canvas: #EBF1F5;
-  --obsidian: #DFE8EF;
+  --canvas: #F0F4F8;
+  --obsidian: #E4EAF0;
   --surface-1: #FFFFFF;
-  --surface-2: #F4F8FB;
-  --surface-3: #E5EDF3;
-  --surface-4: #D6E3EC;
-  --border: #B2C4D2;
-  --border-soft: #D2DEE7;
-  --border-strong: #8AA2B5;
+  --surface-2: #F6F9FC;
+  --surface-3: #E8EEF4;
+  --surface-4: #D8E2EC;
+  --border: #B0C0D0;
+  --border-soft: #D0DAE4;
+  --border-strong: #8098B0;
 
-  --secure: #0A6E45;
-  --secure-hover: #085A38;
-  --secure-deep: #064B2F;
+  --secure: #007A4A;
+  --secure-hover: #006640;
+  --secure-deep: #005234;
   --secure-ink: #FFFFFF;
-  --secure-soft: #DCF3E7;
-  --secure-line: rgba(10, 110, 69, 0.4);
+  --secure-soft: #D8F4E8;
+  --secure-line: rgba(0, 122, 74, 0.35);
 
-  --incident: #B62537;
-  --incident-hover: #971B2B;
-  --incident-deep: #7C1523;
+  --cyan: #0084A8;
+  --cyan-soft: rgba(0, 132, 168, 0.08);
+  --cyan-line: rgba(0, 132, 168, 0.25);
+
+  --incident: #C4202E;
+  --incident-hover: #A01828;
+  --incident-deep: #801220;
   --incident-ink: #FFFFFF;
-  --incident-soft: #FAE0E4;
-  --incident-line: rgba(182, 37, 55, 0.38);
+  --incident-soft: #FCE0E3;
+  --incident-line: rgba(196, 32, 46, 0.35);
 
-  --evidence: #8A5B00;
-  --evidence-soft: #FBEFD6;
+  --evidence: #906000;
+  --evidence-soft: #FDF0D0;
 
-  --text-1: #06131E;
-  --text-2: #294152;
-  --text-3: #4A6173;
+  --text-1: #0A1520;
+  --text-2: #304860;
+  --text-3: #506878;
   --text-invert: #FFFFFF;
 
-  --focus-ring: #0A6E45;
-  --shadow-1: 0 2px 6px rgba(6, 19, 30, 0.07);
-  --shadow-2: 0 16px 42px rgba(6, 19, 30, 0.12);
-  /* Forensic Daylight does not glow. Both tokens collapse to flat elevation
-     so any component that opts into glow simply reads as a printed panel. */
-  --glow-secure: 0 1px 3px rgba(10, 110, 69, 0.18);
-  --glow-incident: 0 1px 3px rgba(182, 37, 55, 0.18);
+  --focus-ring: #007A4A;
+  --shadow-1: 0 2px 8px rgba(10, 21, 32, 0.06);
+  --shadow-2: 0 16px 48px rgba(10, 21, 32, 0.1);
+  --glow-secure: 0 1px 4px rgba(0, 122, 74, 0.16);
+  --glow-incident: 0 1px 4px rgba(196, 32, 46, 0.16);
+  --glow-cyan: 0 1px 4px rgba(0, 132, 168, 0.16);
 
-  --grid-line: rgba(138, 162, 181, 0.32);
-  --scrim: rgba(16, 34, 48, 0.42);
-  --bar-colour: #EBF1F5;
+  --grid-line: rgba(128, 152, 176, 0.25);
+  --scrim: rgba(10, 21, 32, 0.4);
+  --bar-colour: #F0F4F8;
 
-  --gradient-accent: linear-gradient(135deg, var(--secure) 0%, #064B2F 50%, var(--secure) 100%);
-  --divider: linear-gradient(90deg, transparent 0%, var(--border-soft) 20%, var(--border-soft) 80%, transparent 100%);
+  --gradient-accent: linear-gradient(135deg, #007A4A 0%, #005234 50%, #007A4A 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(0, 122, 74, 0.04) 0%, transparent 40%, rgba(0, 132, 168, 0.03) 100%);
+  --gradient-card-border: linear-gradient(135deg, rgba(0, 122, 74, 0.2), rgba(0, 132, 168, 0.1), rgba(0, 122, 74, 0.05));
+  --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 122, 74, 0.5), rgba(0, 132, 168, 0.3), rgba(0, 122, 74, 0.15));
+  --divider: linear-gradient(90deg, transparent 0%, rgba(0, 122, 74, 0.15) 20%, rgba(0, 132, 168, 0.1) 80%, transparent 100%);
 
-  --glass-bg: color-mix(in srgb, #FFFFFF 76%, transparent);
-  --glass-border: color-mix(in srgb, var(--border) 80%, transparent);
-  --glass-sheen: color-mix(in srgb, var(--secure) 5%, transparent);
-  --glass-blur: 14px;
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(176, 192, 208, 0.6);
+  --glass-sheen: rgba(0, 122, 74, 0.04);
+  --glass-blur: 16px;
 
-  /* Same geometry, lighter elevation: a forensic-laboratory sheet lifts off a
-     white desk with far less shadow than a panel lifts off black, and the same
-     opacities that read as depth on dark read as dirt on white. */
   --perspective: 1100px;
   --tilt-max: 6deg;
   --lift-z: 20px;
 
-  --elev-rest: 0 1px 3px rgba(6, 19, 30, 0.08), 0 6px 18px rgba(6, 19, 30, 0.08);
-  --elev-lift: 0 3px 8px rgba(6, 19, 30, 0.1), 0 18px 42px rgba(6, 19, 30, 0.14);
-  --edge-light: rgba(10, 110, 69, 0.14);
+  --elev-rest: 0 1px 4px rgba(10, 21, 32, 0.07), 0 8px 24px rgba(10, 21, 32, 0.07);
+  --elev-lift: 0 4px 10px rgba(10, 21, 32, 0.09), 0 24px 52px rgba(10, 21, 32, 0.13);
+  --edge-light: rgba(0, 122, 74, 0.1);
 }
 
-/* Very wide screens: let the shell breathe rather than stranding the layout in
-   a narrow column with hundreds of pixels of dead gutter either side. The hero
-   rails fill what remains. */
 @media (min-width: 1700px) {
   :root { --shell-max: 1560px; }
 }

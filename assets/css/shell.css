@@ -299,8 +299,8 @@ body.boot-active .site-shell { filter: blur(2px); }
 
 .site-header.is-scrolled {
   border-bottom-color: var(--border-soft);
-  background: color-mix(in srgb, var(--canvas) 94%, transparent);
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.15);
+  background: color-mix(in srgb, var(--canvas) 92%, transparent);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1);
 }
 
 .header-inner {

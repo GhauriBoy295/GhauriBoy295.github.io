@@ -24,7 +24,7 @@
      on a low-power device. Nothing here is content: if it never runs, the page
      is unchanged apart from a flat shadow. */
 
-import { $$, root, motionLevel, finePointerQuery, lowPower } from './core.js?v=27.0.0';
+import { $$, root, motionLevel, finePointerQuery, lowPower } from './core.js?v=28.0.0';
 
 const CARD_SELECTOR = '.depth-card';
 

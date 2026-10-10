@@ -87,20 +87,20 @@
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   background: var(--surface-1);
-  transition: border-color var(--duration-control) var(--ease-standard),
-              transform var(--duration-control) var(--ease-standard),
-              box-shadow var(--duration-control) var(--ease-standard);
+  transition: border-color var(--duration-layout) var(--ease-standard),
+              transform var(--duration-layout) var(--ease-standard),
+              box-shadow var(--duration-layout) var(--ease-standard);
 }
 
 .mission:hover,
 .mission:focus-within {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-2);
+  border-color: var(--secure-line);
+  box-shadow: var(--shadow-2), var(--glow-secure);
 }
 
 @media (hover: hover) and (pointer: fine) {
   :root[data-motion="full"] .mission:hover {
-    transform: translateY(-3px);
+    transform: translateY(-6px);
   }
 }
 
