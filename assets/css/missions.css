@@ -95,7 +95,13 @@
 .mission:hover,
 .mission:focus-within {
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-1);
+  box-shadow: var(--shadow-2);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-motion="full"] .mission:hover {
+    transform: translateY(-3px);
+  }
 }
 
 .mission[data-class="offensive"]:hover,

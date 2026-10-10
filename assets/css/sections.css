@@ -781,6 +781,13 @@ a.cert-card:hover { border-color: var(--secure); }
 .contact-directory a:hover,
 .contact-directory button:hover { border-color: var(--secure); background: var(--surface-3); }
 
+.contact-directory a .icon,
+.contact-directory button .icon {
+  transition: transform var(--duration-control) var(--ease-enter);
+}
+
+.contact-directory a:hover .icon { transform: translate(2px, -2px); }
+
 .contact-directory span {
   display: block;
   font-family: var(--font-mono);

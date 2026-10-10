@@ -159,7 +159,12 @@
   font-size: clamp(2.5rem, 7vw, 5rem);
 }
 
-.hero-title .surname { color: var(--secure); }
+.hero-title .surname {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .hero-role {
   font-size: clamp(1.1rem, 2vw, 1.5rem);

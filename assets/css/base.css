@@ -43,6 +43,11 @@ html {
   scroll-padding-top: calc(var(--header-h) + var(--space-5));
 }
 
+:root[data-motion="full"] html,
+:root[data-motion="calm"] html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-height: 100dvh;
@@ -53,10 +58,8 @@ body {
   background: var(--canvas);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* The page must never scroll sideways: every wide child owns its own
-     overflow container instead. `clip` rather than `hidden` — hidden would
-     make body a scroll container and break the sticky header. */
   overflow-x: clip;
+  transition: background-color 0.4s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4 {
@@ -532,3 +535,47 @@ kbd {
 :root[data-motion="off"] .depth-card.is-tilting .depth-mid { transform: none; }
 
 :root[data-motion="off"] .depth-card .depth-sheen { display: none; }
+
+/* ---------- Section dividers ---------- */
+.section + .section::before {
+  content: "";
+  display: block;
+  width: min(80%, 600px);
+  height: 1px;
+  margin: 0 auto calc(var(--section-gap) * -0.92);
+  background: var(--divider);
+}
+
+/* ---------- Theme-transition smoothing ---------- */
+.section, .ticket, .edu-card, .skills-panel, .contact-grid,
+.redblue, .cert-card, .recognition article, .feature-grid li,
+.about-orbit, .about-stats > div, .badge, .panel-card, .glass,
+.header-inner, .site-footer, .tool-grid li {
+  transition-property: background, background-color, border-color, color, box-shadow, transform;
+  transition-duration: var(--duration-control);
+  transition-timing-function: var(--ease-standard);
+}
+
+/* ---------- Interactive card lift ---------- */
+@media (hover: hover) and (pointer: fine) {
+  :root[data-motion="full"] .edu-card:hover,
+  :root[data-motion="full"] .ticket:hover,
+  :root[data-motion="full"] a.cert-card:hover,
+  :root[data-motion="full"] .recognition article:hover,
+  :root[data-motion="full"] .tool-grid li:hover,
+  :root[data-motion="full"] .feature-grid li:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-1);
+  }
+}
+
+/* ---------- Stat icon hover ---------- */
+.stat-icon {
+  transition: transform var(--duration-control) var(--ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-motion="full"] *:hover > .stat-icon {
+    transform: scale(1.06);
+  }
+}
