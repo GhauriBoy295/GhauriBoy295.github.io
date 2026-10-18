@@ -194,14 +194,18 @@ html {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--secure);
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .eyebrow::before {
   content: "";
-  width: 18px;
-  height: 1px;
-  background: var(--secure);
+  width: 24px;
+  height: 2px;
+  background: var(--gradient-accent);
+  border-radius: 1px;
 }
 
 .eyebrow-index { color: var(--text-3); }
@@ -271,15 +275,17 @@ time,
 }
 
 .btn-primary {
-  background: var(--secure);
+  background: var(--gradient-accent);
+  background-size: 200% auto;
   color: var(--secure-ink);
   font-weight: 700;
   box-shadow: var(--glow-secure);
+  border: none;
 }
 
 .btn-primary:hover {
-  background: var(--secure-hover);
-  box-shadow: 0 0 30px rgba(0, 255, 156, 0.3), 0 0 60px rgba(0, 255, 156, 0.1), 0 8px 24px rgba(0, 0, 0, 0.4);
+  background-position: right center;
+  box-shadow: 0 0 30px rgba(0, 255, 178, 0.35), 0 0 60px rgba(139, 92, 246, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .btn-secondary {
@@ -390,7 +396,7 @@ kbd {
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
-  opacity: 0.24;
+  opacity: 0.3;
   mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 20%, transparent 78%);
 }
 
@@ -412,7 +418,7 @@ kbd {
   background: var(--gradient-accent);
   transform: scaleX(0);
   transform-origin: 0 50%;
-  box-shadow: 0 0 12px rgba(0, 255, 156, 0.4), 0 0 30px rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 12px rgba(0, 255, 178, 0.5), 0 0 30px rgba(0, 212, 255, 0.25), 0 0 50px rgba(139, 92, 246, 0.15);
 }
 
 /* ---------- Surface treatments ----------
@@ -549,7 +555,7 @@ kbd {
   height: 1px;
   margin: 0 auto calc(var(--section-gap) * -0.92);
   background: var(--divider);
-  box-shadow: 0 0 20px rgba(0, 255, 156, 0.06);
+  box-shadow: 0 0 20px rgba(0, 255, 178, 0.1), 0 0 40px rgba(139, 92, 246, 0.05);
 }
 
 /* ---------- Theme-transition smoothing ---------- */
@@ -570,8 +576,8 @@ kbd {
   :root[data-motion="full"] .recognition article:hover,
   :root[data-motion="full"] .tool-grid li:hover,
   :root[data-motion="full"] .feature-grid li:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-2), var(--glow-secure);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-2), var(--glow-secure), 0 0 40px rgba(139, 92, 246, 0.06);
     border-color: var(--secure-line);
   }
 }

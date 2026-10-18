@@ -1,9 +1,9 @@
-/* AEGIS NEXUS v28 — design tokens.
+/* AEGIS NEXUS v29 — design tokens.
 
    Two independently designed themes share one token contract:
 
-   BlackICE Night     true-black ground with deep surfaces, electric green
-                      signal, cyan secondary, red for incident/offensive.
+   BlackICE Night     deep indigo-black ground with electric mint signal,
+                      cyan secondary, violet tertiary, red for incident.
 
    Forensic Daylight  a crisp forensic-laboratory aesthetic with stronger
                       contrast and saturated accent greens. */
@@ -16,9 +16,9 @@
   --font-display: "Outfit", "Space Grotesk", Inter, ui-sans-serif, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
 
-  --text-h1: clamp(3rem, 9vw, 7rem);
-  --text-h2: clamp(2rem, 4vw, 3.75rem);
-  --text-h3: clamp(1.2rem, 1.8vw, 1.6rem);
+  --text-h1: clamp(3.2rem, 10vw, 7.5rem);
+  --text-h2: clamp(2.1rem, 4.5vw, 4rem);
+  --text-h3: clamp(1.25rem, 1.9vw, 1.65rem);
   --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.075rem);
   --text-small: 0.875rem;
   --text-micro: 0.72rem;
@@ -64,26 +64,30 @@
 /* ---------- BlackICE Night ---------- */
 :root,
 :root[data-theme="dark"] {
-  --canvas: #000000;
-  --obsidian: #020408;
-  --surface-1: #0A0F18;
-  --surface-2: #111826;
-  --surface-3: #1A2236;
-  --surface-4: #242E44;
-  --border: #1C2B42;
-  --border-soft: #141E30;
-  --border-strong: #2A4060;
+  --canvas: #030014;
+  --obsidian: #04011A;
+  --surface-1: #0C0824;
+  --surface-2: #120E30;
+  --surface-3: #1A1540;
+  --surface-4: #241E52;
+  --border: #1E1848;
+  --border-soft: #16103A;
+  --border-strong: #2E2668;
 
-  --secure: #00FF9C;
-  --secure-hover: #33FFB3;
-  --secure-deep: #00CC7D;
+  --secure: #00FFB2;
+  --secure-hover: #33FFC4;
+  --secure-deep: #00CC8E;
   --secure-ink: #000D06;
-  --secure-soft: rgba(0, 255, 156, 0.08);
-  --secure-line: rgba(0, 255, 156, 0.25);
+  --secure-soft: rgba(0, 255, 178, 0.08);
+  --secure-line: rgba(0, 255, 178, 0.25);
 
   --cyan: #00D4FF;
   --cyan-soft: rgba(0, 212, 255, 0.08);
   --cyan-line: rgba(0, 212, 255, 0.25);
+
+  --violet: #8B5CF6;
+  --violet-soft: rgba(139, 92, 246, 0.1);
+  --violet-line: rgba(139, 92, 246, 0.3);
 
   --incident: #FF3B53;
   --incident-hover: #FF6478;
@@ -96,39 +100,41 @@
   --evidence-soft: rgba(255, 176, 32, 0.1);
 
   --text-1: #F0F4F8;
-  --text-2: #A0B4C8;
-  --text-3: #5A7A94;
+  --text-2: #A0B0CC;
+  --text-3: #5A6E8C;
   --text-invert: #000000;
 
-  --focus-ring: #00FF9C;
-  --shadow-1: 0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-2: 0 24px 80px rgba(0, 0, 0, 0.7);
-  --glow-secure: 0 0 40px rgba(0, 255, 156, 0.15), 0 0 80px rgba(0, 255, 156, 0.05);
-  --glow-incident: 0 0 40px rgba(255, 59, 83, 0.15);
-  --glow-cyan: 0 0 40px rgba(0, 212, 255, 0.15);
+  --focus-ring: #00FFB2;
+  --shadow-1: 0 8px 32px rgba(0, 0, 0, 0.7);
+  --shadow-2: 0 24px 80px rgba(0, 0, 0, 0.8);
+  --glow-secure: 0 0 30px rgba(0, 255, 178, 0.2), 0 0 60px rgba(0, 255, 178, 0.08);
+  --glow-incident: 0 0 30px rgba(255, 59, 83, 0.2);
+  --glow-cyan: 0 0 30px rgba(0, 212, 255, 0.2);
+  --glow-violet: 0 0 30px rgba(139, 92, 246, 0.2);
 
-  --grid-line: rgba(20, 40, 70, 0.6);
-  --scrim: rgba(0, 0, 0, 0.85);
-  --bar-colour: #020408;
+  --grid-line: rgba(30, 24, 72, 0.7);
+  --scrim: rgba(3, 0, 20, 0.9);
+  --bar-colour: #04011A;
 
-  --gradient-accent: linear-gradient(135deg, #00FF9C 0%, #00D4FF 50%, #00FF9C 100%);
-  --gradient-hero: linear-gradient(135deg, rgba(0, 255, 156, 0.06) 0%, transparent 40%, rgba(0, 212, 255, 0.04) 100%);
-  --gradient-card-border: linear-gradient(135deg, rgba(0, 255, 156, 0.3), rgba(0, 212, 255, 0.15), rgba(0, 255, 156, 0.05));
-  --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 255, 156, 0.6), rgba(0, 212, 255, 0.4), rgba(0, 255, 156, 0.2));
-  --divider: linear-gradient(90deg, transparent 0%, rgba(0, 255, 156, 0.12) 20%, rgba(0, 212, 255, 0.12) 80%, transparent 100%);
+  --gradient-accent: linear-gradient(135deg, #00FFB2 0%, #00D4FF 40%, #8B5CF6 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(0, 255, 178, 0.06) 0%, rgba(139, 92, 246, 0.04) 40%, rgba(0, 212, 255, 0.05) 100%);
+  --gradient-card-border: linear-gradient(135deg, rgba(0, 255, 178, 0.35), rgba(0, 212, 255, 0.2), rgba(139, 92, 246, 0.25));
+  --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 255, 178, 0.7), rgba(0, 212, 255, 0.5), rgba(139, 92, 246, 0.5));
+  --gradient-surface: linear-gradient(135deg, rgba(0, 255, 178, 0.03), rgba(139, 92, 246, 0.02));
+  --divider: linear-gradient(90deg, transparent 0%, rgba(0, 255, 178, 0.15) 15%, rgba(0, 212, 255, 0.12) 50%, rgba(139, 92, 246, 0.12) 85%, transparent 100%);
 
-  --glass-bg: rgba(10, 15, 24, 0.7);
-  --glass-border: rgba(42, 64, 96, 0.5);
-  --glass-sheen: rgba(0, 255, 156, 0.04);
+  --glass-bg: rgba(12, 8, 36, 0.75);
+  --glass-border: rgba(46, 38, 104, 0.6);
+  --glass-sheen: rgba(0, 255, 178, 0.04);
   --glass-blur: 20px;
 
   --perspective: 1100px;
   --tilt-max: 7deg;
   --lift-z: 26px;
 
-  --elev-rest: 0 2px 8px rgba(0, 0, 0, 0.5), 0 12px 36px rgba(0, 0, 0, 0.45);
-  --elev-lift: 0 8px 20px rgba(0, 0, 0, 0.55), 0 36px 80px rgba(0, 0, 0, 0.6);
-  --edge-light: rgba(0, 255, 156, 0.12);
+  --elev-rest: 0 2px 8px rgba(0, 0, 0, 0.6), 0 12px 36px rgba(0, 0, 0, 0.5);
+  --elev-lift: 0 8px 20px rgba(0, 0, 0, 0.6), 0 36px 80px rgba(0, 0, 0, 0.65);
+  --edge-light: rgba(0, 255, 178, 0.14);
 }
 
 /* ---------- Forensic Daylight ---------- */
@@ -156,6 +162,10 @@
   --cyan-soft: rgba(0, 132, 168, 0.08);
   --cyan-line: rgba(0, 132, 168, 0.25);
 
+  --violet: #6D28D9;
+  --violet-soft: rgba(109, 40, 217, 0.06);
+  --violet-line: rgba(109, 40, 217, 0.2);
+
   --incident: #C4202E;
   --incident-hover: #A01828;
   --incident-deep: #801220;
@@ -177,16 +187,18 @@
   --glow-secure: 0 1px 4px rgba(0, 122, 74, 0.16);
   --glow-incident: 0 1px 4px rgba(196, 32, 46, 0.16);
   --glow-cyan: 0 1px 4px rgba(0, 132, 168, 0.16);
+  --glow-violet: 0 1px 4px rgba(109, 40, 217, 0.12);
 
   --grid-line: rgba(128, 152, 176, 0.25);
   --scrim: rgba(10, 21, 32, 0.4);
   --bar-colour: #F0F4F8;
 
-  --gradient-accent: linear-gradient(135deg, #007A4A 0%, #005234 50%, #007A4A 100%);
-  --gradient-hero: linear-gradient(135deg, rgba(0, 122, 74, 0.04) 0%, transparent 40%, rgba(0, 132, 168, 0.03) 100%);
-  --gradient-card-border: linear-gradient(135deg, rgba(0, 122, 74, 0.2), rgba(0, 132, 168, 0.1), rgba(0, 122, 74, 0.05));
-  --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 122, 74, 0.5), rgba(0, 132, 168, 0.3), rgba(0, 122, 74, 0.15));
-  --divider: linear-gradient(90deg, transparent 0%, rgba(0, 122, 74, 0.15) 20%, rgba(0, 132, 168, 0.1) 80%, transparent 100%);
+  --gradient-accent: linear-gradient(135deg, #007A4A 0%, #0084A8 40%, #6D28D9 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(0, 122, 74, 0.04) 0%, transparent 40%, rgba(109, 40, 217, 0.03) 100%);
+  --gradient-card-border: linear-gradient(135deg, rgba(0, 122, 74, 0.2), rgba(0, 132, 168, 0.1), rgba(109, 40, 217, 0.12));
+  --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 122, 74, 0.5), rgba(0, 132, 168, 0.3), rgba(109, 40, 217, 0.3));
+  --gradient-surface: linear-gradient(135deg, rgba(0, 122, 74, 0.02), rgba(109, 40, 217, 0.01));
+  --divider: linear-gradient(90deg, transparent 0%, rgba(0, 122, 74, 0.15) 20%, rgba(0, 132, 168, 0.1) 50%, rgba(109, 40, 217, 0.1) 80%, transparent 100%);
 
   --glass-bg: rgba(255, 255, 255, 0.78);
   --glass-border: rgba(176, 192, 208, 0.6);

@@ -67,7 +67,7 @@
 
 .about-stats > div:hover {
   border-color: var(--secure-line);
-  box-shadow: 0 0 24px rgba(0, 255, 156, 0.08);
+  box-shadow: 0 0 24px rgba(0, 255, 178, 0.12), 0 0 40px rgba(139, 92, 246, 0.06);
 }
 
 .about-stats dt {
@@ -432,9 +432,27 @@
   width: var(--fill, 0%);
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--secure), var(--cyan, var(--secure)));
-  box-shadow: 0 0 12px rgba(0, 255, 156, 0.3);
+  background: linear-gradient(90deg, var(--secure), var(--cyan, var(--secure)), var(--violet, var(--secure)));
+  box-shadow: 0 0 16px rgba(0, 255, 178, 0.35), 0 0 30px rgba(139, 92, 246, 0.1);
   position: relative;
+  overflow: hidden;
+}
+
+.skill-track span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  transform: translateX(-100%);
+}
+
+:root[data-motion="full"] .reveal.is-visible .skill-track span::after,
+:root[data-motion="full"] .skills-panel.is-visible .skill-track span::after {
+  animation: shimmer 2s var(--ease-enter) 0.9s forwards;
+}
+
+@keyframes shimmer {
+  to { transform: translateX(100%); }
 }
 
 /* The fill grows into place once the panel scrolls in, and only at Full. */
@@ -754,7 +772,7 @@ a.cert-card:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   background: var(--surface-1);
-  box-shadow: var(--shadow-2), 0 0 60px rgba(0, 255, 156, 0.04);
+  box-shadow: var(--shadow-2), 0 0 60px rgba(0, 255, 178, 0.06), 0 0 100px rgba(139, 92, 246, 0.03);
 }
 
 @media (min-width: 940px) {
