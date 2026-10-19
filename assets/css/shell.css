@@ -57,6 +57,22 @@ body:not(.boot-active) .boot {
 body.boot-active { overflow: hidden; }
 body.boot-active .site-shell { filter: blur(2px); }
 
+/* An atmospheric wash behind the welcome panel, so the scene has depth rather
+   than a panel floating on a flat field. Sits above the tunnel, below the
+   panel. */
+.boot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 45% at 22% 28%, rgba(0, 255, 178, 0.1), transparent 60%),
+    radial-gradient(ellipse 48% 42% at 80% 70%, rgba(139, 92, 246, 0.09), transparent 60%),
+    radial-gradient(ellipse 40% 36% at 55% 48%, rgba(0, 212, 255, 0.06), transparent 58%);
+}
+
+:root[data-theme="light"] .boot::before { opacity: 0.35; }
+
 .boot-panel {
   position: relative;
   z-index: 1;
@@ -66,8 +82,54 @@ body.boot-active .site-shell { filter: blur(2px); }
   border-radius: var(--radius-xl);
   background: color-mix(in srgb, var(--surface-1) 92%, transparent);
   backdrop-filter: blur(8px);
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-2),
+              0 0 80px rgba(0, 255, 178, 0.07),
+              0 0 140px rgba(139, 92, 246, 0.04);
   overflow: hidden;
+}
+
+/* A lit rim on the welcome panel, matching the card edges on the page behind
+   it. Masked to the 1px border so nothing inside is tinted. */
+.boot-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-card-border-hover);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+:root[data-motion="full"] .boot-panel::before { animation: edge-travel 6s linear infinite; }
+
+/* A single scan sweep across the panel while verification runs. One pass of a
+   narrow gradient band — no loop once the sequence settles. */
+:root[data-motion="full"] .boot-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgba(0, 255, 178, 0.07) 50%,
+    transparent 60%
+  );
+  background-size: 300% 100%;
+  animation: boot-sweep 3.2s var(--ease-standard) 2;
+}
+
+@keyframes boot-sweep {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
 }
 
 .boot-bar {
@@ -136,7 +198,36 @@ body.boot-active .site-shell { filter: blur(2px); }
   width: 118px;
   height: 118px;
   color: var(--secure);
+  filter: drop-shadow(0 0 18px rgba(0, 255, 178, 0.28));
 }
+
+/* A contained halo behind the crest. It reaches full transparency inside its
+   own box, so it never draws a visible edge against the panel. */
+.boot-crest::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0, 255, 178, 0.18) 0%,
+    rgba(139, 92, 246, 0.08) 42%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+:root[data-motion="full"] .boot-crest::before { animation: crest-halo 3.4s ease-in-out infinite; }
+
+@keyframes crest-halo {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.07); }
+}
+
+:root[data-theme="light"] .boot-crest {
+  filter: drop-shadow(0 1px 3px rgba(0, 122, 74, 0.2));
+}
+
+:root[data-theme="light"] .boot-crest::before { opacity: 0.4; }
 
 .boot-crest svg { width: 100%; height: 100%; }
 
@@ -145,8 +236,14 @@ body.boot-active .site-shell { filter: blur(2px); }
   font-size: clamp(1.6rem, 4vw, 2.15rem);
   font-weight: 700;
   letter-spacing: -0.035em;
-  color: var(--text-1);
+  background: var(--gradient-heading);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+
+:root[data-motion="full"] .boot-name { animation: gradient-shift 6s ease-in-out infinite; }
 
 .boot-role { color: var(--text-2); font-weight: 600; }
 .boot-place { color: var(--text-3); font-size: var(--text-small); }
@@ -299,8 +396,8 @@ body.boot-active .site-shell { filter: blur(2px); }
 
 .site-header.is-scrolled {
   border-bottom-color: var(--border-soft);
-  background: color-mix(in srgb, var(--canvas) 94%, transparent);
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.15);
+  background: color-mix(in srgb, var(--canvas) 92%, transparent);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 0, 0, 0.15), 0 0 60px rgba(139, 92, 246, 0.04);
 }
 
 .header-inner {

@@ -12,16 +12,16 @@
 /* ---------- Reveal (full) ---------- */
 :root[data-motion="full"] .reveal {
   opacity: 0;
-  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 22px), 0);
-  transition: opacity var(--duration-scene) var(--ease-enter),
-              transform var(--duration-scene) var(--ease-enter);
+  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 32px), 0);
+  transition: opacity 600ms var(--ease-enter),
+              transform 700ms var(--ease-spring);
   transition-delay: calc(var(--reveal-delay, 0) * 1ms);
   will-change: opacity, transform;
 }
 
-:root[data-motion="full"] .reveal[data-reveal="left"] { --reveal-x: -24px; --reveal-y: 0; }
-:root[data-motion="full"] .reveal[data-reveal="right"] { --reveal-x: 24px; --reveal-y: 0; }
-:root[data-motion="full"] .reveal[data-reveal="scale"] { --reveal-y: 0; transform: scale(0.97); }
+:root[data-motion="full"] .reveal[data-reveal="left"] { --reveal-x: -36px; --reveal-y: 0; }
+:root[data-motion="full"] .reveal[data-reveal="right"] { --reveal-x: 36px; --reveal-y: 0; }
+:root[data-motion="full"] .reveal[data-reveal="scale"] { --reveal-y: 0; transform: scale(0.94); }
 
 :root[data-motion="full"] .reveal.is-visible {
   opacity: 1;
@@ -185,18 +185,18 @@
 :root[data-motion="full"] .mission { view-transition-name: none; }
 
 :root[data-motion="full"] .missions.is-filtering .mission {
-  animation: mission-in var(--duration-layout) var(--ease-enter) both;
+  animation: mission-in 500ms var(--ease-spring) both;
 }
 
 @keyframes mission-in {
-  from { opacity: 0; transform: scale(0.98) translate3d(0, 8px, 0); }
+  from { opacity: 0; transform: scale(0.92) translate3d(0, 16px, 0); }
   to { opacity: 1; transform: none; }
 }
 
 /* ---------- Controls ---------- */
-:root[data-motion="full"] .btn:hover { transform: translateY(-1px); }
-:root[data-motion="full"] .btn:active { transform: translateY(0); }
-:root[data-motion="full"] .mission:hover { transform: translateY(-2px); }
+:root[data-motion="full"] .btn:hover { transform: translateY(-2px); }
+:root[data-motion="full"] .btn:active { transform: translateY(0) scale(0.98); }
+:root[data-motion="full"] .mission:hover { transform: translateY(-6px); }
 
 /* ---------- Idle and hidden ---------- */
 /* Ambient loops stop the moment their section leaves the viewport. */

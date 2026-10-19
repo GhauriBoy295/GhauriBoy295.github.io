@@ -14,12 +14,13 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=27.0.0';
-import { initGlobe } from './globe.js?v=27.0.0';
-import { initDepth } from './depth.js?v=27.0.0';
-import { initBoot } from './boot.js?v=27.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=27.0.0';
-import { projectData } from './project-data.js?v=27.0.0';
+} from './core.js?v=30.0.0';
+import { initGlobe } from './globe.js?v=30.0.0';
+import { initDepth } from './depth.js?v=30.0.0';
+import { initBoot } from './boot.js?v=30.0.0';
+import { initReport, openReport, projectFromHash } from './report.js?v=30.0.0';
+import { projectData } from './project-data.js?v=30.0.0';
+import { initCharts } from './charts.js?v=30.0.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');
@@ -760,6 +761,48 @@ if (!coarseOrSmall()) {
 } else {
   $('#globe')?.querySelector('canvas')?.remove();
 }
+
+/* ================= Count-up animation ================= */
+function initCountUp() {
+  const counters = $$('[data-count]');
+  if (!counters.length || !('IntersectionObserver' in window)) return;
+
+  const animate = (el) => {
+    const target = parseInt(el.dataset.count, 10);
+    if (!Number.isFinite(target) || target <= 0) return;
+    const duration = 1600;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      obs.unobserve(entry.target);
+      if (motionReduced()) {
+        entry.target.textContent = entry.target.dataset.count;
+      } else {
+        animate(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  counters.forEach((c) => {
+    c.textContent = '0';
+    observer.observe(c);
+  });
+}
+initCountUp();
+
+/* Charts are generated from projectData, so they stay in step with the case
+   studies without a second copy of the numbers in the markup. */
+initCharts();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {

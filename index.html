@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#04090E">
+  <meta name="theme-color" content="#030014">
   <meta name="description" content="AEGIS NEXUS — the cyber security portfolio of Sarmad Saeed, MSc Cyber Security Graduate of the University of Chester. Based in the United Kingdom and open to cyber security opportunities worldwide across SOC operations, DFIR, ICS/OT security and security research.">
   <meta name="author" content="Sarmad Saeed">
   <meta name="robots" content="index, follow">
@@ -32,16 +32,20 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=27.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=27.0.0">
-  <script type="module" src="assets/js/app.js?v=27.0.0"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap">
+
+  <link rel="stylesheet" href="assets/css/tokens.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=30.0.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=30.0.0">
+  <script type="module" src="assets/js/app.js?v=30.0.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -66,7 +70,7 @@
       html.dataset.theme = theme;
       html.dataset.themeChoice = choice;
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', theme === 'light' ? '#EDF2F6' : '#04090E');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#F0F4F8' : '#030014');
 
       let motion = read('aegis-motion');
       if (motion !== 'full' && motion !== 'calm' && motion !== 'off') {
@@ -133,6 +137,8 @@
 <body class="boot-active">
   <a class="skip-link" href="#main">Skip to main content</a>
 
+  <div class="page-aurora" aria-hidden="true"></div>
+  <div class="page-stars" aria-hidden="true"></div>
   <div class="page-grid" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
 
@@ -449,7 +455,7 @@
 
             <!-- Side panels -->
             <div class="hero-panels reveal" data-reveal="right" data-delay="160">
-              <article class="panel-card glass">
+              <article class="panel-card glass lit-edge">
                 <header class="panel-card-head">
                   <h2>Profile status</h2>
                   <span class="badge badge-secure">Verified</span>
@@ -484,7 +490,7 @@
                 </ul>
               </article>
 
-              <article class="panel-card glass">
+              <article class="panel-card glass lit-edge">
                 <header class="panel-card-head">
                   <h2>Location</h2>
                 </header>
@@ -536,7 +542,7 @@
           </div>
 
           <!-- Operator terminal -->
-          <div class="hero-terminal reveal" data-reveal="up">
+          <div class="hero-terminal reveal lit-edge" data-reveal="up">
             <div class="hero-terminal-bar">
               <span class="win-dots" aria-hidden="true"><span></span><span></span><span></span></span>
               <span>operator · status</span>
@@ -592,7 +598,7 @@
           <div class="about-grid">
             <div class="reveal" data-reveal="left">
               <p class="eyebrow">About me</p>
-              <h2 id="aboutTitle">Building <span class="is-secure-text">secure systems</span> and defending the digital world.</h2>
+              <h2 id="aboutTitle">Building <span class="heading-glow">secure systems</span> and defending the digital world.</h2>
               <p class="about-copy">I am an MSc Cyber Security Graduate from the University of Chester with a strong academic background and practical experience in cyber security, digital forensics, incident response, penetration testing, network security and industrial control systems security.</p>
               <p class="about-copy">I enjoy solving complex security challenges and building solutions that make systems safer and more resilient. Alongside that, an operations role at Trezlon Ltd has taught me the unglamorous half of the job: accuracy, process ownership and doing the same thing correctly every time.</p>
 
@@ -611,11 +617,31 @@
                 <svg viewBox="0 0 320 320" role="img" aria-labelledby="orbitTitle orbitDesc">
                   <title id="orbitTitle">Capability relationship map</title>
                   <desc id="orbitDesc">A central security-practice node orbited by research, detection, forensics, authorised assessment and development.</desc>
+                  <defs>
+                    <radialGradient id="orbitCore" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0" stop-color="var(--secure)" stop-opacity=".28"/>
+                      <stop offset="0.6" stop-color="var(--secure)" stop-opacity=".08"/>
+                      <stop offset="1" stop-color="var(--secure)" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="orbitSpoke" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="var(--secure)"/>
+                      <stop offset="1" stop-color="var(--violet)"/>
+                    </linearGradient>
+                  </defs>
+
+                  <circle cx="160" cy="160" r="120" fill="url(#orbitCore)"/>
+
                   <g fill="none" stroke="var(--border-strong)" stroke-opacity=".6">
-                    <circle cx="160" cy="160" r="150"/>
-                    <circle cx="160" cy="160" r="110"/>
-                    <circle cx="160" cy="160" r="70"/>
+                    <circle class="orbit-ring" cx="160" cy="160" r="150"/>
+                    <circle class="orbit-ring" cx="160" cy="160" r="110"/>
+                    <circle class="orbit-ring" cx="160" cy="160" r="70"/>
                   </g>
+
+                  <!-- A dashed counter-rotating ring, which is what makes the
+                       diagram read as an orbit rather than a static target. -->
+                  <circle class="orbit-sweep" cx="160" cy="160" r="130" fill="none"
+                          stroke="url(#orbitSpoke)" stroke-opacity=".45"
+                          stroke-width="1.2" stroke-dasharray="3 14"/>
                   <g fill="none" stroke="var(--secure)" stroke-width="1.2" stroke-opacity=".7">
                     <path class="packet-route" d="M160 160 L160 50"/>
                     <path class="packet-route is-slow" d="M160 160 L265 205"/>
@@ -625,19 +651,21 @@
                     <path d="M160 160 L265 205"/><path d="M160 160 L60 118"/>
                     <path d="M160 160 L96 253"/><path d="M160 160 L246 92"/>
                   </g>
-                  <circle cx="160" cy="160" r="46" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.6"/>
+                  <circle class="orbit-core-pulse" cx="160" cy="160" r="46" fill="none"
+                          stroke="var(--secure)" stroke-opacity=".4" stroke-width="1"/>
+                  <circle cx="160" cy="160" r="46" fill="var(--secure-soft)" stroke="var(--secure)" stroke-width="1.8"/>
                   <text x="160" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text-1)">Security</text>
                   <text x="160" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text-1)">practice</text>
-                  <g font-size="11" text-anchor="middle" fill="var(--text-2)">
-                    <circle cx="160" cy="50" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                  <g class="orbit-nodes" font-size="11" text-anchor="middle" fill="var(--text-2)">
+                    <circle cx="160" cy="50" r="26" fill="var(--surface-3)" stroke="var(--secure-line)"/>
                     <text x="160" y="54">Research</text>
-                    <circle cx="246" cy="92" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <circle cx="246" cy="92" r="26" fill="var(--surface-3)" stroke="var(--cyan-line)"/>
                     <text x="246" y="96">Detect</text>
                     <circle cx="265" cy="205" r="26" fill="var(--surface-3)" stroke="var(--incident-line)"/>
                     <text x="265" y="209" fill="var(--incident)">Assess</text>
-                    <circle cx="96" cy="253" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <circle cx="96" cy="253" r="26" fill="var(--surface-3)" stroke="var(--violet-line)"/>
                     <text x="96" y="257">Build</text>
-                    <circle cx="60" cy="118" r="26" fill="var(--surface-3)" stroke="var(--border-strong)"/>
+                    <circle cx="60" cy="118" r="26" fill="var(--surface-3)" stroke="var(--secure-line)"/>
                     <text x="60" y="122">DFIR</text>
                   </g>
                 </svg>
@@ -647,12 +675,12 @@
                 <div>
                   <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
                   <dt>Degrees</dt>
-                  <dd>2 in cyber security</dd>
+                  <dd><span class="count-up" data-count="2">2</span> in cyber security</dd>
                 </div>
                 <div>
                   <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-code"></use></svg></span>
                   <dt>Case studies</dt>
-                  <dd>5 documented</dd>
+                  <dd><span class="count-up" data-count="5">5</span> documented</dd>
                 </div>
                 <div>
                   <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"></use></svg></span>
@@ -667,10 +695,12 @@
 
       <!-- ============================ Education ============================ -->
       <section class="section" id="education" aria-labelledby="educationTitle">
+        <span class="section-deco is-ring" aria-hidden="true" style="top:8%;right:-70px;width:260px;height:260px"></span>
+        <span class="section-deco is-dot-field" aria-hidden="true" style="bottom:10%;left:-40px;width:200px;height:160px"></span>
         <div class="shell">
           <div class="section-head is-centred reveal">
             <p class="eyebrow">Academic foundation</p>
-            <h2 id="educationTitle">Education</h2>
+            <h2 id="educationTitle"><span class="heading-glow">Education</span></h2>
             <p>Two cyber security degrees covering technical defence, offensive testing, forensics, secure development and research.</p>
           </div>
 
@@ -719,7 +749,7 @@
         <div class="shell">
           <div class="section-head is-centred reveal">
             <p class="eyebrow">Professional track</p>
-            <h2 id="experienceTitle">Experience</h2>
+            <h2 id="experienceTitle"><span class="heading-glow">Experience</span></h2>
             <p>An ICS security internship and a current operations role, recorded in sequence.</p>
           </div>
 
@@ -842,6 +872,8 @@
 
       <!-- ============================ Projects ============================ -->
       <section class="section" id="projects" aria-labelledby="projectsTitle">
+        <span class="section-deco is-square" aria-hidden="true" style="top:12%;left:-60px;width:180px;height:180px"></span>
+        <span class="section-deco is-ring" aria-hidden="true" style="bottom:14%;right:-80px;width:300px;height:300px"></span>
         <div class="shell">
           <div class="section-head is-centred reveal">
             <p class="eyebrow">My work</p>
@@ -1199,7 +1231,7 @@
           </div>
 
           <div class="skills-grid">
-            <article class="skills-panel reveal" data-reveal="left">
+            <article class="skills-panel reveal lit-edge" data-reveal="left">
               <header class="panel-card-head">
                 <h3>Core skills</h3>
               </header>
@@ -1273,7 +1305,7 @@
               </ul>
             </article>
 
-            <article class="skills-panel reveal" data-reveal="right" data-delay="80">
+            <article class="skills-panel reveal lit-edge" data-reveal="right" data-delay="80">
               <header class="panel-card-head">
                 <h3>Tools &amp; technologies</h3>
               </header>
@@ -1297,7 +1329,7 @@
           </div>
 
           <!-- Red Cell / Blue Team -->
-          <div class="redblue reveal" id="redblue" data-side="both" data-ambient>
+          <div class="redblue reveal lit-edge" id="redblue" data-side="both" data-ambient>
             <header class="redblue-head">
               <div>
                 <p class="eyebrow">Red Cell · Blue Team</p>
@@ -1384,6 +1416,31 @@
               </article>
             </div>
           </div>
+
+          <!-- Coverage charts.
+               Both charts are generated by charts.js from the same project
+               data the cards and reports use, so they count this portfolio's
+               own documented work. They are not telemetry and claim no
+               outcome, traffic or measurement of anything off this page. -->
+          <div class="coverage reveal lit-edge" id="coverage">
+            <header class="coverage-head">
+              <div>
+                <p class="eyebrow">Portfolio coverage</p>
+                <h3>What the documented work actually covers</h3>
+              </div>
+              <p class="coverage-total">
+                <b id="coverageTotal">5</b>
+                <span>Case studies</span>
+              </p>
+            </header>
+
+            <div class="coverage-body">
+              <div class="coverage-radar-wrap" id="coverageRadar"></div>
+              <div id="coverageBars"></div>
+            </div>
+
+            <p class="coverage-note">Both charts count the case studies documented on this page — the radar by the NIST CSF function each one aligns to, the bars by classification. Recover is shown empty because no documented case study sits there. Nothing here is live telemetry or a measured outcome.</p>
+          </div>
         </div>
       </section>
 
@@ -1392,7 +1449,7 @@
         <div class="shell">
           <div class="section-head is-centred reveal">
             <p class="eyebrow">Evidence register</p>
-            <h2 id="certificationsTitle">Certifications &amp; <span class="is-secure-text">Course Completions</span></h2>
+            <h2 id="certificationsTitle">Certifications &amp; <span class="heading-glow">Course Completions</span></h2>
             <p>Recorded the way evidence should be, with verification status stated plainly. These are course completions, not vendor or industry certifications.</p>
           </div>
 
@@ -1472,6 +1529,8 @@
 
       <!-- ============================ Contact ============================ -->
       <section class="section" id="contact" aria-labelledby="contactTitle" data-ambient>
+        <span class="section-deco is-ring" aria-hidden="true" style="top:6%;left:-90px;width:320px;height:320px"></span>
+        <span class="section-deco is-square" aria-hidden="true" style="bottom:8%;right:-50px;width:170px;height:170px"></span>
         <div class="shell">
           <div class="section-head is-centred reveal">
             <p class="eyebrow">Get in touch</p>
@@ -1479,7 +1538,7 @@
             <p>Open to graduate and entry-level cyber security opportunities worldwide — remote, hybrid, on-site and relocation — across SOC operations, cyber security analysis, DFIR, vulnerability assessment and ICS/OT security.</p>
           </div>
 
-          <div class="contact-grid glass reveal">
+          <div class="contact-grid glass reveal lit-edge">
             <div>
               <div class="reach-modes">
                 <span class="badge badge-secure">Remote</span>
@@ -1642,7 +1701,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 27.0.0</span>
+          <span>Release 30.0.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>
