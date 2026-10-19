@@ -14,12 +14,13 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=29.0.0';
-import { initGlobe } from './globe.js?v=29.0.0';
-import { initDepth } from './depth.js?v=29.0.0';
-import { initBoot } from './boot.js?v=29.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=29.0.0';
-import { projectData } from './project-data.js?v=29.0.0';
+} from './core.js?v=30.0.0';
+import { initGlobe } from './globe.js?v=30.0.0';
+import { initDepth } from './depth.js?v=30.0.0';
+import { initBoot } from './boot.js?v=30.0.0';
+import { initReport, openReport, projectFromHash } from './report.js?v=30.0.0';
+import { projectData } from './project-data.js?v=30.0.0';
+import { initCharts } from './charts.js?v=30.0.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');
@@ -798,6 +799,10 @@ function initCountUp() {
   });
 }
 initCountUp();
+
+/* Charts are generated from projectData, so they stay in step with the case
+   studies without a second copy of the numbers in the markup. */
+initCharts();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {

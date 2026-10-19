@@ -1,4 +1,4 @@
-/* AEGIS NEXUS v29 — design tokens.
+/* AEGIS NEXUS v30 — design tokens.
 
    Two independently designed themes share one token contract:
 
@@ -117,10 +117,12 @@
   --bar-colour: #04011A;
 
   --gradient-accent: linear-gradient(135deg, #00FFB2 0%, #00D4FF 40%, #8B5CF6 100%);
+  --gradient-accent-reverse: linear-gradient(315deg, #00FFB2 0%, #00D4FF 40%, #8B5CF6 100%);
   --gradient-hero: linear-gradient(135deg, rgba(0, 255, 178, 0.06) 0%, rgba(139, 92, 246, 0.04) 40%, rgba(0, 212, 255, 0.05) 100%);
   --gradient-card-border: linear-gradient(135deg, rgba(0, 255, 178, 0.35), rgba(0, 212, 255, 0.2), rgba(139, 92, 246, 0.25));
   --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 255, 178, 0.7), rgba(0, 212, 255, 0.5), rgba(139, 92, 246, 0.5));
   --gradient-surface: linear-gradient(135deg, rgba(0, 255, 178, 0.03), rgba(139, 92, 246, 0.02));
+  --gradient-heading: linear-gradient(135deg, var(--text-1) 0%, #00FFB2 50%, #8B5CF6 100%);
   --divider: linear-gradient(90deg, transparent 0%, rgba(0, 255, 178, 0.15) 15%, rgba(0, 212, 255, 0.12) 50%, rgba(139, 92, 246, 0.12) 85%, transparent 100%);
 
   --glass-bg: rgba(12, 8, 36, 0.75);
@@ -194,10 +196,12 @@
   --bar-colour: #F0F4F8;
 
   --gradient-accent: linear-gradient(135deg, #007A4A 0%, #0084A8 40%, #6D28D9 100%);
+  --gradient-accent-reverse: linear-gradient(315deg, #007A4A 0%, #0084A8 40%, #6D28D9 100%);
   --gradient-hero: linear-gradient(135deg, rgba(0, 122, 74, 0.04) 0%, transparent 40%, rgba(109, 40, 217, 0.03) 100%);
   --gradient-card-border: linear-gradient(135deg, rgba(0, 122, 74, 0.2), rgba(0, 132, 168, 0.1), rgba(109, 40, 217, 0.12));
   --gradient-card-border-hover: linear-gradient(135deg, rgba(0, 122, 74, 0.5), rgba(0, 132, 168, 0.3), rgba(109, 40, 217, 0.3));
   --gradient-surface: linear-gradient(135deg, rgba(0, 122, 74, 0.02), rgba(109, 40, 217, 0.01));
+  --gradient-heading: linear-gradient(135deg, var(--text-1) 0%, #007A4A 50%, #6D28D9 100%);
   --divider: linear-gradient(90deg, transparent 0%, rgba(0, 122, 74, 0.15) 20%, rgba(0, 132, 168, 0.1) 50%, rgba(109, 40, 217, 0.1) 80%, transparent 100%);
 
   --glass-bg: rgba(255, 255, 255, 0.78);

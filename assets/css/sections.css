@@ -37,13 +37,45 @@
 .about-visual { display: grid; gap: var(--space-4); }
 
 .about-orbit {
+  position: relative;
   padding: var(--space-4);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-xl);
   background: var(--surface-1);
+  box-shadow: inset 0 0 60px rgba(0, 255, 178, 0.03);
 }
 
 .about-orbit svg { width: 100%; height: auto; }
+
+/* The dashed ring counter-rotates and the core breathes, which is what turns
+   a static target diagram into something that reads as a working practice.
+   Both are decoration and stop entirely below Full motion. */
+:root[data-motion="full"] .about-orbit .orbit-sweep {
+  transform-origin: 160px 160px;
+  animation: orbit-spin 38s linear infinite;
+}
+
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+
+:root[data-motion="full"] .about-orbit .orbit-core-pulse {
+  transform-origin: 160px 160px;
+  animation: orbit-pulse 3.6s var(--ease-standard) infinite;
+}
+
+@keyframes orbit-pulse {
+  0% { transform: scale(1); opacity: 0.55; }
+  70% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Each discipline node lights to its own semantic colour on hover, so the
+   diagram rewards being pointed at rather than only being looked at. */
+.about-orbit .orbit-nodes circle {
+  transition: fill var(--duration-control) var(--ease-standard),
+              stroke-opacity var(--duration-control) var(--ease-standard);
+}
+
+.about-orbit:hover .orbit-nodes circle { fill: var(--surface-4); }
 
 .about-stats {
   display: grid;
@@ -597,14 +629,24 @@
 .redblue-switch button[data-side="red"][aria-pressed="true"] { background: var(--incident-soft); color: var(--incident); }
 .redblue-switch button[data-side="blue"][aria-pressed="true"] { background: var(--secure-soft); color: var(--secure); }
 
+/* The attack-path diagram is the centrepiece of this block, so it gets a
+   deeper ground and a split wash — red bleeding from the offensive row at the
+   top, green rising from the defensive row beneath it. */
 .redblue-diagram {
+  position: relative;
   min-width: 0;
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
-  background: var(--surface-2);
+  background:
+    linear-gradient(180deg, rgba(255, 59, 83, 0.04) 0%, transparent 42%),
+    linear-gradient(0deg, rgba(0, 255, 178, 0.04) 0%, transparent 42%),
+    var(--surface-2);
   padding: var(--space-4);
   overflow-x: auto;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.25);
 }
+
+:root[data-theme="light"] .redblue-diagram { box-shadow: none; }
 
 .redblue-diagram svg { width: 100%; min-width: 480px; height: auto; }
 .redblue-note { font-size: 0.82rem; color: var(--text-3); }
@@ -629,8 +671,60 @@
 .redblue[data-side="red"] .redblue-column[data-side="blue"],
 .redblue[data-side="blue"] .redblue-column[data-side="red"] { opacity: 0.4; }
 
-.redblue-column[data-side="red"] { border-top: 2px solid var(--incident); }
-.redblue-column[data-side="blue"] { border-top: 2px solid var(--secure); }
+.redblue-column[data-side="red"] {
+  border-top: 2px solid var(--incident);
+  box-shadow: 0 -1px 24px rgba(255, 59, 83, 0.08);
+}
+
+.redblue-column[data-side="blue"] {
+  border-top: 2px solid var(--secure);
+  box-shadow: 0 -1px 24px rgba(0, 255, 178, 0.08);
+}
+
+/* The emphasised side lifts rather than only the other side dimming, so the
+   switch reads as a choice instead of a fault. */
+.redblue[data-side="red"] .redblue-column[data-side="red"] {
+  border-color: var(--incident-line);
+  box-shadow: 0 -1px 30px rgba(255, 59, 83, 0.16), var(--shadow-1);
+}
+
+.redblue[data-side="blue"] .redblue-column[data-side="blue"] {
+  border-color: var(--secure-line);
+  box-shadow: 0 -1px 30px rgba(0, 255, 178, 0.16), var(--shadow-1);
+}
+
+/* Each step reveals in sequence once the block scrolls in. */
+:root[data-motion="full"] .redblue-list li {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 420ms var(--ease-enter), transform 420ms var(--ease-enter);
+}
+
+:root[data-motion="full"] .redblue.is-visible .redblue-list li {
+  opacity: 1;
+  transform: none;
+}
+
+:root[data-motion="full"] .redblue.is-visible .redblue-list li:nth-child(1) { transition-delay: 60ms; }
+:root[data-motion="full"] .redblue.is-visible .redblue-list li:nth-child(2) { transition-delay: 130ms; }
+:root[data-motion="full"] .redblue.is-visible .redblue-list li:nth-child(3) { transition-delay: 200ms; }
+:root[data-motion="full"] .redblue.is-visible .redblue-list li:nth-child(4) { transition-delay: 270ms; }
+:root[data-motion="full"] .redblue.is-visible .redblue-list li:nth-child(5) { transition-delay: 340ms; }
+
+.redblue-list li {
+  transition: border-color var(--duration-control) var(--ease-standard),
+              background var(--duration-control) var(--ease-standard);
+}
+
+.redblue-column[data-side="red"] .redblue-list li:hover {
+  border-color: var(--incident-line);
+  background: var(--incident-soft);
+}
+
+.redblue-column[data-side="blue"] .redblue-list li:hover {
+  border-color: var(--secure-line);
+  background: var(--secure-soft);
+}
 
 .redblue-column h4 {
   display: flex;
@@ -667,6 +761,214 @@
 
 .redblue-column[data-side="red"] .redblue-list b { color: var(--incident); }
 .redblue-column[data-side="blue"] .redblue-list b { color: var(--secure); }
+
+/* ================= Coverage charts =================
+   Two charts drawn from the case studies themselves. Nothing here is live
+   telemetry: the radar counts NIST CSF functions across the documented work
+   and the bars count classifications, both read from the same data the project
+   cards and reports use. */
+.coverage {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  padding: clamp(var(--space-4), 3vw, var(--space-6));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface-1);
+}
+
+.coverage > * { min-width: 0; }
+
+@media (min-width: 900px) {
+  .coverage-body { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); }
+}
+
+.coverage-body {
+  display: grid;
+  gap: clamp(var(--space-5), 4vw, var(--space-7));
+  align-items: center;
+}
+
+.coverage-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.coverage-head h3 { font-size: 1.3rem; margin-top: var(--space-2); }
+
+.coverage-total {
+  display: grid;
+  justify-items: center;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--secure-line);
+  border-radius: var(--radius-lg);
+  background: var(--secure-soft);
+  text-align: center;
+}
+
+.coverage-total b {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--secure);
+}
+
+.coverage-total span {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ---------- Radar ---------- */
+.coverage-radar-wrap {
+  display: grid;
+  place-items: center;
+  padding: var(--space-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+}
+
+.coverage-radar { width: 100%; height: auto; max-width: 340px; overflow: visible; }
+
+.coverage-radar .radar-rings polygon {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-opacity: 0.55;
+}
+
+.coverage-radar .radar-rings polygon:last-child { stroke-opacity: 0.85; }
+
+.coverage-radar .radar-spokes line {
+  stroke: var(--border-strong);
+  stroke-opacity: 0.4;
+}
+
+.coverage-radar .radar-area {
+  fill: var(--secure);
+  fill-opacity: 0.14;
+  stroke: var(--secure);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 178, 0.3));
+}
+
+.coverage-radar .radar-dots circle {
+  fill: var(--secure);
+  stroke: var(--canvas);
+  stroke-width: 2;
+}
+
+.coverage-radar .radar-dots circle.is-empty {
+  fill: none;
+  stroke: var(--text-3);
+  stroke-width: 1.5;
+}
+
+.coverage-radar .radar-labels text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--text-2);
+}
+
+.coverage-radar .radar-labels text.is-empty { fill: var(--text-3); }
+
+.coverage-radar .radar-value {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--secure);
+}
+
+/* The plot draws itself in once the section scrolls into view. Scaling from
+   the centre of the viewBox, so the pentagon grows outwards from the origin
+   rather than sliding in from a corner. */
+:root[data-motion="full"] .coverage-radar .radar-area,
+:root[data-motion="full"] .coverage-radar .radar-dots {
+  transform: scale(0);
+  transform-origin: 160px 160px;
+  transition: transform 900ms var(--ease-enter) 120ms;
+}
+
+:root[data-motion="full"] .coverage.is-charted .radar-area,
+:root[data-motion="full"] .coverage.is-charted .radar-dots {
+  transform: scale(1);
+}
+
+/* ---------- Classification bars ---------- */
+.coverage-bars { display: grid; gap: var(--space-4); }
+
+.coverage-bar-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.coverage-bar-name { font-size: 0.9rem; font-weight: 600; color: var(--text-1); }
+
+.coverage-bar-count {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--secure);
+}
+
+.coverage-bar-track {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.coverage-bar-track span {
+  display: block;
+  width: var(--fill, 0%);
+  height: 100%;
+  border-radius: 999px;
+  background: var(--secure);
+  box-shadow: 0 0 14px rgba(0, 255, 178, 0.3);
+}
+
+/* Each classification keeps the semantic colour it carries everywhere else on
+   the page, so the bars are readable against the project cards and filters. */
+.coverage-bars li[data-tone="incident"] .coverage-bar-count,
+.coverage-bars li[data-tone="incident"] .coverage-bar-track span { color: var(--incident); }
+.coverage-bars li[data-tone="incident"] .coverage-bar-track span {
+  background: var(--incident);
+  box-shadow: 0 0 14px rgba(255, 59, 83, 0.28);
+}
+
+.coverage-bars li[data-tone="cyan"] .coverage-bar-count { color: var(--cyan); }
+.coverage-bars li[data-tone="cyan"] .coverage-bar-track span {
+  background: var(--cyan);
+  box-shadow: 0 0 14px rgba(0, 212, 255, 0.28);
+}
+
+.coverage-bars li[data-tone="violet"] .coverage-bar-count { color: var(--violet); }
+.coverage-bars li[data-tone="violet"] .coverage-bar-track span {
+  background: var(--violet);
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.28);
+}
+
+:root[data-motion="full"] .coverage-bar-track span {
+  width: 0;
+  transition: width 1000ms var(--ease-enter) 200ms;
+}
+
+:root[data-motion="full"] .coverage.is-charted .coverage-bar-track span { width: var(--fill, 0%); }
+
+.coverage-note { font-size: 0.82rem; color: var(--text-3); }
 
 /* ================= Certifications ================= */
 .register-group + .register-group { margin-top: var(--space-7); }

@@ -402,6 +402,61 @@ kbd {
 
 :root[data-theme="light"] .page-grid { opacity: 0.5; }
 
+/* A fixed starfield behind the whole page, drawn as one element with layered
+   radial gradients rather than hundreds of nodes. It sits under the grid and
+   drifts only at Full motion. */
+.page-stars {
+  position: fixed;
+  inset: -10% 0 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 18%, rgba(0, 255, 178, 0.5), transparent),
+    radial-gradient(1px 1px at 68% 8%, rgba(0, 212, 255, 0.4), transparent),
+    radial-gradient(1.6px 1.6px at 88% 44%, rgba(139, 92, 246, 0.45), transparent),
+    radial-gradient(1px 1px at 32% 62%, rgba(0, 255, 178, 0.3), transparent),
+    radial-gradient(1.2px 1.2px at 54% 34%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 8% 82%, rgba(0, 212, 255, 0.3), transparent),
+    radial-gradient(1.5px 1.5px at 78% 76%, rgba(139, 92, 246, 0.35), transparent),
+    radial-gradient(1px 1px at 44% 92%, rgba(255, 255, 255, 0.25), transparent);
+  background-size: 420px 420px, 560px 560px, 640px 640px, 480px 480px,
+                   720px 720px, 520px 520px, 600px 600px, 660px 660px;
+  opacity: 0.55;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 92%);
+}
+
+:root[data-motion="full"] .page-stars { animation: star-drift 90s linear infinite; }
+
+@keyframes star-drift {
+  to { background-position: 420px 420px, -560px 560px, 640px -640px, -480px 480px,
+                            720px 720px, -520px 520px, 600px -600px, -660px 660px; }
+}
+
+/* Forensic Daylight is a laboratory, not a night sky. */
+:root[data-theme="light"] .page-stars { display: none; }
+
+/* A soft aurora wash that keeps the long scroll from reading as a flat field.
+   Three slow-moving colour pools, fixed to the viewport. */
+.page-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 40% at 15% 20%, rgba(0, 255, 178, 0.05), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 85% 55%, rgba(139, 92, 246, 0.055), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 88%, rgba(0, 212, 255, 0.04), transparent 60%);
+}
+
+:root[data-motion="full"] .page-aurora { animation: aurora-breathe 24s ease-in-out infinite; }
+
+@keyframes aurora-breathe {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+:root[data-theme="light"] .page-aurora { opacity: 0.45; }
+
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -547,6 +602,100 @@ kbd {
 
 :root[data-motion="off"] .depth-card .depth-sheen { display: none; }
 
+/* ---------- Animated gradient card edge ----------
+   An opt-in lit border for the page's principal panels. The gradient lives on
+   a pseudo-element masked to the 1px rim, so the card's own background stays
+   independent of it and nothing inside is tinted.
+
+   It is drawn at rest at low opacity and lifts on hover; the travel only runs
+   at Full motion. Applied to a countable set of panels rather than every card
+   — a page where everything glows is a page where nothing reads as important. */
+.lit-edge { position: relative; }
+
+.lit-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-card-border);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity var(--duration-layout) var(--ease-standard);
+}
+
+.lit-edge:hover::before,
+.lit-edge:focus-within::before {
+  background: var(--gradient-card-border-hover);
+  background-size: 300% 300%;
+  opacity: 1;
+}
+
+:root[data-motion="full"] .lit-edge::before { animation: edge-travel 8s linear infinite; }
+
+@keyframes edge-travel {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* The rim is decoration, so it must never sit over readable content. */
+.lit-edge > * { position: relative; z-index: 1; }
+
+/* ---------- Gradient headings ----------
+   Section titles pick up the tri-colour wash. Applied by opting in, so a
+   heading that needs plain ink can still have it. */
+.heading-glow {
+  background: var(--gradient-heading);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-motion="full"] .heading-glow { animation: gradient-shift 7s ease-in-out infinite; }
+
+/* ---------- Floating geometry ----------
+   Abstract outlined shapes drifting behind a section, in the manner of the
+   instrument rails: pure decoration, hidden from assistive technology, clipped
+   by the section and removed entirely where motion is reduced. */
+.section-deco {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid var(--border-strong);
+  opacity: 0.3;
+}
+
+.section-deco.is-ring { border-radius: 50%; border-color: var(--secure-line); }
+.section-deco.is-square { border-radius: var(--radius-md); border-color: var(--violet-line); rotate: 24deg; }
+.section-deco.is-dot-field {
+  border: 0;
+  background-image: radial-gradient(1.5px 1.5px at center, var(--secure) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.12;
+}
+
+:root[data-motion="full"] .section-deco { animation: deco-float 18s ease-in-out infinite; }
+:root[data-motion="full"] .section-deco:nth-of-type(2) { animation-duration: 24s; animation-direction: reverse; }
+
+@keyframes deco-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(14px, -22px, 0); }
+}
+
+:root[data-motion="off"] .section-deco { display: none; }
+
+@media (max-width: 899px) {
+  .section-deco { display: none; }
+}
+
 /* ---------- Section dividers ---------- */
 .section + .section::before {
   content: "";
@@ -557,6 +706,11 @@ kbd {
   background: var(--divider);
   box-shadow: 0 0 20px rgba(0, 255, 178, 0.1), 0 0 40px rgba(139, 92, 246, 0.05);
 }
+
+/* Sections that host floating geometry must clip it and establish a
+   containing block for it. */
+.section { position: relative; overflow: clip; }
+.section > .shell { position: relative; z-index: 1; }
 
 /* ---------- Theme-transition smoothing ---------- */
 .section, .ticket, .edu-card, .skills-panel, .contact-grid,
