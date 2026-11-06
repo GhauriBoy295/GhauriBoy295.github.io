@@ -1,18 +1,18 @@
 # Sarmad Saeed — Cyber Security Portfolio
 
-**AEGIS NEXUS** — a premium, responsive and accessible static portfolio for
-**Sarmad Saeed**, an **MSc Cyber Security Graduate from the University of
-Chester**. It presents as a professional security-operations interface, not a
-generic template, and fuses four systems into one:
+**AEGIS NEXUS** — a responsive, accessible static portfolio for **Sarmad
+Saeed**, an **MSc Cyber Security Graduate from the University of Chester**. It
+puts documented work, not interface effects, at the centre, and gives four
+design influences distinct jobs:
 
 | Layer | Responsibility |
 |---|---|
 | Sentinel X Executive | Global shell, hierarchy, typography, spacing, recruiter clarity |
-| BlackICE Operator | Secure welcome, command-centre hero, cyber globe, terminal, command palette |
-| Red Cell / Blue Team | Offensive vs defensive semantics, mission classification, attack-path diagram |
-| Neo-Forensics | Evidence-led case-study reports, work-sequence timelines, light theme, print layouts |
+| BlackICE Operator | Restrained dark atmosphere and the command palette — no simulated operations |
+| Red Cell / Blue Team | Strict red/green meaning; paired assessment-stage vs defensive-control comparison |
+| Neo-Forensics | Evidence Dossier, static case studies, work-sequence timelines, light theme, print |
 
-**Current release: `30.0.0`** (`CACHE_VERSION = 'v30-0-0'`, `ASSET_REV = '30.0.0'`).
+**Current release: `31.0.0`** (`CACHE_VERSION = 'v31-0-0'`, `ASSET_REV = '31.0.0'`).
 
 ## Where it is published
 
@@ -43,26 +43,20 @@ that have no public verification link. These rules are enforced in CI — see
 
 ## Main features
 
-- Skippable secure-profile welcome sequence with an operator-style verification checklist
-- Command-centre hero with an original canvas cyber globe and a static SVG fallback
-- Recruiter Quick View panel: status, base, availability, work modes, target roles, CV downloads
+- Loads straight into an identity-first hero — no welcome gate or loading screen
+- **Evidence Dossier**: a linked index of the documented case studies beside the hero
+- Project cards built around each report: verified context, problem, documented contribution, and a cover showing the report's own work phases
+- **Static case studies** (`#case-<id>`) — complete and deep-linkable without JavaScript
+- Documented-work table mapping each case study to the NIST CSF function its write-up names ("Mapped", or a dash meaning not documented here — never a skill score)
+- Red Cell / Blue Team as three paired stages, with the authorised-lab note alongside
 - Three-state theme control: **System**, **Dark (BlackICE Night)**, **Light (Forensic Daylight)**
-- Three-state motion control: **Full**, **Calm**, **Off**, defaulting from the OS preference
-- Capability map placed on the NIST Cybersecurity Framework lifecycle
-- Red Cell / Blue Team module with an attack path drawn against defensive controls
-- **Portfolio coverage charts** — a NIST CSF radar and classification bars, both generated at runtime from the case-study data so they can never drift from the work or invent a metric
-- Five missions with original per-subject SVG artwork and discipline / NIST filters
-- 3D depth layer: pointer-driven card tilt, Z-separated layers, specular sheen and hero parallax (full motion, fine pointers only)
-- Forensic case-study reports: section rail, work-sequence timeline, working-material list
-- Deep-linkable case studies with copy-link, Web Share (where supported) and print
-- Command palette (`Ctrl+K` / `⌘K`) and a keyboard shortcuts sheet (`?`)
-- Atmospheric backdrop: fixed starfield + aurora wash, lit gradient panel edges, floating section geometry (all dark-theme, Full-motion only, removed at reduced motion)
-- PDF and DOCX CV downloads
-- Offline shell via a versioned service worker, online/offline status and install-app support
+- Three-state motion control: **Full**, **Calm**, **Off**; the OS reduced-motion setting always wins
+- Project filters and a command palette (`Ctrl+K` / `⌘K`) as enhancements, never the only route to content
+- Native `<details>` navigation menu at narrow widths that works without JavaScript
+- PDF and DOCX CV downloads, reachable from the header at every width
+- Offline shell via a versioned service worker; install-app support
 - Custom 404, sitemap, robots, Open Graph, Twitter card and JSON-LD structured data
-- Accessibility: skip link, focus management, focus trapping, `Escape` handling, `aria-live` status
-- No-JavaScript fallback that still exposes every piece of content
-- No framework, package manager or build step required
+- No framework, package manager or build step
 
 ## File structure
 
@@ -74,7 +68,7 @@ netlify.toml vercel.json   per-host config
 favicon.svg icon-192.png icon-512.png apple-touch-icon.png
 assets/
   css/  tokens · base · shell · hero · sections · missions · overlays · motion · print
-  js/   app · core · boot · globe · depth · report · project-data · charts
+  js/   app · core · project-data · charts
   fonts/ Space Grotesk 500/700, JetBrains Mono 400 — SIL OFL, latin subsets
   social-preview.png/.svg
   linkedin-banner.png/.svg  1584 x 396 profile banner
@@ -89,14 +83,24 @@ CLAUDE.md                  content + engineering + git contract
 
 - **Text and profile facts** live in `index.html`. The facts in the Profile
   details section above must read identically everywhere they appear — the
-  hero, the welcome panel, the JSON-LD block and the footer. CI fails the build
-  if the LinkedIn URL or the worldwide-availability wording drifts, or if a
-  forbidden status phrase (`candidate`, `expected 2026`, `currently studying`)
-  appears.
-- **Projects** are objects in `assets/js/project-data.js`; the coverage charts
-  and the command palette read from the same data, so adding a case study there
-  updates them automatically.
+  hero, the "About this portfolio" disclosure, the JSON-LD block and the footer.
+  CI fails the build if the LinkedIn URL or the worldwide-availability wording
+  drifts, or if a forbidden status phrase (`candidate`, `expected 2026`,
+  `currently studying`) appears.
+- **Case studies** are static `<article class="case" id="case-<id>">` elements
+  in `index.html` — that is the single source of each report. Case-study counts
+  on the page are computed from these articles.
+- **Adding a project** touches five places, all in `index.html` except the last:
+  1. a card in `#missions` (with `data-categories` for the filters),
+  2. a `case-<id>` article in `#cases`,
+  3. a row in the hero dossier,
+  4. a row in the static coverage table (the no-JS fallback),
+  5. an entry in `assets/js/project-data.js` (title, kicker, classification,
+     stack, and `framework.fn` only if the write-up names a NIST CSF function).
+  Filter counts, case counts and the JS-built coverage table update themselves.
 - **Colours and tokens** are in `assets/css/tokens.css`, defined once per theme.
+  Breakpoints are in `em` and type in `rem`, so layout follows the browser's
+  text-size setting — keep new ones that way.
 - **CV:** replace `Sarmad_Saeed_CV.pdf` and `Sarmad_Saeed_CV.docx` in place,
   keeping the filenames (they are linked from the markup).
 
@@ -110,7 +114,7 @@ drift.
 
 ## Deploying an update
 
-1. Work on `redesign/aegis-nexus-v15-live`; commit there.
+1. Work on a `redesign/*` branch; commit there.
 2. Push the branch — `verify.yml` runs on every push and must be green.
 3. Merge to `main` (fast-forward `origin/main` first, then `--no-ff` the branch,
    then `git push origin main`). That single push publishes to all three hosts:
@@ -133,21 +137,26 @@ python -m http.server 8123
 Then open <http://localhost:8123>. Opening `index.html` directly works too, but
 the service worker and the module graph behave more realistically over HTTP.
 
+While editing, the service worker and browser cache can keep serving an older
+copy of a file whose `?v=` has not changed. Hard-reload, or unregister the
+worker in DevTools → Application, before judging a change.
+
 ## Keyboard controls
 
-- `Enter` — continue from the secure welcome · `Esc` — skip the welcome, close a dialog/menu
+- `Esc` — close a dialog or the menu (in the command palette, the first press clears the search)
 - `Ctrl+K` / `⌘K` — command palette · `↑` `↓` move, `Enter` runs · `?` — shortcuts sheet
 - `T` — dark ⇄ light · `M` — cycle motion full → calm → off
 - `G` then `A`/`D`/`E`/`P`/`S`/`V`/`C` — jump to About / Education / Experience / Projects / Skills / Certifications / Contact
 
 ## Accessibility and performance
 
-Semantic landmarks, skip link, visible focus, focus trapping in the welcome and
-dialogs, `Escape` to close, `aria-live` status, 44px-class tap targets,
-safe-area support and a no-JavaScript fallback. Motion respects
-`prefers-reduced-motion` and drops to Calm on touch-first, small-screen or
-low-core devices. The canvas globe is skipped on those devices, pauses when the
-hero scrolls away or the tab is hidden, and never runs below Full motion.
+Semantic landmarks, skip link, a 2px focus ring on every control (including
+disclosure summaries), native dialog focus handling with `Escape` to close,
+44px minimum targets, safe-area support, and a complete no-JavaScript fallback
+in which JS-only controls are hidden rather than left dead. Motion is limited to
+a short fade on reveal and colour/border hover feedback; content is never left
+hidden if a reveal does not fire. With JavaScript off the page renders in
+BlackICE Night regardless of the OS colour preference.
 
 ## Custom-domain note
 
