@@ -1,9 +1,8 @@
-/* AEGIS NEXUS — Neo-Forensics print layout.
+/* AEGIS NEXUS v31 — Neo-Forensics print layout.
 
-   Two print jobs are supported:
-   1. The whole page as a profile document.
-   2. A single case study as an evidence report (body.printing-case), which
-      is what the Print button inside the report dialog produces.
+   The page prints as one profile document. The case studies are static
+   articles, so they print in full with no special mode; each starts on a clean
+   break so a single report can be printed by page range.
 
    Printing always uses the Forensic Daylight palette regardless of the
    on-screen theme: ink on white, no glow, visible URLs. */
@@ -24,6 +23,12 @@
     --secure: #0A5A38;
     --secure-soft: #FFFFFF;
     --secure-line: #0A5A38;
+    --cyan: #005468;
+    --cyan-soft: #FFFFFF;
+    --cyan-line: #005468;
+    --violet: #4C1D95;
+    --violet-soft: #FFFFFF;
+    --violet-line: #4C1D95;
     --incident: #93202F;
     --incident-soft: #FFFFFF;
     --incident-line: #93202F;
@@ -38,9 +43,7 @@
     --glow-incident: none;
   }
 
-  @page {
-    margin: 16mm;
-  }
+  @page { margin: 16mm; }
 
   body {
     background: #FFFFFF;
@@ -49,34 +52,33 @@
     line-height: 1.5;
   }
 
+  /* Interface chrome and JS-only controls have no meaning on paper. */
   .page-grid,
   .scroll-progress,
-  .boot,
   .site-header,
   .back-to-top,
   .toast,
   .command,
   .sheet,
-  .hero-globe,
-  .hero-panels,
-  .hero-terminal,
-  .hero-scroll,
-  .about-orbit,
+  .hero-actions,
+  .hero::before,
+  .hero::after,
+  .cases-index,
+  .case-copy,
   .feature-strip,
-  .redblue-diagram,
-  .location-map,
   .reach-map,
-  .report-rail,
-  .report-actions,
-  .report-nav,
-  .report-close,
-  .redblue-switch,
   .filters,
+  .mission-placeholder,
   .mission-open,
+  .case-actions,
   .footer-links button,
   .skip-link {
     display: none !important;
   }
+
+  /* The About disclosure prints expanded: a collapsed summary would hide facts.
+     app.js also opens it on beforeprint for browsers without ::details-content. */
+  .hero-about > summary { display: none; }
 
   .section { padding-block: 8mm; break-inside: auto; }
 
@@ -84,19 +86,38 @@
   h2 { font-size: 16pt; margin-bottom: 3mm; }
   h3 { font-size: 12pt; }
 
-  .panel,
+  /* H01 on paper: a plain list of report titles, no backing sheets. */
+  .dossier { padding: 0; }
+  .dossier::before,
+  .dossier::after { display: none; }
+
+  .dossier-sheet,
   .mission,
+  .case,
   .edu-card,
   .cert-card,
   .skills-panel,
-  .stat-item,
-  .route-card,
+  .coverage,
   .contact-grid,
   .redblue {
     border: 0.4pt solid #B8C6D1 !important;
     box-shadow: none !important;
     break-inside: avoid;
   }
+
+  .missions { grid-template-columns: 1fr 1fr; }
+
+  /* Each full case study begins on a fresh page. */
+  .case { break-before: page; break-inside: auto; }
+  .case-block,
+  .case-aside { break-inside: avoid; }
+
+  .coverage-scroll { overflow: visible; }
+  .cases-layout { display: block; }
+
+  /* Kept as its own rule: a browser that does not know ::details-content drops
+     only this rule, not the whole selector list. */
+  .hero-about::details-content { content-visibility: visible; display: block; }
 
   /* Show the destination of every off-site link, which is what makes a
      printed copy verifiable. */
@@ -106,43 +127,5 @@
     font-size: 8pt;
     color: #3E4E5C;
     overflow-wrap: anywhere;
-  }
-
-  .missions { grid-template-columns: 1fr 1fr; }
-  .mission-art { display: none; }
-
-  /* ---------- Single case-study report ---------- */
-  body.printing-case > .site-shell,
-  body.printing-case > .toast,
-  body.printing-case > .back-to-top { display: none !important; }
-
-  body.printing-case .report,
-  body.printing-case .report-shell {
-    position: static;
-    display: block;
-    width: auto;
-    height: auto;
-    max-height: none;
-    border: 0;
-    overflow: visible;
-  }
-
-  body.printing-case .report::backdrop { background: #FFFFFF; }
-
-  body.printing-case .report-body { display: block; overflow: visible; }
-  body.printing-case .report-main,
-  body.printing-case .report-aside { overflow: visible; padding: 0; border: 0; }
-  body.printing-case .report-aside { margin-top: 6mm; break-inside: avoid; }
-
-  /* Every panel prints, not just the selected tab — a report with four of its
-     five sections hidden would be a misleading document. */
-  body.printing-case .report-panel[hidden] { display: grid !important; }
-  body.printing-case .report-panel { break-inside: avoid; margin-bottom: 6mm; }
-
-  body.printing-case .report-bar {
-    position: static;
-    border-bottom: 0.8pt solid #56697A;
-    padding: 0 0 4mm;
-    margin-bottom: 6mm;
   }
 }

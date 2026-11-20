@@ -1,211 +1,49 @@
-/* AEGIS NEXUS — choreographed motion.
+/* AEGIS NEXUS v31 — motion (R09).
 
-   One central preference drives everything: html[data-motion] is "full",
-   "calm" or "off". Every rule below is nested under that attribute, so the
-   base stylesheet describes a completely static page and motion is only ever
-   added on top. That is what makes "off" trustworthy — there is nothing to
-   undo, and no element can be left mid-transition with content hidden.
+   One central preference drives everything: html[data-motion] is "full", "calm"
+   or "off". Every rule is nested under that attribute, so the base stylesheet is
+   a completely static page and motion is only ever added on top. That is what
+   makes "off" trustworthy — there is nothing to undo, and no element can be left
+   mid-transition with content hidden.
 
-   Section idling (.is-idle) is applied by the observer in app.js and stops
-   ambient loops that have scrolled out of view. */
+   v31 removes the boot sequence, the globe, the capability orbit, the packet
+   and pulse "telemetry" motion, card tilt and hover lifts. What remains is a
+   short scroll-reveal fade and restrained control feedback. Essential text is
+   always present; app.js carries a failsafe that reveals everything shortly
+   after load so nothing can stay hidden. */
 
-/* ---------- Reveal (full) ---------- */
-:root[data-motion="full"] .reveal {
-  opacity: 0;
-  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 32px), 0);
-  transition: opacity 600ms var(--ease-enter),
-              transform 700ms var(--ease-spring);
-  transition-delay: calc(var(--reveal-delay, 0) * 1ms);
-  will-change: opacity, transform;
-}
-
-:root[data-motion="full"] .reveal[data-reveal="left"] { --reveal-x: -36px; --reveal-y: 0; }
-:root[data-motion="full"] .reveal[data-reveal="right"] { --reveal-x: 36px; --reveal-y: 0; }
-:root[data-motion="full"] .reveal[data-reveal="scale"] { --reveal-y: 0; transform: scale(0.94); }
-
-:root[data-motion="full"] .reveal.is-visible {
-  opacity: 1;
-  transform: none;
-  will-change: auto;
-}
-
-/* ---------- Reveal (calm) ---------- */
-/* Fade only: no translation, no scale, shorter duration. */
+/* ---------- Reveal ----------
+   Opacity only — no translation, rotation or scale at any level (R09). */
+:root[data-motion="full"] .reveal,
 :root[data-motion="calm"] .reveal {
   opacity: 0;
-  transition: opacity var(--duration-layout) linear;
+  transition: opacity var(--duration-layout) var(--ease-standard);
+  transition-delay: calc(var(--reveal-delay, 0) * 1ms);
 }
 
+:root[data-motion="full"] .reveal.is-visible,
 :root[data-motion="calm"] .reveal.is-visible { opacity: 1; }
 
-/* ---------- Stagger ---------- */
-:root[data-motion="full"] .stagger > * {
+/* ---------- Stagger ----------
+   A short per-child fade; no movement. */
+:root[data-motion="full"] .stagger > *,
+:root[data-motion="calm"] .stagger > * {
   opacity: 0;
-  transform: translate3d(0, 16px, 0);
-  transition: opacity var(--duration-layout) var(--ease-enter),
-              transform var(--duration-layout) var(--ease-enter);
+  transition: opacity var(--duration-control) var(--ease-standard);
 }
 
-:root[data-motion="full"] .stagger.is-visible > * { opacity: 1; transform: none; }
+:root[data-motion="full"] .stagger.is-visible > *,
+:root[data-motion="calm"] .stagger.is-visible > * { opacity: 1; }
+
 :root[data-motion="full"] .stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
 :root[data-motion="full"] .stagger.is-visible > *:nth-child(2) { transition-delay: 60ms; }
 :root[data-motion="full"] .stagger.is-visible > *:nth-child(3) { transition-delay: 120ms; }
 :root[data-motion="full"] .stagger.is-visible > *:nth-child(4) { transition-delay: 180ms; }
-:root[data-motion="full"] .stagger.is-visible > *:nth-child(5) { transition-delay: 240ms; }
-:root[data-motion="full"] .stagger.is-visible > *:nth-child(n+6) { transition-delay: 300ms; }
+:root[data-motion="full"] .stagger.is-visible > *:nth-child(n+5) { transition-delay: 240ms; }
 
-/* ---------- Boot scene ---------- */
-/* The welcome is choreographed as a sequence: the panel arrives, the crest
-   draws itself, a scan sweeps it, and the identity resolves line by line while
-   app.js fills the checklist. Every step ends in the finished state, so an
-   interrupted animation can never leave the panel half-built. */
-:root[data-motion="full"] .boot-panel,
-:root[data-motion="calm"] .boot-panel {
-  animation: boot-in var(--duration-scene) var(--ease-enter) both;
-}
-
-@keyframes boot-in {
-  from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
-  to { opacity: 1; transform: none; }
-}
-
-:root[data-motion="full"] .boot-mark > *,
-:root[data-motion="full"] .boot-body > div > p,
-:root[data-motion="full"] .boot-facts > div {
-  animation: boot-line 460ms var(--ease-enter) both;
-}
-
-:root[data-motion="full"] .boot-mark > *:nth-child(1) { animation-delay: 120ms; }
-:root[data-motion="full"] .boot-mark > *:nth-child(2) { animation-delay: 220ms; }
-:root[data-motion="full"] .boot-mark > *:nth-child(3) { animation-delay: 300ms; }
-:root[data-motion="full"] .boot-mark > *:nth-child(4) { animation-delay: 380ms; }
-:root[data-motion="full"] .boot-mark > *:nth-child(5) { animation-delay: 440ms; }
-:root[data-motion="full"] .boot-facts > div:nth-child(1) { animation-delay: 320ms; }
-:root[data-motion="full"] .boot-facts > div:nth-child(2) { animation-delay: 400ms; }
-:root[data-motion="full"] .boot-facts > div:nth-child(3) { animation-delay: 480ms; }
-:root[data-motion="full"] .boot-facts > div:nth-child(4) { animation-delay: 560ms; }
-
-@keyframes boot-line {
-  from { opacity: 0; transform: translate3d(-10px, 0, 0); }
-  to { opacity: 1; transform: none; }
-}
-
-/* The crest draws itself, then holds. --dash is set from the path length in
-   boot.js is not needed here: both paths are short enough to use a fixed
-   dash budget that comfortably exceeds their length. */
-:root[data-motion="full"] .crest-shield {
-  stroke-dasharray: 420;
-  animation: crest-draw 1.1s var(--ease-standard) 200ms both;
-}
-
-:root[data-motion="full"] .crest-check {
-  stroke-dasharray: 70;
-  animation: crest-draw 520ms var(--ease-standard) 1.05s both;
-}
-
-@keyframes crest-draw {
-  from { stroke-dashoffset: var(--dash-from, 420); opacity: 0.2; }
-  to { stroke-dashoffset: 0; opacity: 1; }
-}
-
-:root[data-motion="full"] .crest-check { --dash-from: 70; }
-
-:root[data-motion="full"] .crest-rings circle:last-child {
-  transform-origin: 50% 50%;
-  animation: crest-spin 24s linear infinite;
-}
-
-@keyframes crest-spin {
-  to { transform: rotate(360deg); }
-}
-
-:root[data-motion="full"] .crest-scan {
-  animation: crest-scan 3.6s var(--ease-standard) 1.4s infinite;
-}
-
-@keyframes crest-scan {
-  0%, 100% { opacity: 0; transform: translateY(-42px); }
-  35% { opacity: 0.85; }
-  70% { opacity: 0; transform: translateY(42px); }
-}
-
-/* ---------- Globe instrument frame ---------- */
-:root[data-motion="full"] .hud-ring {
-  transform-origin: 50% 50%;
-  animation: crest-spin 60s linear infinite;
-}
-
-/* ---------- Terminal caret ---------- */
-:root[data-motion="full"] .caret { animation: caret 1.1s steps(2, start) infinite; }
-:root[data-motion="calm"] .caret,
-:root[data-motion="off"] .caret { opacity: 0.5; }
-
-@keyframes caret {
-  0%, 45% { opacity: 1; }
-  46%, 100% { opacity: 0; }
-}
-
-/* ---------- Packet routes ---------- */
-/* Used by the Red/Blue diagram and the availability map. Dash offset only —
-   no filters, no layout properties. */
-:root[data-motion="full"] .packet-route {
-  stroke-dasharray: 5 9;
-  animation: packet 2.4s linear infinite;
-}
-
-:root[data-motion="full"] .packet-route.is-slow { animation-duration: 4s; }
-
-@keyframes packet {
-  to { stroke-dashoffset: -28; }
-}
-
-:root[data-motion="full"] .node-pulse {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: node-pulse 3s var(--ease-standard) infinite;
-}
-
-@keyframes node-pulse {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.35); }
-}
-
-/* ---------- Mission artwork scan ---------- */
-:root[data-motion="full"] .mission:hover .art-scan,
-:root[data-motion="full"] .mission:focus-within .art-scan {
-  animation: art-scan 1.6s var(--ease-standard);
-}
-
-@keyframes art-scan {
-  from { opacity: 0.75; transform: translateY(-100%); }
-  to { opacity: 0; transform: translateY(220%); }
-}
-
-/* ---------- Filter layout transition ---------- */
-:root[data-motion="full"] .mission { view-transition-name: none; }
-
-:root[data-motion="full"] .missions.is-filtering .mission {
-  animation: mission-in 500ms var(--ease-spring) both;
-}
-
-@keyframes mission-in {
-  from { opacity: 0; transform: scale(0.92) translate3d(0, 16px, 0); }
-  to { opacity: 1; transform: none; }
-}
-
-/* ---------- Controls ---------- */
-:root[data-motion="full"] .btn:hover { transform: translateY(-2px); }
-:root[data-motion="full"] .btn:active { transform: translateY(0) scale(0.98); }
-:root[data-motion="full"] .mission:hover { transform: translateY(-6px); }
-
-/* ---------- Idle and hidden ---------- */
-/* Ambient loops stop the moment their section leaves the viewport. */
-.is-idle .packet-route,
-.is-idle .node-pulse,
-.is-idle .crest-scan,
-.is-idle .hud-ring {
-  animation-play-state: paused;
-}
+/* ---------- Control feedback ----------
+   Full and Calm get a short colour/border response on hover (declared on the
+   components themselves). No translation, lift or scale. Off is immediate. */
 
 /* ---------- Off ---------- */
 :root[data-motion="off"] *,
@@ -217,10 +55,10 @@
   scroll-behavior: auto !important;
 }
 
-/* ---------- Operating-system reduced motion ---------- */
-/* The default when the visitor has expressed no explicit preference; app.js
-   resolves the stored choice first. This block is the belt-and-braces layer
-   for the case where script never runs. */
+/* ---------- Operating-system reduced motion ----------
+   The default when the visitor has expressed no explicit preference; app.js
+   resolves the stored choice first. This block is the belt-and-braces layer for
+   the case where script never runs. */
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion]) *,
   :root:not([data-motion]) *::before,

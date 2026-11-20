@@ -98,7 +98,7 @@ dialog { color: inherit; }
 :target { scroll-margin-top: calc(var(--header-h) + var(--space-5)); }
 
 /* ---------- Focus ---------- */
-:where(a, button, input, [tabindex]):focus-visible {
+:where(a, button, input, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
@@ -171,8 +171,10 @@ html {
   padding-inline: var(--shell-pad);
 }
 
+/* Half the gap above and below each section, so consecutive sections sit one
+   --section-gap apart (80px desktop, 56px phone) with the divider centred. */
 .section {
-  padding-block: var(--section-gap);
+  padding-block: calc(var(--section-gap) / 2);
   scroll-margin-top: var(--header-h);
 }
 
@@ -192,19 +194,16 @@ html {
   font-family: var(--font-mono);
   font-size: var(--text-micro);
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--secure);
 }
 
 .eyebrow::before {
   content: "";
-  width: 24px;
+  width: 20px;
   height: 2px;
-  background: var(--gradient-accent);
+  background: var(--secure);
   border-radius: 1px;
 }
 
@@ -275,18 +274,13 @@ time,
 }
 
 .btn-primary {
-  background: var(--gradient-accent);
-  background-size: 200% auto;
+  background: var(--secure);
   color: var(--secure-ink);
   font-weight: 700;
-  box-shadow: var(--glow-secure);
   border: none;
 }
 
-.btn-primary:hover {
-  background-position: right center;
-  box-shadow: 0 0 30px rgba(0, 255, 178, 0.35), 0 0 60px rgba(139, 92, 246, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
-}
+.btn-primary:hover { background: var(--secure-hover); }
 
 .btn-secondary {
   background: var(--surface-2);
@@ -400,62 +394,9 @@ kbd {
   mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 20%, transparent 78%);
 }
 
-:root[data-theme="light"] .page-grid { opacity: 0.5; }
-
-/* A fixed starfield behind the whole page, drawn as one element with layered
-   radial gradients rather than hundreds of nodes. It sits under the grid and
-   drifts only at Full motion. */
-.page-stars {
-  position: fixed;
-  inset: -10% 0 0;
-  z-index: -3;
-  pointer-events: none;
-  background-image:
-    radial-gradient(1.4px 1.4px at 12% 18%, rgba(0, 255, 178, 0.5), transparent),
-    radial-gradient(1px 1px at 68% 8%, rgba(0, 212, 255, 0.4), transparent),
-    radial-gradient(1.6px 1.6px at 88% 44%, rgba(139, 92, 246, 0.45), transparent),
-    radial-gradient(1px 1px at 32% 62%, rgba(0, 255, 178, 0.3), transparent),
-    radial-gradient(1.2px 1.2px at 54% 34%, rgba(255, 255, 255, 0.35), transparent),
-    radial-gradient(1px 1px at 8% 82%, rgba(0, 212, 255, 0.3), transparent),
-    radial-gradient(1.5px 1.5px at 78% 76%, rgba(139, 92, 246, 0.35), transparent),
-    radial-gradient(1px 1px at 44% 92%, rgba(255, 255, 255, 0.25), transparent);
-  background-size: 420px 420px, 560px 560px, 640px 640px, 480px 480px,
-                   720px 720px, 520px 520px, 600px 600px, 660px 660px;
-  opacity: 0.55;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 92%);
-}
-
-:root[data-motion="full"] .page-stars { animation: star-drift 90s linear infinite; }
-
-@keyframes star-drift {
-  to { background-position: 420px 420px, -560px 560px, 640px -640px, -480px 480px,
-                            720px 720px, -520px 520px, 600px -600px, -660px 660px; }
-}
-
-/* Forensic Daylight is a laboratory, not a night sky. */
-:root[data-theme="light"] .page-stars { display: none; }
-
-/* A soft aurora wash that keeps the long scroll from reading as a flat field.
-   Three slow-moving colour pools, fixed to the viewport. */
-.page-aurora {
-  position: fixed;
-  inset: 0;
-  z-index: -4;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 50% 40% at 15% 20%, rgba(0, 255, 178, 0.05), transparent 60%),
-    radial-gradient(ellipse 45% 35% at 85% 55%, rgba(139, 92, 246, 0.055), transparent 60%),
-    radial-gradient(ellipse 40% 30% at 50% 88%, rgba(0, 212, 255, 0.04), transparent 60%);
-}
-
-:root[data-motion="full"] .page-aurora { animation: aurora-breathe 24s ease-in-out infinite; }
-
-@keyframes aurora-breathe {
-  0%, 100% { opacity: 0.85; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.08); }
-}
-
-:root[data-theme="light"] .page-aurora { opacity: 0.45; }
+/* The page grid is a faint static structural backdrop, removed in the light
+   document where a plain white field is wanted. No starfield, no aurora. */
+:root[data-theme="light"] .page-grid { display: none; }
 
 .scroll-progress {
   position: fixed;
@@ -470,10 +411,9 @@ kbd {
 .scroll-progress span {
   display: block;
   height: 100%;
-  background: var(--gradient-accent);
+  background: var(--secure);
   transform: scaleX(0);
   transform-origin: 0 50%;
-  box-shadow: 0 0 12px rgba(0, 255, 178, 0.5), 0 0 30px rgba(0, 212, 255, 0.25), 0 0 50px rgba(139, 92, 246, 0.15);
 }
 
 /* ---------- Surface treatments ----------
@@ -506,243 +446,53 @@ kbd {
    worst frame (16.7ms vs 8.5ms) — but that is this machine, and the devices it
    is not are exactly the ones where six blurred cards would hurt. Translucency,
    border and sheen stay, so the cards still read as glass. */
-@media (max-width: 899px), (hover: none) {
+@media (width < 56.25em), (hover: none) {
   .glass {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
 }
 
-/* ---------- Depth (3D) ----------
-   A grid marked .depth-scene becomes one shared camera: every card inside it
-   tilts against the same vanishing point, so a row reads as panels on a desk
-   rather than as separate little stages.
-
-   The perspective lives on the grid and not on the card on purpose. Per-card
-   perspective gives each card its own centre, and a row of them tilting
-   towards their own middles is the effect that makes 3D card walls look
-   cheap. */
-.depth-scene { perspective: var(--perspective); perspective-origin: 50% 42%; }
-
-/* The card itself only declares how it moves. The actual tilt is written by
-   depth.js as an inline transform, which is also how it stays out of the way
-   of the reveal system: the reveal owns the stylesheet transform, the pointer
-   owns the inline one, and clearing the inline value hands control straight
-   back. */
-.depth-card {
-  position: relative;
-  transform-style: preserve-3d;
-  box-shadow: var(--elev-rest);
-  transition: box-shadow var(--duration-control) var(--ease-standard),
-              transform var(--duration-control) var(--ease-standard);
-}
-
-.depth-card.is-tilting {
-  /* While the pointer drives it, the transform must not lag behind by a
-     transition — it is already being updated every frame. */
-  transition: box-shadow var(--duration-control) var(--ease-standard);
-  box-shadow: var(--elev-lift);
-}
-
-/* Layers inside a tilting card. Pushing them apart in Z is what produces real
-   parallax between artwork and text: they are genuinely at different depths,
-   so they separate as the card turns instead of sliding as one flat image.
-
-   Gated on .is-tilting rather than applied at rest, and that gate is
-   load-bearing: translateZ under perspective also *scales* — a layer 26px
-   closer to the camera projects about 2.4% larger, so a permanently lifted
-   layer overhangs its own card's edges when nothing is happening. The lift
-   only exists while the card is being pointed at, which is also the only time
-   the parallax it produces can be seen. */
-.depth-card.is-tilting .depth-near { transform: translateZ(var(--lift-z)); }
-.depth-card.is-tilting .depth-mid { transform: translateZ(calc(var(--lift-z) * 0.45)); }
-
-.depth-near,
-.depth-mid { transition: transform var(--duration-control) var(--ease-standard); }
-
-/* A specular edge that tracks the pointer, so the card looks lit from where
-   the cursor is rather than uniformly bright. Pure decoration, and it sits
-   above the artwork but below anything clickable. */
-.depth-card .depth-sheen {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(
-    circle at var(--sheen-x, 50%) var(--sheen-y, 0%),
-    var(--edge-light),
-    transparent 58%
-  );
-  transition: opacity var(--duration-control) var(--ease-standard);
-}
-
-.depth-card.is-tilting .depth-sheen { opacity: 1; }
-
-/* Depth is decorative, so it is spent only where it is affordable: a fine
-   pointer to aim it and the full motion level to allow it. Everything below
-   collapses the effect without removing a single piece of content. */
-@media (hover: none), (pointer: coarse) {
-  .depth-scene { perspective: none; }
-  .depth-card.is-tilting .depth-near,
-  .depth-card.is-tilting .depth-mid { transform: none; }
-}
-
-:root[data-motion="calm"] .depth-card,
-:root[data-motion="off"] .depth-card {
-  transform: none !important;
-  transition: box-shadow var(--duration-control) var(--ease-standard);
-}
-
-:root[data-motion="calm"] .depth-card.is-tilting .depth-near,
-:root[data-motion="calm"] .depth-card.is-tilting .depth-mid,
-:root[data-motion="off"] .depth-card.is-tilting .depth-near,
-:root[data-motion="off"] .depth-card.is-tilting .depth-mid { transform: none; }
-
-:root[data-motion="off"] .depth-card .depth-sheen { display: none; }
-
-/* ---------- Animated gradient card edge ----------
-   An opt-in lit border for the page's principal panels. The gradient lives on
-   a pseudo-element masked to the 1px rim, so the card's own background stays
-   independent of it and nothing inside is tinted.
-
-   It is drawn at rest at low opacity and lifts on hover; the travel only runs
-   at Full motion. Applied to a countable set of panels rather than every card
-   — a page where everything glows is a page where nothing reads as important. */
-.lit-edge { position: relative; }
-
-.lit-edge::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: var(--gradient-card-border);
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.5;
-  pointer-events: none;
-  transition: opacity var(--duration-layout) var(--ease-standard);
-}
-
-.lit-edge:hover::before,
-.lit-edge:focus-within::before {
-  background: var(--gradient-card-border-hover);
-  background-size: 300% 300%;
-  opacity: 1;
-}
-
-:root[data-motion="full"] .lit-edge::before { animation: edge-travel 8s linear infinite; }
-
-@keyframes edge-travel {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* The rim is decoration, so it must never sit over readable content. */
-.lit-edge > * { position: relative; z-index: 1; }
-
-/* ---------- Gradient headings ----------
-   Section titles pick up the tri-colour wash. Applied by opting in, so a
-   heading that needs plain ink can still have it. */
-.heading-glow {
-  background: var(--gradient-heading);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-:root[data-motion="full"] .heading-glow { animation: gradient-shift 7s ease-in-out infinite; }
-
-/* ---------- Floating geometry ----------
-   Abstract outlined shapes drifting behind a section, in the manner of the
-   instrument rails: pure decoration, hidden from assistive technology, clipped
-   by the section and removed entirely where motion is reduced. */
-.section-deco {
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
-  border: 1px solid var(--border-strong);
-  opacity: 0.3;
-}
-
-.section-deco.is-ring { border-radius: 50%; border-color: var(--secure-line); }
-.section-deco.is-square { border-radius: var(--radius-md); border-color: var(--violet-line); rotate: 24deg; }
-.section-deco.is-dot-field {
-  border: 0;
-  background-image: radial-gradient(1.5px 1.5px at center, var(--secure) 1px, transparent 1px);
-  background-size: 18px 18px;
-  opacity: 0.12;
-}
-
-:root[data-motion="full"] .section-deco { animation: deco-float 18s ease-in-out infinite; }
-:root[data-motion="full"] .section-deco:nth-of-type(2) { animation-duration: 24s; animation-direction: reverse; }
-
-@keyframes deco-float {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(14px, -22px, 0); }
-}
-
-:root[data-motion="off"] .section-deco { display: none; }
-
-@media (max-width: 899px) {
-  .section-deco { display: none; }
-}
-
-/* ---------- Section dividers ---------- */
+/* ---------- Section dividers ----------
+   A single faint neutral rule between sections, no glow. */
+/* Pinned to the top edge of the section. It used to sit in the flow with a
+   large negative margin, which landed it across the section's heading. */
 .section + .section::before {
   content: "";
-  display: block;
-  width: min(80%, 700px);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(80%, 40rem);
   height: 1px;
-  margin: 0 auto calc(var(--section-gap) * -0.92);
+  transform: translateX(-50%);
   background: var(--divider);
-  box-shadow: 0 0 20px rgba(0, 255, 178, 0.1), 0 0 40px rgba(139, 92, 246, 0.05);
+  pointer-events: none;
 }
 
-/* Sections that host floating geometry must clip it and establish a
-   containing block for it. */
-.section { position: relative; overflow: clip; }
-.section > .shell { position: relative; z-index: 1; }
+.section { position: relative; }
 
-/* ---------- Theme-transition smoothing ---------- */
+/* ---------- Theme-transition smoothing ----------
+   Colour/border/shadow only — no transform transitions anywhere now. */
 .section, .ticket, .edu-card, .skills-panel, .contact-grid,
 .redblue, .cert-card, .recognition article, .feature-grid li,
-.about-orbit, .about-stats > div, .badge, .panel-card, .glass,
+.badge, .panel-card, .glass,
 .header-inner, .site-footer, .tool-grid li {
-  transition-property: background, background-color, border-color, color, box-shadow, transform;
+  transition-property: background, background-color, border-color, color, box-shadow;
   transition-duration: var(--duration-control);
   transition-timing-function: var(--ease-standard);
 }
 
-/* ---------- Interactive card lift ---------- */
+/* ---------- Interactive card feedback ----------
+   Restrained hover: border and shadow only. No lift, tilt or parallax
+   (R09). Applies at Full and Calm; Off leaves an immediate colour change. */
 @media (hover: hover) and (pointer: fine) {
-  :root[data-motion="full"] .edu-card:hover,
-  :root[data-motion="full"] .ticket:hover,
-  :root[data-motion="full"] a.cert-card:hover,
-  :root[data-motion="full"] .recognition article:hover,
-  :root[data-motion="full"] .tool-grid li:hover,
-  :root[data-motion="full"] .feature-grid li:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-2), var(--glow-secure), 0 0 40px rgba(139, 92, 246, 0.06);
+  :root:not([data-motion="off"]) .edu-card:hover,
+  :root:not([data-motion="off"]) .ticket:hover,
+  :root:not([data-motion="off"]) a.cert-card:hover,
+  :root:not([data-motion="off"]) .recognition article:hover,
+  :root:not([data-motion="off"]) .tool-grid li:hover,
+  :root:not([data-motion="off"]) .feature-grid li:hover {
+    box-shadow: var(--shadow-1);
     border-color: var(--secure-line);
-  }
-}
-
-/* ---------- Stat icon hover ---------- */
-.stat-icon {
-  transition: transform var(--duration-control) var(--ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :root[data-motion="full"] *:hover > .stat-icon {
-    transform: scale(1.06);
   }
 }

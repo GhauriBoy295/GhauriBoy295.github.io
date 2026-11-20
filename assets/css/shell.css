@@ -1,386 +1,8 @@
 /* AEGIS NEXUS — Sentinel X Executive shell: secure welcome, product header,
    navigation, preference menus and footer. */
 
-/* ================= Secure welcome (BlackICE boot) ================= */
-/* Flex rather than grid centring: a percentage width inside a centred auto
-   grid track resolves against a content-sized track, so the panel refused to
-   shrink below its max-content width and overflowed at 320px. */
-.boot {
-  position: fixed;
-  inset: 0;
-  z-index: 150;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-4);
-  background: var(--canvas);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-/* The tunnel and grid sit behind the panel and are purely atmospheric. */
-.boot-tunnel,
-.boot-grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-/* A canvas is a replaced element, so inset:0 alone leaves it at its intrinsic
-   300x150 — the four offsets do not stretch it the way they stretch a div.
-   The explicit size is what actually makes it full-bleed. */
-.boot-tunnel {
-  width: 100%;
-  height: 100%;
-}
-
-.boot-tunnel { opacity: 0.85; }
-:root[data-theme="light"] .boot-tunnel { opacity: 0.28; }
-
-.boot-grid {
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.22;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 34%, #000 100%);
-}
-
-body:not(.boot-active) .boot {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity var(--duration-scene) var(--ease-exit),
-              visibility 0s linear var(--duration-scene);
-}
-
-body.boot-active { overflow: hidden; }
-body.boot-active .site-shell { filter: blur(2px); }
-
-/* An atmospheric wash behind the welcome panel, so the scene has depth rather
-   than a panel floating on a flat field. Sits above the tunnel, below the
-   panel. */
-.boot::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 55% 45% at 22% 28%, rgba(0, 255, 178, 0.1), transparent 60%),
-    radial-gradient(ellipse 48% 42% at 80% 70%, rgba(139, 92, 246, 0.09), transparent 60%),
-    radial-gradient(ellipse 40% 36% at 55% 48%, rgba(0, 212, 255, 0.06), transparent 58%);
-}
-
-:root[data-theme="light"] .boot::before { opacity: 0.35; }
-
-.boot-panel {
-  position: relative;
-  z-index: 1;
-  width: min(820px, 100%);
-  margin-block: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  background: color-mix(in srgb, var(--surface-1) 92%, transparent);
-  backdrop-filter: blur(8px);
-  box-shadow: var(--shadow-2),
-              0 0 80px rgba(0, 255, 178, 0.07),
-              0 0 140px rgba(139, 92, 246, 0.04);
-  overflow: hidden;
-}
-
-/* A lit rim on the welcome panel, matching the card edges on the page behind
-   it. Masked to the 1px border so nothing inside is tinted. */
-.boot-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  padding: 1px;
-  background: var(--gradient-card-border-hover);
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-:root[data-motion="full"] .boot-panel::before { animation: edge-travel 6s linear infinite; }
-
-/* A single scan sweep across the panel while verification runs. One pass of a
-   narrow gradient band — no loop once the sequence settles. */
-:root[data-motion="full"] .boot-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    100deg,
-    transparent 40%,
-    rgba(0, 255, 178, 0.07) 50%,
-    transparent 60%
-  );
-  background-size: 300% 100%;
-  animation: boot-sweep 3.2s var(--ease-standard) 2;
-}
-
-@keyframes boot-sweep {
-  from { background-position: 150% 0; }
-  to { background-position: -50% 0; }
-}
-
-.boot-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border-soft);
-  background: var(--surface-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.win-dots { display: inline-flex; gap: 6px; }
-.win-dots span {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--border-strong);
-}
-.win-dots span:last-child { background: var(--secure); }
-
-.boot-bar-state {
-  margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--evidence);
-}
-
-.boot-bar-state::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.boot-bar-state.is-ready { color: var(--secure); }
-
-.boot-body {
-  display: grid;
-  gap: var(--space-6);
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
-}
-
-@media (min-width: 760px) {
-  /* 240px is the width at which "Sarmad Saeed" stays on one line at the
-     column's own type size. */
-  .boot-body { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); align-items: start; }
-}
-
-.boot-mark {
-  display: grid;
-  gap: var(--space-3);
-  justify-items: start;
-}
-
-.boot-ident { display: grid; gap: var(--space-2); }
-
-.boot-crest {
-  position: relative;
-  width: 118px;
-  height: 118px;
-  color: var(--secure);
-  filter: drop-shadow(0 0 18px rgba(0, 255, 178, 0.28));
-}
-
-/* A contained halo behind the crest. It reaches full transparency inside its
-   own box, so it never draws a visible edge against the panel. */
-.boot-crest::before {
-  content: "";
-  position: absolute;
-  inset: -22%;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(0, 255, 178, 0.18) 0%,
-    rgba(139, 92, 246, 0.08) 42%,
-    transparent 70%);
-  pointer-events: none;
-}
-
-:root[data-motion="full"] .boot-crest::before { animation: crest-halo 3.4s ease-in-out infinite; }
-
-@keyframes crest-halo {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.07); }
-}
-
-:root[data-theme="light"] .boot-crest {
-  filter: drop-shadow(0 1px 3px rgba(0, 122, 74, 0.2));
-}
-
-:root[data-theme="light"] .boot-crest::before { opacity: 0.4; }
-
-.boot-crest svg { width: 100%; height: 100%; }
-
-.boot-name {
-  margin: 0;
-  font-size: clamp(1.6rem, 4vw, 2.15rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  background: var(--gradient-heading);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-:root[data-motion="full"] .boot-name { animation: gradient-shift 6s ease-in-out infinite; }
-
-.boot-role { color: var(--text-2); font-weight: 600; }
-.boot-place { color: var(--text-3); font-size: var(--text-small); }
-
-.boot-facts {
-  display: grid;
-  gap: var(--space-2);
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  margin-block: var(--space-4);
-}
-
-.boot-facts > div {
-  padding: var(--space-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  background: var(--surface-2);
-}
-
-.boot-facts span {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.boot-facts strong { color: var(--text-1); font-size: var(--text-small); }
-.boot-facts .is-secure { color: var(--secure); }
-
-/* ---------- Verification progress ---------- */
-.boot-progress { margin-bottom: var(--space-3); }
-
-.boot-progress-head {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  margin-bottom: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.boot-progress-head span:last-child { color: var(--secure); }
-
-.boot-progress-track {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--surface-3);
-  overflow: hidden;
-}
-
-.boot-progress-track span {
-  display: block;
-  width: var(--fill, 0%);
-  height: 100%;
-  border-radius: 999px;
-  background: var(--secure);
-  transition: width var(--duration-layout) var(--ease-standard);
-}
-
-.boot-checks {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid var(--border-soft);
-  border-left: 2px solid var(--secure);
-  border-radius: var(--radius-md);
-  background: var(--surface-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.06em;
-  color: var(--text-3);
-}
-
-.boot-checks li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  opacity: 0.4;
-  transition: opacity var(--duration-control) var(--ease-standard),
-              color var(--duration-control) var(--ease-standard);
-}
-
-.boot-checks li.is-done { opacity: 1; color: var(--text-2); }
-
-.boot-checks i {
-  width: 8px;
-  height: 8px;
-  border: 1px solid var(--border-strong);
-  border-radius: 2px;
-  flex: none;
-  transition: background var(--duration-control) var(--ease-standard),
-              border-color var(--duration-control) var(--ease-standard);
-}
-
-.boot-checks li.is-done i { background: var(--secure); border-color: var(--secure); }
-
-.boot-checks b {
-  margin-left: auto;
-  color: var(--text-3);
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity var(--duration-control) var(--ease-standard);
-}
-
-.boot-checks li.is-done b { color: var(--secure); opacity: 1; }
-
-.boot-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-top: var(--space-5);
-}
-
-.boot-hint { margin-top: var(--space-4); color: var(--text-3); font-size: var(--text-micro); }
-
-/* ---------- Docked welcome ----------
-   From 1100px the panel moves off the centre line and the tunnel takes the
-   frame. Inside a tube the readable geometry is the middle of the view, so a
-   centred panel hides exactly the part worth seeing — the walls only ever
-   showed as stray dots in the margins. Docking it is what makes the flight
-   legible; the panel's content is unchanged. */
-@media (min-width: 1100px) {
-  .boot {
-    justify-content: flex-start;
-    padding-left: clamp(1.5rem, 5vw, 4.5rem);
-  }
-
-  /* The two-column body is kept rather than stacked: a single column at this
-     width made the panel taller than a 900px viewport and cut the CV button
-     off. Two columns keep it at the height it has always been, and 760px still
-     leaves the tunnel a ~560px window to converge in. */
-  .boot-panel { width: min(760px, 100%); }
-}
+/* The secure-welcome / boot overlay was removed in v31 (R01): the site
+   loads directly into the portfolio with no gate or verification theatre. */
 
 /* ================= Header ================= */
 .site-header {
@@ -397,7 +19,7 @@ body.boot-active .site-shell { filter: blur(2px); }
 .site-header.is-scrolled {
   border-bottom-color: var(--border-soft);
   background: color-mix(in srgb, var(--canvas) 92%, transparent);
-  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 0, 0, 0.15), 0 0 60px rgba(139, 92, 246, 0.04);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 0, 0, 0.15);
 }
 
 .header-inner {
@@ -415,6 +37,7 @@ body.boot-active .site-shell { filter: blur(2px); }
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
+  min-height: 44px;
   flex: none;
 }
 
@@ -452,7 +75,10 @@ body.boot-active .site-shell { filter: blur(2px); }
 
 .primary-nav a {
   position: relative;
-  padding: var(--space-2) 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.5rem;
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
   font-weight: 550;
@@ -470,9 +96,9 @@ body.boot-active .site-shell { filter: blur(2px); }
 .primary-nav a::after {
   content: "";
   position: absolute;
-  left: 0.6rem;
-  right: 0.6rem;
-  bottom: 2px;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 6px;
   height: 2px;
   border-radius: 2px;
   background: var(--secure);
@@ -500,7 +126,9 @@ body.boot-active .site-shell { filter: blur(2px); }
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  height: 38px;
+  min-width: 44px;
+  height: 44px;
+  justify-content: center;
   padding-inline: var(--space-3);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -516,8 +144,8 @@ body.boot-active .site-shell { filter: blur(2px); }
 .icon-btn {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface-2);
@@ -554,6 +182,7 @@ body.boot-active .site-shell { filter: blur(2px); }
   align-items: center;
   gap: var(--space-3);
   width: 100%;
+  min-height: 44px;
   padding: var(--space-2) var(--space-3);
   border: 0;
   border-radius: var(--radius-sm);
@@ -584,45 +213,87 @@ body.boot-active .site-shell { filter: blur(2px); }
 }
 
 .header-cv {
-  min-height: 38px;
+  min-height: 44px;
   padding-inline: var(--space-4);
   font-size: 0.82rem;
 }
 
-/* The CV action and the command label are the first things to go when the
-   header runs out of room; both remain reachable from the palette and the
-   page itself. */
-@media (max-width: 1439px) {
-  .header-command span { display: none; }
+/* The command label is the first thing to go when the header runs short. */
+@media (width < 90em) {
+  .header-command span,
   .header-command kbd { display: none; }
 }
 
-@media (max-width: 1279px) {
-  .header-cv { display: none; }
-}
+/* ---------- Compact navigation (native disclosure) ---------- */
+.nav-menu { display: none; }
 
 .menu-toggle {
-  display: none;
-  place-items: center;
-  width: 38px;
-  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding-inline: var(--space-3);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-1);
+  cursor: pointer;
+  list-style: none;
 }
 
-.menu-toggle span {
+.menu-toggle::-webkit-details-marker { display: none; }
+.menu-toggle::marker { content: ""; }
+.menu-toggle:hover { border-color: var(--border-strong); }
+
+.menu-bars { display: grid; gap: 4px; }
+.menu-bars span {
   display: block;
   width: 16px;
-  height: 1.5px;
-  background: var(--text-1);
-  transition: transform var(--duration-control) var(--ease-standard),
-              opacity var(--duration-fast) linear;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform var(--duration-control) var(--ease-standard);
 }
 
-.menu-toggle span + span { margin-top: 4px; }
-.menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(2.75px) rotate(45deg); }
-.menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-2.75px) rotate(-45deg); }
+.nav-menu[open] .menu-bars span:first-child { transform: translateY(3px) rotate(45deg); }
+.nav-menu[open] .menu-bars span:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+.nav-menu-panel {
+  position: fixed;
+  inset: var(--header-h) 0 auto;
+  z-index: 1;
+  display: grid;
+  gap: 2px;
+  max-height: calc(100dvh - var(--header-h));
+  overflow-y: auto;
+  padding: var(--space-3) var(--shell-pad) var(--space-5);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-2);
+}
+
+.nav-menu-panel a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 550;
+  color: var(--text-2);
+}
+
+.nav-menu-panel a:hover { background: var(--surface-2); color: var(--text-1); }
+.nav-menu-panel a[aria-current="true"] { background: var(--secure-soft); color: var(--secure); }
+
+.nav-menu-panel a.nav-menu-cv {
+  margin-top: var(--space-2);
+  border: 1px solid var(--secure-line);
+  color: var(--secure);
+  font-weight: 650;
+}
 
 /* ================= Footer ================= */
 .site-footer {
@@ -640,7 +311,7 @@ body.boot-active .site-shell { filter: blur(2px); }
   padding-inline: var(--shell-pad);
 }
 
-@media (min-width: 860px) {
+@media (min-width: 53.75em) {
   .footer-inner {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
@@ -738,50 +409,17 @@ body.boot-active .site-shell { filter: blur(2px); }
   transition-delay: 0s;
 }
 
-/* ================= Responsive navigation ================= */
-@media (max-width: 1279px) {
-  .menu-toggle { display: grid; }
-  .header-command span { display: none; }
-  .header-command kbd { display: none; }
-
-  .primary-nav {
-    position: fixed;
-    inset: var(--header-h) 0 auto;
-    z-index: 1;
-    display: grid;
-    gap: 2px;
-    margin: 0;
-    padding: var(--space-4) var(--shell-pad) var(--space-5);
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-1);
-    box-shadow: var(--shadow-2);
-    max-height: calc(100dvh - var(--header-h));
-    overflow-y: auto;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity var(--duration-control) var(--ease-standard),
-                transform var(--duration-control) var(--ease-standard),
-                visibility 0s linear var(--duration-control);
-  }
-
-  .primary-nav.is-open {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    transition-delay: 0s;
-  }
-
-  .primary-nav a {
-    padding: var(--space-3);
-    border-radius: var(--radius-md);
-    font-size: 1rem;
-  }
-
-  .primary-nav a[aria-current="true"] { background: var(--secure-soft); }
-  .primary-nav a[aria-current="true"]::after { display: none; }
+/* ================= Responsive navigation =================
+   The inline nav is shown only while it genuinely fits; below that the
+   native disclosure takes over. The breakpoint is measured, not guessed —
+   see the implementation report. */
+@media (width < 75em) {
+  .primary-nav { display: none; }
+  .nav-menu { display: block; }
+  .header-actions { margin-left: auto; }
+  .header-cv { display: none; }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 35em) {
   .brand-copy { display: none; }
 }

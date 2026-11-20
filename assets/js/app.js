@@ -1,10 +1,9 @@
 /* AEGIS NEXUS — application orchestrator.
 
-   Composition, in order: preferences, the secure welcome scene, the shell
-   (header, navigation, scroll state), the choreographed reveal system, the
-   interactive modules (Red/Blue, project filters), the command surface, and
-   finally the progressive extras (globe, service worker, install, deep
-   links).
+   Composition, in order: preferences, the shell (header, compact menu,
+   scroll state), the reveal system, project filters, the command surface,
+   and finally the progressive extras (coverage table, case-link focus,
+   service worker, install).
 
    Every module degrades to visible, usable content if it never runs: the
    markup ships complete and script only ever hides or enhances. */
@@ -13,14 +12,10 @@ import {
   $, $$, el, root, svgIcon, showToast, copyText,
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
-  initPrefMenu, trapFocus, scrollBehaviour, reducedMotionQuery, coarseOrSmall
-} from './core.js?v=30.0.0';
-import { initGlobe } from './globe.js?v=30.0.0';
-import { initDepth } from './depth.js?v=30.0.0';
-import { initBoot } from './boot.js?v=30.0.0';
-import { initReport, openReport, projectFromHash } from './report.js?v=30.0.0';
-import { projectData } from './project-data.js?v=30.0.0';
-import { initCharts } from './charts.js?v=30.0.0';
+  initPrefMenu, scrollBehaviour, reducedMotionQuery
+} from './core.js?v=31.1.0';
+import { projectData } from './project-data.js?v=31.1.0';
+import { initCoverage } from './charts.js?v=31.1.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');
@@ -28,7 +23,6 @@ root.classList.add('js');
 const body = document.body;
 
 const state = {
-  menuOpen: false,
   commandSelection: 0,
   filteredCommands: [],
   awaitingJump: false,
@@ -37,7 +31,11 @@ const state = {
 
 /* ================= Preferences ================= */
 applyTheme(storedTheme() || 'system');
-applyMotion(storedMotion() || defaultMotion());
+/* The operating system's reduced-motion setting outranks a saved choice: a
+   stored "full" from an earlier visit must never override it on load. An
+   explicit choice made in this session still applies until the next load. */
+const resolvedMotion = () => (reducedMotionQuery.matches ? 'off' : (storedMotion() || defaultMotion()));
+applyMotion(resolvedMotion());
 
 const themeMenu = initPrefMenu({
   trigger: $('#themeTrigger'),
@@ -71,135 +69,46 @@ const onScheme = () => {
 };
 lightSchemeQuery.addEventListener?.('change', onScheme);
 
-// An OS reduced-motion change only moves the page if no explicit choice exists.
+// An OS reduced-motion change takes effect immediately, saved choice or not.
 reducedMotionQuery.addEventListener?.('change', () => {
-  if (storedMotion()) return;
-  applyMotion(defaultMotion());
+  applyMotion(resolvedMotion());
   motionMenu.sync();
-  revealAll(motionLevel() === 'off');
+  revealAll();
 });
 
-/* ================= Secure welcome ================= */
-const boot = $('#boot');
-// The rain canvas and the verification sequence live in their own module; this
-// keeps a handle so both can be stopped the moment the visitor moves on.
-const bootScene = initBoot();
-const siteShell = $('#siteShell');
-const mainContent = $('#main');
-const bootEnter = $('#bootEnter');
-
-function setShellInert(value) {
-  if (!siteShell) return;
-  try { siteShell.inert = value; } catch { /* older engines: aria-hidden below */ }
-  siteShell.setAttribute('aria-hidden', value ? 'true' : 'false');
-}
-
-function completeBoot({ focusMain = true } = {}) {
-  if (!boot || !body.classList.contains('boot-active')) return;
-  window.clearTimeout(state.bootTimer);
-  bootScene.stop();
-  body.classList.remove('boot-active');
-  boot.setAttribute('aria-hidden', 'true');
-  setShellInert(false);
-  if (focusMain) mainContent?.focus({ preventScroll: true });
-}
-
-function replayBoot() {
-  if (!boot) return;
-  closeMenu();
-  $('#command')?.close();
-  $('#shortcuts')?.close();
-  $('#report')?.close();
-  window.scrollTo({ top: 0, behavior: scrollBehaviour() });
-  body.classList.add('boot-active');
-  boot.setAttribute('aria-hidden', 'false');
-  setShellInert(true);
-  requestAnimationFrame(() => bootEnter?.focus({ preventScroll: true }));
-}
-
-if (boot && bootEnter) {
-  setShellInert(true);
-  bootEnter.addEventListener('click', () => completeBoot());
-  $('#bootSkip')?.addEventListener('click', () => completeBoot());
-
-  boot.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' && event.target === boot) {
-      event.preventDefault();
-      completeBoot();
-    }
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      completeBoot();
-    }
-    trapFocus(boot, event);
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (!body.classList.contains('boot-active')) return;
-    if (event.key === 'Enter' && !(event.target instanceof HTMLAnchorElement)) {
-      event.preventDefault();
-      completeBoot();
-    }
-  });
-
-  // The welcome is a scene, not a gate: it self-clears if the visitor never
-  // interacts with it, so nothing can strand the page behind it.
-  state.bootTimer = window.setTimeout(() => completeBoot({ focusMain: false }), 14000);
-} else {
-  body.classList.remove('boot-active');
-  setShellInert(false);
-}
-
-$$('[data-replay-boot]').forEach((button) => button.addEventListener('click', replayBoot));
+/* The secure-welcome overlay was removed in v31 (R01). The site loads
+   directly into the portfolio; there is no gate, inert shell or timer. */
 
 /* ================= Header and navigation ================= */
 const header = $('#siteHeader');
-const primaryNav = $('#primaryNav');
-const menuToggle = $('#menuToggle');
+const navMenu = $('#navMenu');
+const navMenuToggle = navMenu?.querySelector('summary');
 
-function openMenu() {
-  if (!primaryNav || !menuToggle) return;
-  state.menuOpen = true;
-  primaryNav.classList.add('is-open');
-  menuToggle.setAttribute('aria-expanded', 'true');
-  menuToggle.setAttribute('aria-label', 'Close navigation menu');
-  primaryNav.querySelector('a')?.focus();
-}
-
+/* The compact menu is a native <details>: it opens, closes and stays keyboard
+   operable with no script at all. Everything below is enhancement — Escape,
+   closing on outside click or after choosing a destination, and closing when
+   the viewport widens back to the inline nav. None of it traps focus. */
 function closeMenu({ restoreFocus = false } = {}) {
-  if (!primaryNav || !menuToggle || !state.menuOpen) return;
-  state.menuOpen = false;
-  primaryNav.classList.remove('is-open');
-  menuToggle.setAttribute('aria-expanded', 'false');
-  menuToggle.setAttribute('aria-label', 'Open navigation menu');
-  if (restoreFocus) menuToggle.focus();
+  if (!navMenu?.open) return;
+  navMenu.open = false;
+  if (restoreFocus) navMenuToggle?.focus();
 }
 
-menuToggle?.addEventListener('click', () => (state.menuOpen ? closeMenu({ restoreFocus: true }) : openMenu()));
-$$('#primaryNav a').forEach((link) => link.addEventListener('click', () => closeMenu()));
+$$('a', navMenu).forEach((link) => link.addEventListener('click', () => closeMenu()));
 
-primaryNav?.addEventListener('keydown', (event) => {
-  if (!state.menuOpen) return;
-  if (event.key === 'Escape') {
+navMenu?.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navMenu.open) {
+    event.preventDefault();
     closeMenu({ restoreFocus: true });
-    return;
-  }
-  // While open as an overlay the menu keeps focus between itself and its
-  // toggle; on desktop it is inline and this never engages.
-  if (window.matchMedia('(max-width: 1279px)').matches) {
-    const scope = { contains: (node) => primaryNav.contains(node) || menuToggle.contains(node) };
-    if (!scope.contains(document.activeElement)) return;
-    trapFocus(primaryNav, event);
   }
 });
 
 document.addEventListener('pointerdown', (event) => {
-  if (!state.menuOpen) return;
-  if (!primaryNav.contains(event.target) && !menuToggle.contains(event.target)) closeMenu();
+  if (navMenu?.open && !navMenu.contains(event.target)) closeMenu();
 });
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 1279) closeMenu();
+  if (navMenu && getComputedStyle(navMenu).display === 'none') closeMenu();
 }, { passive: true });
 
 /* ---------- Scroll state ---------- */
@@ -229,7 +138,7 @@ updateScroll();
 backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: scrollBehaviour() }));
 
 /* ---------- Active section ---------- */
-const navLinks = $$('#primaryNav a');
+const navLinks = $$('#primaryNav a, #navMenu nav a:not(.nav-menu-cv)');
 const navTargets = navLinks.map((link) => $(link.getAttribute('href'))).filter(Boolean);
 
 if ('IntersectionObserver' in window && navTargets.length) {
@@ -275,6 +184,15 @@ if (!('IntersectionObserver' in window)) {
 
   revealItems.forEach((item) => revealObserver.observe(item));
   staggerGroups.forEach((group) => revealObserver.observe(group));
+
+  // Failsafe (R09): reveal content is a progressive enhancement and must never
+  // leave text stuck invisible. If the observer has not fired for an element
+  // shortly after load, on a restored page, or when a tab that loaded while
+  // hidden becomes visible (both of which throttle the observer and timers),
+  // reveal everything so no essential content stays hidden or dim.
+  window.setTimeout(revealAll, 1200);
+  window.addEventListener('pageshow', revealAll);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) revealAll(); });
 }
 
 /* ---------- Idle offscreen sections ---------- */
@@ -285,87 +203,8 @@ if ('IntersectionObserver' in window) {
   $$('[data-ambient]').forEach((section) => idleObserver.observe(section));
 }
 
-/* ================= Operator terminal ================= */
-const terminalOutput = $('#terminalLine');
-
-const TERMINAL_LINES = [
-  'Open to cyber security opportunities worldwide.',
-  'Base: United Kingdom. Work modes: remote, hybrid, on-site, relocation.',
-  'Focus: SOC operations, DFIR, ICS/OT and vulnerability assessment.',
-  'Method: investigate, validate, then communicate clearly.'
-];
-
-function runTerminal() {
-  if (!terminalOutput) return;
-  if (motionReduced()) {
-    terminalOutput.textContent = TERMINAL_LINES[0];
-    return;
-  }
-
-  let lineIndex = 0;
-  let charIndex = 0;
-  let deleting = false;
-  let timer = 0;
-
-  const tick = () => {
-    if (document.hidden) {
-      timer = window.setTimeout(tick, 600);
-      return;
-    }
-    const line = TERMINAL_LINES[lineIndex];
-    if (!deleting) {
-      charIndex += 1;
-      terminalOutput.textContent = line.slice(0, charIndex);
-      if (charIndex >= line.length) {
-        deleting = true;
-        timer = window.setTimeout(tick, 2600);
-        return;
-      }
-      timer = window.setTimeout(tick, 32 + Math.random() * 22);
-    } else {
-      charIndex -= 1;
-      terminalOutput.textContent = line.slice(0, Math.max(0, charIndex));
-      if (charIndex <= 0) {
-        deleting = false;
-        lineIndex = (lineIndex + 1) % TERMINAL_LINES.length;
-        timer = window.setTimeout(tick, 420);
-        return;
-      }
-      timer = window.setTimeout(tick, 16);
-    }
-  };
-
-  timer = window.setTimeout(tick, 700);
-  window.addEventListener('pagehide', () => window.clearTimeout(timer), { once: true });
-  document.addEventListener('aegis:motion', () => {
-    if (!motionReduced()) return;
-    window.clearTimeout(timer);
-    terminalOutput.textContent = TERMINAL_LINES[0];
-  });
-}
-runTerminal();
-
-/* ================= Red Cell / Blue Team ================= */
-function initRedBlue() {
-  const module = $('#redblue');
-  if (!module) return;
-  const buttons = $$('button', $('#redblueSwitch'));
-  if (!buttons.length) return;
-
-  function select(side) {
-    module.dataset.side = side;
-    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.side === side)));
-    $$('.redblue-column', module).forEach((column) => {
-      // Dimmed rather than removed: the comparison is the point, and hiding
-      // one half would make the diagram meaningless.
-      column.setAttribute('aria-hidden', 'false');
-    });
-  }
-
-  buttons.forEach((button) => button.addEventListener('click', () => select(button.dataset.side)));
-  select('both');
-}
-initRedBlue();
+/* The Red Cell / Blue Team block is now static paired stages plus two columns
+   (R08) — no emphasis switch, so it needs no JavaScript at all. */
 
 /* ================= Mission filters ================= */
 function initFilters() {
@@ -395,11 +234,19 @@ function initFilters() {
         : `Showing ${shown} ${shown === 1 ? 'project' : 'projects'} in ${label}.`;
     }
 
-    if (!motionReduced()) {
-      grid.classList.add('is-filtering');
-      window.setTimeout(() => grid.classList.remove('is-filtering'), 400);
-    }
   }
+
+  // Counts come from the cards themselves, so a filter badge can never claim a
+  // number the grid does not show. The markup carries the same values as the
+  // no-JS default; this keeps them honest if a project is added or removed.
+  buttons.forEach((button) => {
+    const filter = button.dataset.filter || 'all';
+    const count = filter === 'all'
+      ? cards.length
+      : cards.filter((card) => (card.dataset.categories || '').split(/\s+/).includes(filter)).length;
+    const badge = button.querySelector('b');
+    if (badge) badge.textContent = String(count);
+  });
 
   buttons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -442,6 +289,7 @@ function openShortcuts() {
 
 const commands = [
   { label: 'Go to About', description: 'Profile, approach and working philosophy', hint: '01', icon: 'icon-user-shield', keywords: 'about profile summary me', run: () => goTo('#about') },
+  { label: 'Go to Timeline', description: 'Degrees, roles and projects in date order', hint: '01', icon: 'icon-activity', keywords: 'timeline history career journey dates chronology', run: () => goTo('#timelineTitle') },
   { label: 'Go to Education', description: 'MSc Cyber Security and BSc Cyber Security', hint: '02', icon: 'icon-graduation', keywords: 'education degree university chester air', run: () => goTo('#education') },
   { label: 'Go to Experience', description: 'ICS internship and current operations role', hint: '03', icon: 'icon-briefcase', keywords: 'experience work trezlon phi-tech internship', run: () => goTo('#experience') },
   { label: 'Go to Projects', description: 'Projects and case studies', hint: '04', icon: 'icon-code', keywords: 'projects work case studies portfolio', run: () => goTo('#projects') },
@@ -453,8 +301,8 @@ const commands = [
     description: project.kicker,
     hint: 'Case',
     icon: 'icon-file',
-    keywords: `case study mission ${project.title} ${project.classification} ${project.stack.join(' ')}`,
-    run: () => openReport(id, commandTrigger)
+    keywords: `case study mission ${id.replace('-', ' ')} ${id} ${project.title} ${project.kicker} ${project.classification} ${project.stack.join(' ')}`,
+    run: () => goTo(`#case-${id}`)
   })),
   { label: 'Theme: System', description: 'Follow the operating system', hint: 'Theme', icon: 'icon-monitor', keywords: 'theme system auto', run: () => { applyTheme('system', true); themeMenu.sync(); showToast('Theme: system'); } },
   { label: 'Theme: BlackICE Night', description: 'Dark operations theme', hint: 'Theme', icon: 'icon-moon', keywords: 'theme dark blackice night', run: () => { applyTheme('dark', true); themeMenu.sync(); showToast('Theme: BlackICE Night'); } },
@@ -476,8 +324,7 @@ const commands = [
   { label: 'Print this page', description: 'Forensic print layout', hint: 'Print', icon: 'icon-print', keywords: 'print pdf export report', run: () => window.print() },
   { label: 'Open LinkedIn', description: 'linkedin.com/in/sarmad-saeed-845a7b267', hint: 'External', icon: 'icon-arrow-up-right', keywords: 'linkedin social profile', run: () => window.open('https://www.linkedin.com/in/sarmad-saeed-845a7b267', '_blank', 'noopener,noreferrer') },
   { label: 'Open GitHub', description: 'github.com/GhauriBoy295', hint: 'External', icon: 'icon-arrow-up-right', keywords: 'github code repository', run: () => window.open('https://github.com/GhauriBoy295', '_blank', 'noopener,noreferrer') },
-  { label: 'Keyboard shortcuts', description: 'Every keyboard control', hint: '?', icon: 'icon-command', keywords: 'keyboard shortcuts help keys', run: openShortcuts },
-  { label: 'Replay secure welcome', description: 'Return to the access sequence', hint: 'Replay', icon: 'icon-arrow-right', keywords: 'welcome intro replay boot', run: replayBoot }
+  { label: 'Keyboard shortcuts', description: 'Every keyboard control', hint: '?', icon: 'icon-command', keywords: 'keyboard shortcuts help keys', run: openShortcuts }
 ];
 
 function renderCommands(query = '') {
@@ -585,17 +432,14 @@ if (commandKbd) commandKbd.textContent = isApple ? '⌘K' : 'Ctrl K';
 
 document.addEventListener('keydown', (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-    if (body.classList.contains('boot-active')) return;
     event.preventDefault();
     if (commandDialog?.open) commandDialog.close();
     else openCommand();
     return;
   }
 
-  if (event.key === 'Escape' && state.menuOpen) closeMenu({ restoreFocus: true });
 
   if (event.metaKey || event.ctrlKey || event.altKey) return;
-  if (body.classList.contains('boot-active')) return;
 
   const target = event.target;
   const typing = target instanceof HTMLElement
@@ -665,6 +509,24 @@ $$('[data-copy]').forEach((button) => {
 });
 
 $('#printPage')?.addEventListener('click', () => window.print());
+
+/* A closed <details> does not print its contents in every browser, so the
+   About disclosure is opened for the print job and restored afterwards. */
+const heroAbout = $('.hero-about');
+let heroAboutWasOpen = false;
+window.addEventListener('beforeprint', () => {
+  if (!heroAbout) return;
+  heroAboutWasOpen = heroAbout.open;
+  heroAbout.open = true;
+});
+window.addEventListener('afterprint', () => {
+  if (heroAbout) heroAbout.open = heroAboutWasOpen;
+});
+
+/* Every "number of case studies" on the page is reconciled against the
+   static case-study articles, the single source of the reports. */
+const caseCount = $$('.case').length;
+$$('[data-case-count]').forEach((node) => { node.textContent = String(caseCount); });
 
 /* ================= UK local time ================= */
 function initLocalTime() {
@@ -748,61 +610,94 @@ const yearSlot = $('#currentYear');
 if (yearSlot) yearSlot.textContent = String(new Date().getFullYear());
 
 /* ================= Progressive extras ================= */
-initReport();
 
-// Depth is decorative and self-gating: it checks motion level, pointer type
-// and device power itself, and does nothing at all when any of those say no.
-initDepth();
+/* The coverage panel rebuilds a documented-work mapping table from projectData,
+   so it stays in step with the case studies without a second copy of the
+   numbers in the markup. No animated counts (R07/R09). */
+initCoverage();
 
-// The globe is decorative: it is skipped entirely on touch-first or small
-// screens, where its cost is highest and its value lowest.
-if (!coarseOrSmall()) {
-  initGlobe($('#globe'));
-} else {
-  $('#globe')?.querySelector('canvas')?.remove();
-}
+/* Case studies are substantive static articles (#case-<id>), reachable without
+   JS. Every link to one — cards, dossier, timeline, coverage table, the case
+   index and "Next" links — is a real anchor; this only smooths the jump and
+   moves focus into the article so the next Tab continues inside it. One
+   delegated listener covers links the coverage table builds at runtime. */
+document.addEventListener('click', (event) => {
+  const link = event.target.closest?.('a[href^="#case-"]');
+  if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
+  const id = link.getAttribute('href').slice(1);
+  const target = document.getElementById(id);
+  if (!target) return;
+  event.preventDefault();
+  target.scrollIntoView({ behavior: scrollBehaviour(), block: 'start' });
+  history.replaceState(null, '', `#${id}`);
+  target.focus({ preventScroll: true });
+});
 
-/* ================= Count-up animation ================= */
-function initCountUp() {
-  const counters = $$('[data-count]');
-  if (!counters.length || !('IntersectionObserver' in window)) return;
+/* ---------- Case-study navigator ----------
+   Marks the article in view in the index, and gives each article a
+   copy-link control. The index itself is static markup. */
+function initCaseNavigator() {
+  const articles = $$('article.case');
+  const indexLinks = $$('.cases-index a');
+  if (!articles.length) return;
 
-  const animate = (el) => {
-    const target = parseInt(el.dataset.count, 10);
-    if (!Number.isFinite(target) || target <= 0) return;
-    const duration = 1600;
-    const start = performance.now();
-    const step = (now) => {
-      const progress = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(eased * target);
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      obs.unobserve(entry.target);
-      if (motionReduced()) {
-        entry.target.textContent = entry.target.dataset.count;
-      } else {
-        animate(entry.target);
-      }
+  if (indexLinks.length && 'IntersectionObserver' in window) {
+    const mark = (id) => indexLinks.forEach((a) => {
+      if (a.getAttribute('href') === `#${id}`) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
     });
-  }, { threshold: 0.3 });
+    const spy = new IntersectionObserver((entries) => {
+      const visible = entries.filter((e) => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (visible) mark(visible.target.id);
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    articles.forEach((a) => spy.observe(a));
+  }
 
-  counters.forEach((c) => {
-    c.textContent = '0';
-    observer.observe(c);
+  articles.forEach((article) => {
+    const actions = $('.case-actions', article);
+    if (!actions) return;
+    const button = el('button', { className: 'case-copy', text: 'Copy link' });
+    button.type = 'button';
+    const title = $('h4', article)?.textContent.trim() || 'case study';
+    button.setAttribute('aria-label', `Copy link to ${title}`);
+    button.addEventListener('click', async () => {
+      const url = `${location.origin}${location.pathname}#${article.id}`;
+      showToast(await copyText(url) ? 'Case-study link copied' : 'Copy failed — the link is in the address bar');
+    });
+    actions.insertBefore(button, $('.case-next', actions));
   });
 }
-initCountUp();
+initCaseNavigator();
 
-/* Charts are generated from projectData, so they stay in step with the case
-   studies without a second copy of the numbers in the markup. */
-initCharts();
+/* ---------- Tool evidence ----------
+   Each tool in the Skills grid links to the case studies whose recorded stack
+   names it, read from the same project records as the coverage table. A tool
+   no case study lists gets no link, rather than a guessed one. */
+function initToolEvidence() {
+  const tools = $$('.tool-grid li');
+  if (!tools.length) return;
+  let linked = 0;
+  tools.forEach((tool) => {
+    const name = $('strong', tool)?.textContent.trim().toLowerCase();
+    if (!name) return;
+    const uses = Object.entries(projectData)
+      .filter(([, p]) => p.stack.some((item) => item.toLowerCase() === name));
+    if (!uses.length) return;
+    const line = el('span', { className: 'tool-evidence' });
+    line.append(el('span', { className: 'tool-evidence-label', text: 'Used in' }));
+    uses.forEach(([id, p]) => line.append(el('a', { text: p.short, attrs: { href: `#case-${id}` } })));
+    tool.append(line);
+    tool.classList.add('has-evidence');
+    linked += 1;
+  });
+  const grid = $('.tool-grid');
+  if (linked && grid) {
+    const note = el('p', { className: 'tool-evidence-note', text: `${linked} of ${tools.length} tools link to the case study that records using them.` });
+    grid.after(note);
+  }
+}
+initToolEvidence();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {
@@ -813,13 +708,3 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 }
 
 window.addEventListener('hashchange', () => closeMenu());
-
-// A visitor arriving on a case-study link skips the welcome and lands on the
-// report itself.
-if (projectFromHash()) {
-  completeBoot({ focusMain: false });
-  requestAnimationFrame(() => {
-    const id = projectFromHash();
-    if (id) openReport(id, $(`[data-open-mission="${id}"]`));
-  });
-}
