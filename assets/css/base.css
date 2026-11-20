@@ -171,8 +171,10 @@ html {
   padding-inline: var(--shell-pad);
 }
 
+/* Half the gap above and below each section, so consecutive sections sit one
+   --section-gap apart (80px desktop, 56px phone) with the divider centred. */
 .section {
-  padding-block: var(--section-gap);
+  padding-block: calc(var(--section-gap) / 2);
   scroll-margin-top: var(--header-h);
 }
 
@@ -453,13 +455,18 @@ kbd {
 
 /* ---------- Section dividers ----------
    A single faint neutral rule between sections, no glow. */
+/* Pinned to the top edge of the section. It used to sit in the flow with a
+   large negative margin, which landed it across the section's heading. */
 .section + .section::before {
   content: "";
-  display: block;
-  width: min(80%, 640px);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(80%, 40rem);
   height: 1px;
-  margin: 0 auto calc(var(--section-gap) * -0.92);
+  transform: translateX(-50%);
   background: var(--divider);
+  pointer-events: none;
 }
 
 .section { position: relative; }

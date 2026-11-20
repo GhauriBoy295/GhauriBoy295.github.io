@@ -12,7 +12,7 @@ design influences distinct jobs:
 | Red Cell / Blue Team | Strict red/green meaning; paired assessment-stage vs defensive-control comparison |
 | Neo-Forensics | Evidence Dossier, static case studies, work-sequence timelines, light theme, print |
 
-**Current release: `31.0.0`** (`CACHE_VERSION = 'v31-0-0'`, `ASSET_REV = '31.0.0'`).
+**Current release: `31.1.0`** (`CACHE_VERSION = 'v31-1-0'`, `ASSET_REV = '31.1.0'`).
 
 ## Where it is published
 
@@ -47,6 +47,10 @@ that have no public verification link. These rules are enforced in CI — see
 - **Evidence Dossier**: a linked index of the documented case studies beside the hero
 - Project cards built around each report: verified context, problem, documented contribution, and a cover showing the report's own work phases
 - **Static case studies** (`#case-<id>`) — complete and deep-linkable without JavaScript
+- Case-study navigator: a sticky "On this page" index that tracks the article in view, plus copy-link and next-case on every case study
+- Career timeline in About: degrees, roles and projects in date order, each linking to its section or case study
+- Tool evidence: each tool in Skills links to the case study whose recorded stack names it; tools no case study lists stay unlinked
+- Hero facts strip with the verified degree, base, availability and documented-work facts
 - Documented-work table mapping each case study to the NIST CSF function its write-up names ("Mapped", or a dash meaning not documented here — never a skill score)
 - Red Cell / Blue Team as three paired stages, with the authorised-lab note alongside
 - Three-state theme control: **System**, **Dark (BlackICE Night)**, **Light (Forensic Daylight)**
@@ -90,14 +94,18 @@ CLAUDE.md                  content + engineering + git contract
 - **Case studies** are static `<article class="case" id="case-<id>">` elements
   in `index.html` — that is the single source of each report. Case-study counts
   on the page are computed from these articles.
-- **Adding a project** touches five places, all in `index.html` except the last:
+- **Adding a project** touches these places, all in `index.html` except the last:
   1. a card in `#missions` (with `data-categories` for the filters),
-  2. a `case-<id>` article in `#cases`,
+  2. a `case-<id>` article in `#cases`, and its entry in the "On this page"
+     case index; update the previous article's "Next" link,
   3. a row in the hero dossier,
   4. a row in the static coverage table (the no-JS fallback),
-  5. an entry in `assets/js/project-data.js` (title, kicker, classification,
-     stack, and `framework.fn` only if the write-up names a NIST CSF function).
-  Filter counts, case counts and the JS-built coverage table update themselves.
+  5. an entry in the About timeline, if the project is dated,
+  6. an entry in `assets/js/project-data.js` (title, `short` label, kicker,
+     classification, stack, and `framework.fn` only if the write-up names a
+     NIST CSF function).
+  Filter counts, case counts, tool-evidence links and the JS-built coverage
+  table update themselves.
 - **Colours and tokens** are in `assets/css/tokens.css`, defined once per theme.
   Breakpoints are in `em` and type in `rem`, so layout follows the browser's
   text-size setting — keep new ones that way.

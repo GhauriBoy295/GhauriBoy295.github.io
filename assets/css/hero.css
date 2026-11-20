@@ -19,8 +19,26 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 22% 20%, rgba(0, 255, 178, 0.06), transparent 60%);
+  background:
+    radial-gradient(ellipse 70% 60% at 22% 20%, rgba(0, 255, 178, 0.06), transparent 60%),
+    radial-gradient(ellipse 45% 55% at 82% 38%, rgba(0, 212, 255, 0.045), transparent 65%);
 }
+
+/* A faint, static dot field behind the dossier side of the hero. Masked so it
+   fades out well before any edge; dark theme only, never animated. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 45%;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(145, 162, 183, 0.22) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 60% 55% at 60% 42%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 60% 42%, #000 0%, transparent 70%);
+}
+
+:root[data-theme="light"] .hero::after { display: none; }
 
 :root[data-theme="light"] .hero::before { display: none; }
 
@@ -225,6 +243,17 @@
   border-radius: var(--radius-md);
   background: var(--surface-1);
   box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+/* A single hairline of the signature gradient across the top of the sheet —
+   the one place the mint/cyan/violet run survives, kept to 2px. */
+.dossier-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--gradient-accent);
 }
 
 .dossier-head { margin-bottom: var(--space-4); }
@@ -353,3 +382,59 @@
 }
 
 .panel-card-note { font-size: 0.8rem; color: var(--text-3); }
+
+/* ---------- Hero facts strip ----------
+   Four verified facts in one ruled row; two columns on tablets, stacked on
+   phones. */
+.hero-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: clamp(var(--space-6), 5vw, var(--space-8));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+@media (min-width: 35em) { .hero-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60em) { .hero-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.hero-strip > div {
+  display: grid;
+  gap: 4px;
+  padding: var(--space-4) var(--space-5);
+  border-right: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  margin: 0 -1px -1px 0;
+}
+
+.hero-strip dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.hero-strip dd {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.strip-badge {
+  display: inline-block;
+  margin-left: var(--space-2);
+  vertical-align: 1px;
+  padding: 1px 8px;
+  border: 1px solid var(--secure-line);
+  border-radius: 999px;
+  background: var(--secure-soft);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--secure);
+}

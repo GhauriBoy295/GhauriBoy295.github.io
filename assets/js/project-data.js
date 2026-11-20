@@ -14,6 +14,7 @@ export const order = ['randomness', 'ics-ids', 'dfir', 'assessment', 'blood-bank
 export const projectData = {
   randomness: {
     title: 'Integrated Randomness Testing Suite',
+    short: 'MSc dissertation',
     kicker: 'Research case study',
     classification: 'research',
     stack: ['Python', 'PRNG / TRNG', 'Statistical testing', 'Entropy analysis', 'Security research'],
@@ -21,6 +22,7 @@ export const projectData = {
   },
   'ics-ids': {
     title: 'Intrusion Detection for Industrial Control Systems',
+    short: 'ICS detection project',
     kicker: 'Defensive security case study',
     classification: 'defence',
     stack: ['ICS / OT security', 'Intrusion detection', 'Anomaly awareness', 'Network monitoring', 'Alert logic'],
@@ -28,6 +30,7 @@ export const projectData = {
   },
   dfir: {
     title: 'Digital Forensics & Incident Response Labs',
+    short: 'DFIR labs',
     kicker: 'Investigation case study',
     classification: 'defence',
     stack: ['Autopsy', 'FTK Imager', 'OS Forensics', 'Evidence handling', 'Incident response'],
@@ -35,6 +38,7 @@ export const projectData = {
   },
   assessment: {
     title: 'Security Assessment & Active Defence Labs',
+    short: 'Assessment labs',
     kicker: 'Offensive security case study',
     classification: 'offensive',
     stack: ['Nmap', 'Burp Suite', 'Metasploit', 'Nessus', 'OpenVAS', 'Wireshark'],
@@ -42,6 +46,7 @@ export const projectData = {
   },
   'blood-bank': {
     title: 'Blood Bank Database System',
+    short: 'Blood Bank database',
     kicker: 'Development case study',
     classification: 'development',
     stack: ['SQL', 'Relational modelling', 'Data integrity', 'System analysis']

@@ -37,7 +37,7 @@
   --shell-max: 75rem;
   --rail-inset: clamp(1rem, 2vw, 2.5rem);
   --shell-pad: clamp(1rem, 4vw, 2.75rem);
-  --section-gap: clamp(3rem, 8vw, 7.5rem);
+  --section-gap: clamp(3.5rem, 7vw, 5rem);
   --header-h: 68px;
 
   /* ---------- Radii ---------- */

@@ -62,6 +62,9 @@
   .sheet,
   .hero-actions,
   .hero::before,
+  .hero::after,
+  .cases-index,
+  .case-copy,
   .feature-strip,
   .reach-map,
   .filters,
@@ -110,6 +113,7 @@
   .case-aside { break-inside: avoid; }
 
   .coverage-scroll { overflow: visible; }
+  .cases-layout { display: block; }
 
   /* Kept as its own rule: a browser that does not know ::details-content drops
      only this rule, not the whole selector list. */

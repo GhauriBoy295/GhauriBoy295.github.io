@@ -11,8 +11,8 @@
    "no ability". No framework version is asserted beyond the five core function
    labels the source work already uses. */
 
-import { $, el } from './core.js?v=31.0.0';
-import { projectData, order } from './project-data.js?v=31.0.0';
+import { $, el } from './core.js?v=31.1.0';
+import { projectData, order } from './project-data.js?v=31.1.0';
 
 const FUNCTIONS = ['Identify', 'Protect', 'Detect', 'Respond', 'Recover'];
 

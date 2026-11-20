@@ -36,16 +36,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap">
 
-  <link rel="stylesheet" href="assets/css/tokens.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/base.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/shell.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/hero.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/sections.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/missions.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/overlays.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/motion.css?v=31.0.0">
-  <link rel="stylesheet" href="assets/css/print.css?v=31.0.0">
-  <script type="module" src="assets/js/app.js?v=31.0.0"></script>
+  <link rel="stylesheet" href="assets/css/tokens.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/base.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/shell.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/hero.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/sections.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/missions.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/overlays.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/motion.css?v=31.1.0">
+  <link rel="stylesheet" href="assets/css/print.css?v=31.1.0">
+  <script type="module" src="assets/js/app.js?v=31.1.0"></script>
 
   <script>
     /* Resolve both preferences before first paint.
@@ -342,6 +342,27 @@
               </div>
             </aside>
           </div>
+
+          <!-- Verified facts at a glance. Every value restates the profile
+               facts above; nothing here is a metric or a claim of outcome. -->
+          <dl class="hero-strip reveal" data-reveal="up" data-delay="120">
+            <div>
+              <dt>Degree</dt>
+              <dd>MSc Cyber Security <span class="strip-badge">Graduated</span></dd>
+            </div>
+            <div>
+              <dt>Base</dt>
+              <dd>United Kingdom</dd>
+            </div>
+            <div>
+              <dt>Availability</dt>
+              <dd>Worldwide &middot; remote, hybrid, on-site, relocation</dd>
+            </div>
+            <div>
+              <dt>Documented work</dt>
+              <dd><span data-case-count>5</span> case studies &middot; 2022&ndash;2026</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
@@ -504,6 +525,18 @@
                matching article into a dialog; the content lives here only. -->
           <div class="cases" id="cases">
             <h3 class="cases-title">Full case studies</h3>
+            <div class="cases-layout">
+            <nav class="cases-index" aria-label="Case studies">
+              <p class="cases-index-label">On this page</p>
+              <ol>
+                <li><a href="#case-randomness"><span class="ci-no">01</span><span class="ci-text"><strong>Integrated Randomness Testing Suite</strong><small>Research</small></span></a></li>
+                <li><a href="#case-ics-ids"><span class="ci-no">02</span><span class="ci-text"><strong>Intrusion Detection for Industrial Control Systems</strong><small>Defensive</small></span></a></li>
+                <li><a href="#case-dfir"><span class="ci-no">03</span><span class="ci-text"><strong>Digital Forensics &amp; Incident Response Labs</strong><small>Defensive</small></span></a></li>
+                <li><a href="#case-assessment"><span class="ci-no">04</span><span class="ci-text"><strong>Security Assessment &amp; Active Defence Labs</strong><small>Offensive</small></span></a></li>
+                <li><a href="#case-blood-bank"><span class="ci-no">05</span><span class="ci-text"><strong>Blood Bank Database System</strong><small>Development</small></span></a></li>
+              </ol>
+            </nav>
+            <div class="cases-list">
             <article class="case" id="case-randomness" aria-labelledby="case-randomness-title" tabindex="-1">
               <div class="case-head">
                 <p class="case-kicker"><span class="badge badge-secure">Research</span> <span class="case-meta">MSc Dissertation &middot; University of Chester &middot; 2025&ndash;2026</span></p>
@@ -560,7 +593,7 @@
                     <li><b>Working material</b><span>Statistical result tables and interpretation notes</span></li>
                     <li><b>Assessment</b><span>MSc dissertation write-up</span></li>
                   </ul>
-                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a></p>
+                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a> <a class="case-next" href="#case-ics-ids">Next: Intrusion Detection for Industrial Control Systems <span aria-hidden="true">&rarr;</span></a></p>
                 </aside>
               </div>
             </article>
@@ -620,7 +653,7 @@
                     <li><b>Working material</b><span>Project report and presentation</span></li>
                     <li><b>Recognition</b><span>Entrepreneur Gala, 2nd position</span></li>
                   </ul>
-                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a></p>
+                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a> <a class="case-next" href="#case-dfir">Next: Digital Forensics &amp; Incident Response Labs <span aria-hidden="true">&rarr;</span></a></p>
                 </aside>
               </div>
             </article>
@@ -680,7 +713,7 @@
                     <li><b>Working material</b><span>Acquisition hash verification records</span></li>
                     <li><b>Working material</b><span>Investigation notes and lab reports</span></li>
                   </ul>
-                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a></p>
+                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a> <a class="case-next" href="#case-assessment">Next: Security Assessment &amp; Active Defence Labs <span aria-hidden="true">&rarr;</span></a></p>
                 </aside>
               </div>
             </article>
@@ -741,7 +774,7 @@
                     <li><b>Working material</b><span>Vulnerability findings with prioritisation</span></li>
                     <li><b>Working material</b><span>Remediation recommendation notes</span></li>
                   </ul>
-                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a></p>
+                  <p class="case-actions"><a href="#projects">Back to projects</a> <a href="#contact">Contact</a> <a class="case-next" href="#case-blood-bank">Next: Blood Bank Database System <span aria-hidden="true">&rarr;</span></a></p>
                 </aside>
               </div>
             </article>
@@ -803,6 +836,8 @@
                 </aside>
               </div>
             </article>
+            </div>
+            </div>
           </div>
         </div>
       </section>
@@ -810,7 +845,8 @@
       <!-- ============================ About ============================ -->
       <section class="section" id="about" aria-labelledby="aboutTitle">
         <div class="shell">
-          <div class="about-inner reveal" data-reveal="up">
+          <div class="about-inner">
+            <div class="about-main reveal" data-reveal="up">
             <p class="eyebrow">About me</p>
             <h2 id="aboutTitle">My approach to <span class="is-secure-text">security work</span></h2>
             <p class="about-copy">I am an MSc Cyber Security Graduate from the University of Chester with a strong academic background and practical experience in cyber security, digital forensics, incident response, penetration testing, network security and industrial control systems security.</p>
@@ -826,6 +862,75 @@
               <a href="#projects">See the documented work</a>
               <a href="#experience">Education &amp; experience</a>
             </p>
+            </div>
+
+            <div class="about-timeline reveal" data-reveal="up" data-delay="80">
+            <!-- Career timeline. Every entry restates a date already given in
+                 Education, Experience or a case study, and links back to it. -->
+            <h3 class="timeline-title" id="timelineTitle">Timeline</h3>
+            <ol class="timeline" aria-labelledby="timelineTitle">
+              <li data-kind="education">
+                <time datetime="2020">2020&ndash;2024</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Education</span>
+                  <a href="#education"><strong>BSc Cyber Security</strong></a>
+                  <span class="timeline-place">Air University, Islamabad</span>
+                </div>
+              </li>
+              <li data-kind="project">
+                <time datetime="2022">2022</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Project</span>
+                  <a href="#case-blood-bank"><strong>Blood Bank Database System</strong></a>
+                  <span class="timeline-place">Semester project, Air University</span>
+                </div>
+              </li>
+              <li data-kind="role">
+                <time datetime="2023-06">Jun&ndash;Aug 2023</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Role</span>
+                  <a href="#experience"><strong>Cyber Security Intern</strong></a>
+                  <span class="timeline-place">Phi-Tech &middot; Industrial Control Systems</span>
+                </div>
+              </li>
+              <li data-kind="project">
+                <time datetime="2023">2023&ndash;2024</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Project</span>
+                  <a href="#case-ics-ids"><strong>Intrusion Detection for Industrial Control Systems</strong></a>
+                  <span class="timeline-place">Final-year project &middot; 2nd position, Entrepreneur Gala</span>
+                </div>
+              </li>
+              <li data-kind="role">
+                <time datetime="2025-04">Apr 2025&ndash;present</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Role</span>
+                  <a href="#experience"><strong>E-commerce Operations / eBay Account Management</strong></a>
+                  <span class="timeline-place">Trezlon Ltd, United Kingdom</span>
+                </div>
+              </li>
+              <li data-kind="education">
+                <time datetime="2025">2025&ndash;2026</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Education</span>
+                  <a href="#education"><strong>MSc Cyber Security &mdash; Graduated</strong></a>
+                  <span class="timeline-place">University of Chester</span>
+                </div>
+              </li>
+              <li data-kind="project">
+                <time datetime="2025">2025&ndash;2026</time>
+                <div class="timeline-body">
+                  <span class="timeline-kind">Projects</span>
+                  <span class="timeline-links">
+                    <a href="#case-randomness"><strong>MSc dissertation: Randomness Testing Suite</strong></a>
+                    <a href="#case-dfir">DFIR labs</a>
+                    <a href="#case-assessment">Security assessment labs</a>
+                  </span>
+                  <span class="timeline-place">MSc dissertation and authorised academic labs</span>
+                </div>
+              </li>
+            </ol>
+            </div>
           </div>
         </div>
       </section>
@@ -1510,7 +1615,7 @@
 
       <div class="footer-legal">
         <p class="footer-status">
-          <span>Release 31.0.0</span>
+          <span>Release 31.1.0</span>
           <span>Status <span id="connectionState" class="is-online">Online</span></span>
           <span>Base United Kingdom</span>
           <span>Availability Worldwide</span>

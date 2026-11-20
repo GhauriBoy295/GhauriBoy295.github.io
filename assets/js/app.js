@@ -13,9 +13,9 @@ import {
   applyTheme, storedTheme, resolveTheme, lightSchemeQuery,
   applyMotion, storedMotion, defaultMotion, motionLevel, motionReduced, MOTION_LEVELS,
   initPrefMenu, scrollBehaviour, reducedMotionQuery
-} from './core.js?v=31.0.0';
-import { projectData } from './project-data.js?v=31.0.0';
-import { initCoverage } from './charts.js?v=31.0.0';
+} from './core.js?v=31.1.0';
+import { projectData } from './project-data.js?v=31.1.0';
+import { initCoverage } from './charts.js?v=31.1.0';
 
 root.classList.remove('no-js');
 root.classList.add('js');
@@ -289,6 +289,7 @@ function openShortcuts() {
 
 const commands = [
   { label: 'Go to About', description: 'Profile, approach and working philosophy', hint: '01', icon: 'icon-user-shield', keywords: 'about profile summary me', run: () => goTo('#about') },
+  { label: 'Go to Timeline', description: 'Degrees, roles and projects in date order', hint: '01', icon: 'icon-activity', keywords: 'timeline history career journey dates chronology', run: () => goTo('#timelineTitle') },
   { label: 'Go to Education', description: 'MSc Cyber Security and BSc Cyber Security', hint: '02', icon: 'icon-graduation', keywords: 'education degree university chester air', run: () => goTo('#education') },
   { label: 'Go to Experience', description: 'ICS internship and current operations role', hint: '03', icon: 'icon-briefcase', keywords: 'experience work trezlon phi-tech internship', run: () => goTo('#experience') },
   { label: 'Go to Projects', description: 'Projects and case studies', hint: '04', icon: 'icon-code', keywords: 'projects work case studies portfolio', run: () => goTo('#projects') },
@@ -616,20 +617,87 @@ if (yearSlot) yearSlot.textContent = String(new Date().getFullYear());
 initCoverage();
 
 /* Case studies are substantive static articles (#case-<id>), reachable without
-   JS. The project cards are real anchors to them; this only smooths the jump
-   and moves focus to the opened article for keyboard users. */
-$$('a.mission-open[href^="#case-"]').forEach((link) => {
-  link.addEventListener('click', (event) => {
-    const id = link.getAttribute('href').slice(1);
-    const target = document.getElementById(id);
-    if (!target) return;
-    event.preventDefault();
-    target.scrollIntoView({ behavior: scrollBehaviour(), block: 'start' });
-    history.replaceState(null, '', `#${id}`);
-    // The article is focusable (tabindex -1) so the next Tab continues inside it.
-    target.focus({ preventScroll: true });
-  });
+   JS. Every link to one — cards, dossier, timeline, coverage table, the case
+   index and "Next" links — is a real anchor; this only smooths the jump and
+   moves focus into the article so the next Tab continues inside it. One
+   delegated listener covers links the coverage table builds at runtime. */
+document.addEventListener('click', (event) => {
+  const link = event.target.closest?.('a[href^="#case-"]');
+  if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
+  const id = link.getAttribute('href').slice(1);
+  const target = document.getElementById(id);
+  if (!target) return;
+  event.preventDefault();
+  target.scrollIntoView({ behavior: scrollBehaviour(), block: 'start' });
+  history.replaceState(null, '', `#${id}`);
+  target.focus({ preventScroll: true });
 });
+
+/* ---------- Case-study navigator ----------
+   Marks the article in view in the index, and gives each article a
+   copy-link control. The index itself is static markup. */
+function initCaseNavigator() {
+  const articles = $$('article.case');
+  const indexLinks = $$('.cases-index a');
+  if (!articles.length) return;
+
+  if (indexLinks.length && 'IntersectionObserver' in window) {
+    const mark = (id) => indexLinks.forEach((a) => {
+      if (a.getAttribute('href') === `#${id}`) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    const spy = new IntersectionObserver((entries) => {
+      const visible = entries.filter((e) => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (visible) mark(visible.target.id);
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    articles.forEach((a) => spy.observe(a));
+  }
+
+  articles.forEach((article) => {
+    const actions = $('.case-actions', article);
+    if (!actions) return;
+    const button = el('button', { className: 'case-copy', text: 'Copy link' });
+    button.type = 'button';
+    const title = $('h4', article)?.textContent.trim() || 'case study';
+    button.setAttribute('aria-label', `Copy link to ${title}`);
+    button.addEventListener('click', async () => {
+      const url = `${location.origin}${location.pathname}#${article.id}`;
+      showToast(await copyText(url) ? 'Case-study link copied' : 'Copy failed — the link is in the address bar');
+    });
+    actions.insertBefore(button, $('.case-next', actions));
+  });
+}
+initCaseNavigator();
+
+/* ---------- Tool evidence ----------
+   Each tool in the Skills grid links to the case studies whose recorded stack
+   names it, read from the same project records as the coverage table. A tool
+   no case study lists gets no link, rather than a guessed one. */
+function initToolEvidence() {
+  const tools = $$('.tool-grid li');
+  if (!tools.length) return;
+  let linked = 0;
+  tools.forEach((tool) => {
+    const name = $('strong', tool)?.textContent.trim().toLowerCase();
+    if (!name) return;
+    const uses = Object.entries(projectData)
+      .filter(([, p]) => p.stack.some((item) => item.toLowerCase() === name));
+    if (!uses.length) return;
+    const line = el('span', { className: 'tool-evidence' });
+    line.append(el('span', { className: 'tool-evidence-label', text: 'Used in' }));
+    uses.forEach(([id, p]) => line.append(el('a', { text: p.short, attrs: { href: `#case-${id}` } })));
+    tool.append(line);
+    tool.classList.add('has-evidence');
+    linked += 1;
+  });
+  const grid = $('.tool-grid');
+  if (linked && grid) {
+    const note = el('p', { className: 'tool-evidence-note', text: `${linked} of ${tools.length} tools link to the case study that records using them.` });
+    grid.after(note);
+  }
+}
+initToolEvidence();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {
